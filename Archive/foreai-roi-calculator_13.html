@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>fore ai — ROI Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@fontsource/nohemi/index.css" onerror="this.remove()">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface2: #f6f8f9;
+  --surface3: #eef1f0;
+  --border: #e5e7eb;
+  --border-hover: #c8cdd0;
+  --text: #101010;
+  --muted: #6b7280;
+  --teal: #075056;
+  --teal-dim: rgba(7,80,86,0.08);
+  --teal-mid: rgba(7,80,86,0.15);
+  --red: #dc2626;
+  --red-dim: rgba(220,38,38,0.08);
+  --amber: #d97706;
+  --amber-dim: rgba(217,119,6,0.08);
+  --green-text: #065f46;
+  --green-dim: rgba(6,95,70,0.08);
+  --font: 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --r: 12px; --r2: 8px;
+}
+body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; overflow-x: hidden; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+/* Views */
+.view { display: none; }
+.view.active { display: block; }
+
+/* Top nav */
+.topnav { background: #fff; border-bottom: 1px solid var(--border); padding: 0; position: sticky; top: 0; z-index: 100; height: 57px; display: flex; align-items: center; }
+.topnav-inner { max-width: 780px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; width: 100%; }
+.nav-logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-mark svg { display: block; }
+.nav-logo-text { font-size: 15px; font-weight: 500; color: var(--text); letter-spacing: -0.01em; }
+.nav-cta { background: var(--teal); color: #fff; border: none; border-radius: 10px; padding: 9px 18px; font-family: var(--font); font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: opacity 0.15s; }
+.nav-cta:hover { opacity: 0.88; }
+
+/* Layout */
+.page { max-width: 780px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* Header */
+.eyebrow { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.eyebrow::before { content: ''; display: inline-block; width: 16px; height: 1.5px; background: var(--teal); }
+h1 { font-family: 'Nohemi', 'Inter', sans-serif; font-size: clamp(28px, 5vw, 44px); font-weight: 400; line-height: 1.1; letter-spacing: -0.4px; color: #000; margin-bottom: 12px; }
+h1 em, h1 span { font-style: italic; color: var(--teal); font-weight: 400; }
+.subtitle { font-size: 15px; color: var(--muted); line-height: 1.65; max-width: 500px; margin-bottom: 40px; font-weight: 400; }
+
+/* Progress */
+.progress-bar { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 32px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--teal); border-radius: 2px; transition: width 0.4s ease; }
+
+/* Step nav */
+.steps-nav { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 36px; }
+.step-item { display: flex; align-items: center; gap: 0; cursor: pointer; }
+.step-dot { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; font-size: 12px; font-weight: 600; border: 1.5px solid var(--border); background: var(--surface2); color: var(--muted); transition: all 0.2s; }
+.step-dot.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+.step-dot.done { background: var(--teal-dim); border-color: var(--teal); color: var(--teal); }
+.step-label { font-size: 12px; color: var(--muted); margin-left: 8px; white-space: nowrap; transition: color 0.15s; font-weight: 500; }
+.step-item.active .step-label { color: var(--text); }
+.step-connector { width: 40px; height: 1px; background: var(--border); margin: 0 4px; }
+
+/* Cards / Sections */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 12px; overflow: hidden; }
+.card-header { background: var(--surface2); border-bottom: 1px solid var(--border); padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+.card-icon { width: 30px; height: 30px; background: var(--teal-dim); border-radius: 8px; display: grid; place-items: center; font-size: 14px; flex-shrink: 0; color: var(--teal); }
+.card-header h2 { font-size: 14px; font-weight: 600; color: var(--text); }
+.card-header p { font-size: 12px; color: var(--muted); margin-top: 1px; font-weight: 400; }
+.card-body { padding: 24px 20px; }
+
+/* Form fields */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 580px) { .form-grid { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field.full { grid-column: 1 / -1; }
+label { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: var(--text); }
+label span { color: var(--muted); font-size: 11px; font-weight: 400; margin-left: 3px; }
+.input-wrap { position: relative; }
+.input-suffix { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--muted); pointer-events: none; letter-spacing: 0.02em; }
+.input-prefix { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--muted); pointer-events: none; }
+input[type="number"], input[type="text"], input[type="password"], select {
+  width: 100%; background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); font-family: var(--font); font-size: 14px;
+  padding: 10px 12px; border-radius: var(--r2);
+  outline: none; transition: border-color 0.15s;
+  -moz-appearance: textfield; appearance: textfield;
+}
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+input.has-suffix { padding-right: 44px; }
+input.has-prefix { padding-left: 28px; }
+input:focus, select:focus { border-color: var(--teal); outline: none; }
+select { cursor: pointer; }
+select option { background: #fff; }
+
+/* Buttons */
+.btn-row { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 10px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-family: var(--font); font-size: 14px; font-weight: 500; padding: 11px 22px; border-radius: 10px; border: none; transition: opacity 0.15s, background 0.15s; }
+.btn-ghost { background: var(--surface3); color: var(--teal); border: 1px solid var(--border); }
+.btn-ghost:hover { background: var(--border); }
+.btn-primary { background: var(--teal); color: #fff; }
+.btn-primary:hover { opacity: 0.88; }
+.btn-danger { background: var(--red-dim); border: 1px solid rgba(220,38,38,0.2); color: var(--red); }
+.btn-danger:hover { background: rgba(220,38,38,0.14); }
+.btn-success { background: var(--teal); color: #fff; font-weight: 600; }
+.btn-success:hover { opacity: 0.88; }
+
+/* Step panels */
+.step-panel { display: none; animation: fadeUp 0.25s ease; }
+.step-panel.active { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Results header */
+.results-header { margin-bottom: 32px; }
+.results-header h2 { font-family: 'Nohemi', 'Inter', sans-serif; font-size: 28px; font-weight: 400; color: #000; letter-spacing: -0.4px; line-height: 1.15; }
+.results-header h2 em { font-style: italic; color: var(--teal); }
+.results-header p { font-size: 14px; color: var(--muted); margin-top: 6px; }
+
+/* KPI grid */
+/* ROI hero card */
+.roi-hero-card { background: var(--teal); border-radius: var(--r); padding: 28px 32px; margin-bottom: 12px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+.roi-hero-num-wrap { flex-shrink: 0; }
+.roi-hero-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-bottom: 4px; }
+.roi-hero-num { font-family: 'Nohemi', 'Inter', sans-serif; font-size: 72px; font-weight: 400; line-height: 1; letter-spacing: -3px; color: #fff; }
+.roi-hero-unit { font-size: 16px; font-weight: 400; color: rgba(255,255,255,0.6); letter-spacing: 0; margin-left: 4px; }
+.roi-hero-divider { width: 1px; height: 64px; background: rgba(255,255,255,0.18); flex-shrink: 0; }
+@media (max-width: 580px) { .roi-hero-divider { display: none; } }
+.roi-hero-copy { flex: 1; min-width: 180px; }
+.roi-hero-copy-title { font-size: 15px; font-weight: 600; color: #fff; line-height: 1.3; margin-bottom: 5px; }
+.roi-hero-copy-sub { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.55; }
+
+/* Secondary KPI grid (4 cards, 2×2) */
+.kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 20px; }
+@media (max-width: 480px) { .kpi-grid { grid-template-columns: 1fr; } }
+.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 16px 16px; position: relative; overflow: hidden; }
+.kpi-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--card-stripe, var(--border)); }
+.kpi-card.green { background: var(--teal-dim); border-color: var(--teal-mid); --card-stripe: var(--teal); }
+.kpi-card.purple { background: rgba(109,40,217,0.06); border-color: rgba(109,40,217,0.15); --card-stripe: #6d28d9; }
+.kpi-card.amber { background: var(--amber-dim); border-color: rgba(217,119,6,0.2); --card-stripe: var(--amber); }
+.kpi-label { font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+.kpi-value { font-family: 'Nohemi', 'Inter', sans-serif; font-size: 28px; font-weight: 400; letter-spacing: -0.8px; margin-top: 8px; line-height: 1; }
+.kpi-value.green { color: var(--teal); }
+.kpi-value.purple { color: #6d28d9; }
+.kpi-value.amber { color: var(--amber); }
+.kpi-sub { font-size: 11px; color: var(--muted); line-height: 1.4; border-top: 1px solid var(--border); padding-top: 6px; margin-top: 8px; }
+
+/* Plan section */
+.plan-section { margin-bottom: 20px; }
+.plan-section h3 { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.plan-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+@media (max-width: 640px) { .plan-cards { grid-template-columns: repeat(2, 1fr); } }
+.plan-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--r); padding: 16px 12px; text-align: center; position: relative; transition: border-color 0.15s; }
+.plan-card.recommended { background: var(--teal-dim); border-color: var(--teal); }
+.plan-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--teal); color: #fff; font-size: 9px; font-weight: 700; padding: 2px 9px; border-radius: 99px; white-space: nowrap; letter-spacing: 0.5px; text-transform: uppercase; }
+.plan-name { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+.plan-price { font-family: 'Nohemi', 'Inter', sans-serif; font-size: 20px; font-weight: 400; color: var(--text); margin-top: 6px; letter-spacing: -0.3px; }
+.plan-price span { font-size: 11px; color: var(--muted); font-weight: 400; font-family: var(--font); }
+.plan-sub { font-size: 10px; color: var(--muted); margin-top: 3px; }
+.plan-card.recommended .plan-price { color: var(--teal); }
+
+/* Summary cards (breakdown rows) */
+.summary-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; margin-bottom: 0; }
+.summary-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 16px; border-bottom: 1px solid var(--border); }
+.summary-row:last-child { border-bottom: none; }
+.summary-row.total { background: var(--teal-dim); border-top: 1px solid var(--teal-mid); }
+.summary-label { font-size: 13px; color: var(--muted); font-weight: 400; }
+.summary-value { font-size: 13px; color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+.summary-value.positive { color: var(--teal); }
+.summary-value.highlight { color: var(--teal); font-size: 14px; }
+
+/* CTA card */
+.cta-card { background: var(--teal); border-radius: var(--r); padding: 32px; text-align: center; margin-bottom: 20px; }
+.cta-card h3 { font-family: 'Nohemi', 'Inter', sans-serif; font-size: 22px; font-weight: 400; color: #fff; letter-spacing: -0.3px; margin-bottom: 8px; }
+.cta-card p { font-size: 13px; color: rgba(255,255,255,0.75); margin-bottom: 20px; line-height: 1.65; max-width: 460px; margin-left: auto; margin-right: auto; }
+.cta-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.cta-row .btn-ghost { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.25); }
+.cta-row .btn-ghost:hover { background: rgba(255,255,255,0.25); }
+.cta-row .btn-primary { background: #fff; color: var(--teal); }
+.cta-row .btn-primary:hover { opacity: 0.92; }
+
+/* Lock screen */
+.lock-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; background: var(--surface2); }
+.lock-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 36px 32px; width: 100%; max-width: 360px; text-align: center; }
+.lock-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--teal-dim); border: 1px solid var(--teal-mid); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 18px; }
+.lock-title { font-size: 17px; font-weight: 600; color: var(--text); letter-spacing: -0.2px; margin-bottom: 5px; }
+.lock-sub { font-size: 13px; color: var(--muted); margin-bottom: 22px; line-height: 1.55; }
+.lock-field { text-align: left; margin-bottom: 10px; }
+.lock-field label { display: block; font-size: 12px; color: var(--text); margin-bottom: 5px; font-weight: 600; }
+.lock-field input { font-size: 14px; padding: 10px 12px; letter-spacing: 2px; }
+.lock-error { font-size: 12px; color: var(--red); margin-top: 8px; min-height: 16px; }
+.lock-btn { width: 100%; justify-content: center; margin-top: 6px; }
+.lock-back { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); cursor: pointer; margin-top: 16px; }
+.lock-back:hover { color: var(--text); }
+
+/* Admin panel */
+.admin-topbar { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 0; z-index: 100; }
+.admin-brand { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: var(--text); }
+.admin-badge { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(217,119,6,0.2); padding: 3px 9px; border-radius: 99px; }
+.admin-body { max-width: 780px; margin: 0 auto; padding: 36px 24px 100px; }
+.admin-page-title { margin-bottom: 28px; }
+.admin-page-title h2 { font-family: 'Nohemi', 'Inter', sans-serif; font-size: 22px; font-weight: 400; color: var(--text); letter-spacing: -0.3px; }
+.admin-page-title p { font-size: 13px; color: var(--muted); margin-top: 5px; line-height: 1.55; }
+.admin-section-title { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.admin-section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.admin-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 22px; margin-bottom: 12px; }
+.admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 580px) { .admin-grid { grid-template-columns: 1fr; } }
+.admin-field { display: flex; flex-direction: column; gap: 6px; }
+.admin-field label { font-size: 11px; color: var(--text); font-weight: 600; }
+.admin-field input { font-size: 13px; padding: 9px 10px; }
+.admin-field input.has-suffix { padding-right: 44px; }
+.admin-field .hint { font-size: 10px; color: var(--muted); line-height: 1.5; }
+
+/* Save bar */
+.save-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 200; background: var(--surface); border-top: 1px solid var(--border); padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; transform: translateY(100%); transition: transform 0.3s ease; }
+.save-bar.visible { transform: translateY(0); }
+.save-bar-msg { font-size: 13px; color: var(--text); }
+.save-bar-msg strong { color: var(--amber); }
+.save-bar-actions { display: flex; gap: 8px; }
+
+/* Toast */
+.toast { position: fixed; bottom: 72px; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--teal); color: #fff; font-size: 12px; padding: 8px 18px; border-radius: 99px; opacity: 0; transition: all 0.25s ease; pointer-events: none; z-index: 300; white-space: nowrap; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Results loader */
+.results-loader { position: relative; }
+.results-loader::after { content: ''; display: none; position: absolute; inset: 0; background: rgba(255,255,255,0.65); border-radius: var(--r); z-index: 10; backdrop-filter: blur(1px); }
+.results-loader.loading::after { display: block; }
+.results-spinner { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 11; pointer-events: none; }
+.results-loader.loading .results-spinner { display: flex; align-items: center; gap: 6px; background: #fff; border: 1px solid var(--border); border-radius: 99px; padding: 8px 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); font-size: 12px; font-weight: 500; color: var(--teal); white-space: nowrap; }
+.spin-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); animation: spinPulse 0.8s ease-in-out infinite; }
+.spin-dot:nth-child(2) { animation-delay: 0.15s; }
+.spin-dot:nth-child(3) { animation-delay: 0.3s; }
+@keyframes spinPulse { 0%,80%,100% { opacity:0.25; transform:scale(0.7); } 40% { opacity:1; transform:scale(1); } }
+
+/* Calc breakdown */
+.calc-section-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.4px; font-weight: 600; margin: 16px 0 8px; display: flex; align-items: center; gap: 8px; }
+.calc-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.calc-note { font-size: 10px; color: var(--muted); font-weight: 400; font-family: var(--mono); margin-left: 5px; }
+
+/* Sensitivity sliders */
+.sensitivity-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r); padding: 20px 22px; margin-bottom: 20px; }
+.sensitivity-card h3 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.sensitivity-card .sens-sub { font-size: 12px; color: var(--muted); margin-bottom: 18px; font-weight: 400; }
+.sliders-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 28px; }
+@media (max-width: 580px) { .sliders-grid { grid-template-columns: 1fr; } }
+.slider-field { display: flex; flex-direction: column; gap: 7px; }
+.slider-top { display: flex; justify-content: space-between; align-items: baseline; }
+.slider-label { font-size: 12px; color: var(--text); font-weight: 600; }
+.slider-val { font-size: 14px; font-weight: 700; color: var(--teal); font-variant-numeric: tabular-nums; min-width: 80px; text-align: right; }
+input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 4px; border-radius: 2px; background: var(--border); outline: none; cursor: pointer; accent-color: var(--teal); }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--teal); cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 0 2px var(--teal-mid); }
+input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--teal); border: 2px solid #fff; cursor: pointer; }
+
+/* Breakdown toggle */
+.breakdown-toggle { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r); padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin-bottom: 0; transition: background 0.15s, border-color 0.15s; color: var(--muted); font-size: 12px; font-weight: 600; font-family: var(--font); letter-spacing: 0.04em; text-transform: uppercase; }
+.breakdown-toggle:hover { background: var(--surface3); color: var(--text); }
+.breakdown-toggle .toggle-arrow { font-size: 11px; transition: transform 0.2s; }
+.breakdown-toggle.open { border-radius: var(--r) var(--r) 0 0; border-color: var(--teal); color: var(--teal); background: var(--teal-dim); }
+.breakdown-toggle.open .toggle-arrow { transform: rotate(180deg); }
+.breakdown-body { display: none; border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--r) var(--r); padding: 20px; margin-bottom: 20px; background: var(--surface2); }
+.breakdown-body.open { display: block; animation: fadeUp 0.2s ease; }
+
+/* Logo dot (used in admin topbar) */
+.logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); }
+
+/* Logo pill (calculator header badge) */
+.logo-pill { display: inline-flex; align-items: center; gap: 8px; background: var(--teal-dim); border: 1px solid var(--teal-mid); padding: 4px 12px 4px 10px; border-radius: 99px; font-size: 11px; color: var(--teal); margin-bottom: 20px; font-weight: 500; letter-spacing: 0.04em; }
+
+@media (max-width: 580px) { .page { padding: 32px 16px 60px; } h1 { font-size: 26px; } }
+</style>
+
+</head>
+<body>
+
+<!-- ═══════════════════════════════════
+     VIEW: CALCULATOR
+═══════════════════════════════════ -->
+<div class="view active" id="view-calc">
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="nav-logo" href="https://foreai.co">
+      <div class="nav-logo-mark">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#075056"/><path d="M7 8h10M7 12h7M7 16h4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </div>
+      <span class="nav-logo-text">fore ai</span>
+    </a>
+    <a class="nav-cta" href="https://meet.fore-ai.com/teams" target="_blank">Request Demo →</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <header>
+    <div class="logo-pill"><div class="logo-dot"></div>ROI Calculator</div>
+    <h1>Discover your <em>ROI with fore ai</em></h1>
+    <p class="subtitle">Quantify the time and cost savings your QA team unlocks with AI‑powered testing.</p>
+  </header>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:25%"></div></div>
+
+  <div class="steps-nav">
+    <div class="step-item active" id="nav0" onclick="goStep(0)"><div class="step-dot active" id="dot0">1</div><span class="step-label">Your team</span></div>
+    <div class="step-connector"></div>
+    <div class="step-item" id="nav1" onclick="goStep(1)"><div class="step-dot" id="dot1">2</div><span class="step-label">Test suite</span></div>
+    <div class="step-connector"></div>
+    <div class="step-item" id="nav2" onclick="goStep(2)"><div class="step-dot" id="dot2">3</div><span class="step-label">Execution</span></div>
+    <div class="step-connector"></div>
+    <div class="step-item" id="nav3" onclick="goStep(3)"><div class="step-dot" id="dot3">4</div><span class="step-label">Your ROI</span></div>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="step-panel active" id="step0">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">👥</div>
+        <div><h2>Tell us about your QA team</h2><p>We'll use this to calculate your current testing costs and efficiency baseline.</p></div>
+      </div>
+      <div class="card-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>Company / Project name <span>(optional)</span></label>
+          <input type="text" id="clientName" placeholder="e.g. Acme Corp">
+        </div>
+        <div class="field">
+          <label>QA region</label>
+          <select id="qaRegion">
+            <option value="Swiss">Switzerland / Western Europe</option>
+            <option value="USA/Canada">USA / Canada</option>
+            <option value="East Europe">Eastern Europe</option>
+            <option value="India/China" selected>India / China / APAC</option>
+            <option value="Mixed">Mixed / Global team</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Number of QA / test engineers</label>
+          <div class="input-wrap"><input type="number" id="numFTEs" value="5" min="1" max="500" class="has-suffix"><span class="input-suffix">FTEs</span></div>
+        </div>
+        <div class="field">
+          <label>Weekly QA hours per engineer</label>
+          <div class="input-wrap"><input type="number" id="weeklyHours" value="35" min="20" max="60" class="has-suffix"><span class="input-suffix">hrs/wk</span></div>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="btn-row"><span></span><button class="btn btn-primary" onclick="goStep(1)">Next: Test suite →</button></div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step-panel" id="step1">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">🧪</div>
+        <div><h2>Your current test suite</h2><p>Help us understand the size and growth of your existing test library.</p></div>
+      </div>
+      <div class="card-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>Existing test cases</label>
+          <div class="input-wrap"><input type="number" id="existingTests" value="200" min="0" class="has-suffix"><span class="input-suffix">tests</span></div>
+        </div>
+        <div class="field">
+          <label>New tests added per month</label>
+          <div class="input-wrap"><input type="number" id="newTestsPerMonth" value="20" min="0" class="has-suffix"><span class="input-suffix">/mo</span></div>
+        </div>
+        <div class="field full">
+          <label>Time to write one test <span>(from scratch)</span></label>
+          <div class="input-wrap"><input type="number" id="timeToGenerate" value="2" min="0.25" step="0.25" class="has-suffix"><span class="input-suffix">hrs</span></div>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="btn-row"><button class="btn btn-ghost" onclick="goStep(0)">← Back</button><button class="btn btn-primary" onclick="goStep(2)">Next: Execution →</button></div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step-panel" id="step2">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">⚡</div>
+        <div><h2>Test execution details</h2><p>How often do your tests run, and how long do they take?</p></div>
+      </div>
+      <div class="card-body">
+      <div class="form-grid">
+        <div class="field">
+          <label>Average test runs per test <span>(daily)</span></label>
+          <div class="input-wrap"><input type="number" id="runsPerTest" value="5" min="0" step="1" class="has-suffix"><span class="input-suffix">runs/day</span></div>
+        </div>
+        <div class="field">
+          <label>Average time to run one test</label>
+          <div class="input-wrap"><input type="number" id="timePerRun" value="3" min="0.5" step="0.5" class="has-suffix"><span class="input-suffix">mins</span></div>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="btn-row"><button class="btn btn-ghost" onclick="goStep(1)">← Back</button><button class="btn btn-primary" onclick="calculateAndShow()">Calculate my ROI →</button></div>
+  </div>
+
+  <!-- Step 4: Results -->
+  <div class="step-panel" id="step3">
+    <div class="results-header">
+      <h2 id="resultsHeading">Your ROI with <em>fore ai</em></h2>
+      <p id="resultsSubtitle">Based on your inputs — here's what fore ai could do for your team.</p>
+    </div>
+    <!-- ROI hero — wrapped in loader for slider updates -->
+    <div class="results-loader" id="resultsLoader" style="position:relative;">
+      <div class="results-spinner" id="resultsSpinner"><div class="spin-dot"></div><div class="spin-dot"></div><div class="spin-dot"></div>Updating…</div>
+
+    <div class="roi-hero-card">
+      <div class="roi-hero-num-wrap">
+        <div class="roi-hero-label">Return on Investment</div>
+        <div><span class="roi-hero-num" id="kpiROI">—</span><span class="roi-hero-unit">mins / $</span></div>
+      </div>
+      <div class="roi-hero-divider"></div>
+      <div class="roi-hero-copy">
+        <div class="roi-hero-copy-title" id="roiHeroCopyTitle">—</div>
+        <div class="roi-hero-copy-sub">Minutes of QA work saved for every dollar spent on fore ai — across authoring time and test execution.</div>
+      </div>
+    </div>
+
+    <!-- 4 secondary metrics -->
+    <div class="kpi-grid">
+      <div class="kpi-card green"><div class="kpi-label">Time saved / month</div><div class="kpi-value green" id="kpiHoursSaved">—</div><div class="kpi-sub" id="kpiDaysSaved">—</div></div>
+      <div class="kpi-card green"><div class="kpi-label">Cost saved / month</div><div class="kpi-value green" id="kpiMonthlyCostSaved">—</div><div class="kpi-sub" id="kpiAnnualCostSaved">—</div></div>
+      <div class="kpi-card purple"><div class="kpi-label">% reduction in cost</div><div class="kpi-value purple" id="kpiCostReductionPct">—</div><div class="kpi-sub" id="kpiCostReductionAbs">vs. current monthly QA spend</div></div>
+      <div class="kpi-card purple"><div class="kpi-label">% of total QA time saved</div><div class="kpi-value purple" id="kpiTimeReductionPct">—</div><div class="kpi-sub">human authoring + test run time combined</div></div>
+    </div>
+
+    <!-- Sensitivity panel — 2 sliders only -->
+    <div class="sensitivity-card">
+      <h3>Adjust assumptions</h3>
+      <p class="sens-sub">Drag to see how headcount and salary affect your ROI in real time.</p>
+      <div class="sliders-grid">
+        <div class="slider-field">
+          <div class="slider-top"><span class="slider-label">QA engineers</span><span class="slider-val" id="sv_fte">—</span></div>
+          <input type="range" id="sl_fte" min="1" max="100" step="1" oninput="onSlider()">
+        </div>
+        <div class="slider-field">
+          <div class="slider-top"><span class="slider-label">Annual salary per engineer</span><span class="slider-val" id="sv_salary">—</span></div>
+          <input type="range" id="sl_salary" min="5000" max="200000" step="1000" oninput="onSlider()">
+        </div>
+      </div>
+    </div>
+
+    <div class="plan-section"><h3>Recommended plan</h3><div class="plan-cards" id="planCards"></div></div>
+
+    <!-- Breakdown toggle -->
+    <button class="breakdown-toggle" id="breakdownToggle" onclick="toggleBreakdown()">
+      <span>Complete calculation flow</span>
+      <span class="toggle-arrow">▼</span>
+    </button>
+    <div class="breakdown-body" id="breakdownBody">
+    <!-- ── DETAILED CALCULATION FLOW ── -->
+
+      <p class="calc-section-label">① Inputs</p>
+      <div class="summary-card">
+        <div class="summary-row"><span class="summary-label">Existing test cases</span><span class="summary-value" id="d_tests">—</span></div>
+        <div class="summary-row"><span class="summary-label">New tests / month</span><span class="summary-value" id="d_newTests">—</span></div>
+        <div class="summary-row"><span class="summary-label">QA engineers (FTEs)</span><span class="summary-value" id="d_fte">—</span></div>
+        <div class="summary-row"><span class="summary-label">Weekly hours / FTE</span><span class="summary-value" id="d_wkH">—</span></div>
+        <div class="summary-row"><span class="summary-label">QA region / salary</span><span class="summary-value" id="d_salary">—</span></div>
+        <div class="summary-row"><span class="summary-label">Time to write one test</span><span class="summary-value" id="d_tGen">—</span></div>
+        <div class="summary-row"><span class="summary-label">Runs per test per day</span><span class="summary-value" id="d_runsPerDay">—</span></div>
+        <div class="summary-row"><span class="summary-label">Time per test run</span><span class="summary-value" id="d_tRun">—</span></div>
+      </div>
+
+      <p class="calc-section-label">② Backend assumptions</p>
+      <div class="summary-card">
+        <div class="summary-row"><span class="summary-label">Test failure rate</span><span class="summary-value" id="d_failRate">—</span></div>
+        <div class="summary-row"><span class="summary-label">Test maintenance rate</span><span class="summary-value" id="d_maintRate">—</span></div>
+        <div class="summary-row"><span class="summary-label">Time to fix a failing test</span><span class="summary-value" id="d_tFix">—</span></div>
+        <div class="summary-row"><span class="summary-label">Time to maintain one test</span><span class="summary-value" id="d_tMaint">—</span></div>
+        <div class="summary-row"><span class="summary-label">Generation time reduction (α)</span><span class="summary-value" id="d_alpha">—</span></div>
+        <div class="summary-row"><span class="summary-label">Maintenance time reduction (β)</span><span class="summary-value" id="d_beta">—</span></div>
+        <div class="summary-row"><span class="summary-label">Run time reduction (γ)</span><span class="summary-value" id="d_gamma">—</span></div>
+        <div class="summary-row"><span class="summary-label">Working days / year</span><span class="summary-value" id="d_WD">—</span></div>
+        <div class="summary-row"><span class="summary-label">Working hours / day <span class="calc-note">standard workday length used for utilisation ratio</span></span><span class="summary-value" id="d_WH">—</span></div>
+        <div class="summary-row"><span class="summary-label">Existing test maintenance frequency</span><span class="summary-value" id="d_maintFreq">—</span></div>
+        <div class="summary-row"><span class="summary-label">Sequential run cost / test</span><span class="summary-value" id="d_seqRunCost">—</span></div>
+        <div class="summary-row"><span class="summary-label">Parallel + server cost / test</span><span class="summary-value" id="d_parUnit">—</span></div>
+        <div class="summary-row"><span class="summary-label">fore AI cost / run</span><span class="summary-value" id="d_cpRun">—</span></div>
+      </div>
+
+      <p class="calc-section-label">③ Run volume</p>
+      <div class="summary-card">
+        <div class="summary-row"><span class="summary-label">Monthly runs <span class="calc-note">tests × runs/day × 30 × (1 + newTests/tests)</span></span><span class="summary-value" id="d_monthlyRuns">—</span></div>
+        <div class="summary-row"><span class="summary-label">Annual runs <span class="calc-note">monthly × 12</span></span><span class="summary-value" id="d_annualRuns">—</span></div>
+      </div>
+
+      <p class="calc-section-label">④ Current authoring hours (annual)</p>
+      <div class="summary-card">
+        <div class="summary-row"><span class="summary-label">Test generation <span class="calc-note">tGen × 12 × newTests</span></span><span class="summary-value" id="d_genYr">—</span></div>
+        <div class="summary-row"><span class="summary-label">Test fixing <span class="calc-note">failRate × newTests × 12 × tFix</span></span><span class="summary-value" id="d_fixYr">—</span></div>
+        <div class="summary-row"><span class="summary-label">Test maintenance <span class="calc-note">(newTests×12 + tests×maintFreq) × maintRate × tMaint</span></span><span class="summary-value" id="d_maintYr">—</span></div>
+        <div class="summary-row total"><span class="summary-label" style="font-weight:500;color:var(--text)">Total authoring hours today</span><span class="summary-value highlight" id="d_totalYr">—</span></div>
+      </div>
+
+      <p class="calc-section-label">⑤ fore AI authoring hours (annual)</p>
+      <div class="summary-card">
+        <div class="summary-row"><span class="summary-label">Gen + fix with fore AI <span class="calc-note">(genYr + fixYr) × (1 − α)</span></span><span class="summary-value" id="d_foreGenYr">—</span></div>
+        <div class="summary-row"><span class="summary-label">Maintenance with fore AI <span class="calc-note">maintYr × (1 − β)</span></span><span class="summary-value" id="d_foreMaintYr">—</span></div>
+        <div class="summary-row total"><span class="summary-label" style="font-weight:500;color:var(--text)">Total authoring hours with fore AI</span><span class="summary-value positive highlight" id="d_foreYr">—</span></div>
+      </div>
+
+      <p class="calc-section-label">⑥ Time savings</p>
+      <div class="summary-card">
+        <div class="summary-row"><span class="summary-label">Hours saved / year <span class="calc-note">round((totalYr − foreYr) / 10) × 10</span></span><span class="summary-value positive" id="d_hrsSaved">—</span></div>
+        <div class="summary-row"><span class="summary-label">Days saved <span class="calc-note">hrsSaved / 24</span></span><span class="summary-value positive" id="d_daysSaved">—</span></div>
+        <div class="summary-row"><span class="summary-label">Annual hours / FTE <span class="calc-note">max(dailyH × WD, 500)</span></span><span class="summary-value" id="d_annualHperFTE">—</span></div>
+        <div class="summary-row"><span class="summary-label">Equivalent FTEs saved <span class="calc-note">hrsSaved / annualH/FTE</span></span><span class="summary-value positive" id="d_ftesSaved">—</span></div>
+        <div class="summary-row"><span class="summary-label">Current annual run time <span class="calc-note">annualRuns × tRun / 60</span></span><span class="summary-value" id="d_runYr">—</span></div>
+        <div class="summary-row"><span class="summary-label">fore AI annual run time <span class="calc-note">annualRuns × tRun × (1−γ) / 60</span></span><span class="summary-value positive" id="d_foreRunYr">—</span></div>
+        <div class="summary-row total"><span class="summary-label" style="font-weight:500;color:var(--text)">Run time saved / year</span><span class="summary-value positive highlight" id="d_runSaved">—</span></div>
+      </div>
+
+      <p class="calc-section-label">⑦ Current QA cost (annual)</p>
+      <div class="summary-card">
+        <div class="summary-row"><span class="summary-label">Total salary cost <span class="calc-note">salary × nFTE</span></span><span class="summary-value" id="d_totalSalary">—</span></div>
+        <div class="summary-row"><span class="summary-label">QA utilisation ratio <span class="calc-note">dailyH / workingHours  — what fraction of the workday goes to QA</span></span><span class="summary-value" id="d_utilRatio">—</span></div>
+        <div class="summary-row"><span class="summary-label">Adjusted annual QA cost <span class="calc-note">totalSalary × utilRatio</span></span><span class="summary-value" id="d_adjQACost">—</span></div>
+        <div class="summary-row"><span class="summary-label">Blended team hourly rate <span class="calc-note">adjustedQACost / (WD × workingHours)</span></span><span class="summary-value" id="d_hrly">—</span></div>
+        <div class="summary-row"><span class="summary-label">Human QA cost <span class="calc-note">totalAuthHrs × blendedRate</span></span><span class="summary-value" id="d_humanCost">—</span></div>
+        <div class="summary-row"><span class="summary-label">Sequential run cost <span class="calc-note">annualRuns × seqRunCost</span></span><span class="summary-value" id="d_runBase">—</span></div>
+        <div class="summary-row"><span class="summary-label">Parallel + server cost <span class="calc-note">$130/test × (tests + newTests×12)</span></span><span class="summary-value" id="d_parCost">—</span></div>
+        <div class="summary-row total"><span class="summary-label" style="font-weight:500;color:var(--text)">Total current QA cost / year</span><span class="summary-value highlight" id="d_totalCostYr">—</span></div>
+        <div class="summary-row"><span class="summary-label">→ Monthly equivalent</span><span class="summary-value" id="d_curMo">—</span></div>
+      </div>
+
+      <p class="calc-section-label">⑧ fore AI cost estimate</p>
+      <div class="summary-card">
+        <div class="summary-row"><span class="summary-label">fore AI human hours cost <span class="calc-note">foreYr × hourly</span></span><span class="summary-value" id="d_foreHrCost">—</span></div>
+        <div class="summary-row"><span class="summary-label">fore AI run cost <span class="calc-note">annualRuns × cpRun</span></span><span class="summary-value" id="d_foreRunCost">—</span></div>
+        <div class="summary-row total"><span class="summary-label" style="font-weight:500;color:var(--text)">Min. fore AI cost / year</span><span class="summary-value highlight" id="d_minCost">—</span></div>
+        <div class="summary-row"><span class="summary-label">Suggested monthly plan budget <span class="calc-note">round(minCost / (12×10)) × 10</span></span><span class="summary-value" id="d_sugMonthly">—</span></div>
+      </div>
+
+      <p class="calc-section-label">⑨ Plan selection &amp; ROI</p>
+      <div class="summary-card">
+        <div class="summary-row"><span class="summary-label">Suggested monthly budget</span><span class="summary-value" id="d_sugMonthly2">—</span></div>
+        <div class="summary-row"><span class="summary-label">Recommended plan <span class="calc-note">highest plan priced ≤ suggested budget</span></span><span class="summary-value highlight" id="d_planName">—</span></div>
+        <div class="summary-row"><span class="summary-label">Plan monthly cost</span><span class="summary-value" id="d_planMo">—</span></div>
+        <div class="summary-row"><span class="summary-label">Current monthly QA cost</span><span class="summary-value" id="d_curMo2">—</span></div>
+        <div class="summary-row"><span class="summary-label">Net monthly saving <span class="calc-note">curMo − planMo</span></span><span class="summary-value positive" id="d_netSave">—</span></div>
+        <div class="summary-row"><span class="summary-label">% cost saved <span class="calc-note">max((curMo−planMo)/curMo, 5%)</span></span><span class="summary-value positive" id="d_savePct">—</span></div>
+        <div class="summary-row total"><span class="summary-label" style="font-weight:500;color:var(--text)">ROI <span class="calc-note">(hrsSaved + runSaved) × 60 / (planMo × 12)</span></span><span class="summary-value positive highlight" id="d_roi">—</span></div>
+      </div>
+    </div><!-- /breakdownBody -->
+
+    <div class="cta-card">
+      <h3 id="ctaTitle">Ready to unlock this ROI?</h3>
+      <p id="ctaBody">Book a demo and we'll walk you through how fore ai fits into your workflow.</p>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="window.open('https://meet.fore-ai.com/teams','_blank')">Book a demo →</button>
+        <button class="btn btn-ghost" onclick="resetCalc()">← Recalculate</button>
+      </div>
+    </div><!-- /cta-card -->
+    </div><!-- /resultsLoader -->
+  </div><!-- /step3 -->
+
+</div><!-- /page -->
+</div><!-- /view-calc -->
+
+
+<!-- ═══════════════════════════════════
+     VIEW: LOCK SCREEN
+═══════════════════════════════════ -->
+<div class="view" id="view-lock">
+  <div class="lock-screen">
+    <div class="lock-card">
+      <div class="lock-icon">🔒</div>
+      <div class="lock-title">Admin access</div>
+      <div class="lock-sub">Enter the admin password to edit fore AI model assumptions and plan pricing.</div>
+      <div class="lock-field">
+        <label>Password</label>
+        <input type="password" id="lockPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')tryUnlock()">
+      </div>
+      <div class="lock-error" id="lockError"></div>
+      <button class="btn btn-primary lock-btn" onclick="tryUnlock()">Unlock →</button>
+      <div class="lock-back" onclick="showView('calc')">← Back to calculator</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════
+     VIEW: ADMIN PANEL
+═══════════════════════════════════ -->
+<div class="view" id="view-admin">
+
+  <div class="admin-topbar">
+    <div class="admin-brand">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#075056"/><path d="M7 8h10M7 12h7M7 16h4" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+      fore ai — Admin
+      <span class="admin-badge">Internal only</span>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-ghost" style="padding:8px 16px;font-size:13px;" onclick="showView('calc')">← Calculator</button>
+      <button class="btn btn-danger" style="padding:8px 16px;font-size:13px;" onclick="adminLogout()">Log out</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+    <div class="admin-page-title">
+      <h2>Model assumptions</h2>
+      <p>These values are applied behind the scenes to every ROI calculation. Changes take effect on the next calculation.</p>
+    </div>
+
+    <!-- AI coefficients -->
+    <p class="admin-section-title">AI performance coefficients</p>
+    <div class="admin-card">
+      <div class="admin-grid">
+        <div class="admin-field">
+          <label>Generation time reduction (alpha)</label>
+          <div class="input-wrap"><input type="number" id="a_alpha" min="10" max="95" step="5" class="has-suffix" oninput="markDirty()"><span class="input-suffix">%</span></div>
+          <span class="hint">How much faster fore AI writes new tests vs. a human engineer.</span>
+        </div>
+        <div class="admin-field">
+          <label>Maintenance time reduction (beta)</label>
+          <div class="input-wrap"><input type="number" id="a_beta" min="10" max="98" step="5" class="has-suffix" oninput="markDirty()"><span class="input-suffix">%</span></div>
+          <span class="hint">Reduction in time spent updating and maintaining existing tests.</span>
+        </div>
+        <div class="admin-field">
+          <label>Run time reduction (gamma)</label>
+          <div class="input-wrap"><input type="number" id="a_gamma" min="10" max="90" step="5" class="has-suffix" oninput="markDirty()"><span class="input-suffix">%</span></div>
+          <span class="hint">Reduction in per-test execution time via parallelisation.</span>
+        </div>
+        <div class="admin-field">
+          <label>Cost per run (merged)</label>
+          <div class="input-wrap"><input type="number" id="a_costPerRun" min="0.01" max="2" step="0.01" class="has-suffix" oninput="markDirty()"><span class="input-suffix">$/run</span></div>
+          <span class="hint">Blended compute + infrastructure cost per fore AI test execution.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Benchmark defaults -->
+    <p class="admin-section-title">Benchmark defaults</p>
+    <div class="admin-card">
+      <div class="admin-grid">
+        <div class="admin-field">
+          <label>Default test failure rate</label>
+          <div class="input-wrap"><input type="number" id="a_failureRate" min="0" max="50" step="0.5" class="has-suffix" oninput="markDirty()"><span class="input-suffix">%</span></div>
+          <span class="hint">Based on industry benchmarks.</span>
+        </div>
+        <div class="admin-field">
+          <label>Default maintenance rate</label>
+          <div class="input-wrap"><input type="number" id="a_maintenanceRate" min="0" max="100" step="5" class="has-suffix" oninput="markDirty()"><span class="input-suffix">%</span></div>
+          <span class="hint">% of tests requiring maintenance per new-test cycle.</span>
+        </div>
+        <div class="admin-field">
+          <label>Time to fix a failing test</label>
+          <div class="input-wrap"><input type="number" id="a_tFix" min="0.25" max="24" step="0.25" class="has-suffix" oninput="markDirty()"><span class="input-suffix">hrs</span></div>
+          <span class="hint">Average hours an engineer spends fixing one failed test.</span>
+        </div>
+        <div class="admin-field">
+          <label>Time to maintain / update one test</label>
+          <div class="input-wrap"><input type="number" id="a_tMaint" min="0.25" max="24" step="0.25" class="has-suffix" oninput="markDirty()"><span class="input-suffix">hrs</span></div>
+          <span class="hint">Average hours to update an existing test when the app changes.</span>
+        </div>
+        <div class="admin-field">
+          <label>Working days per year</label>
+          <div class="input-wrap"><input type="number" id="a_workingDays" min="200" max="260" step="5" class="has-suffix" oninput="markDirty()"><span class="input-suffix">days</span></div>
+          <span class="hint">Used to convert annual hours into FTE equivalents.</span>
+        </div>
+        <div class="admin-field">
+          <label>Working hours per day</label>
+          <div class="input-wrap"><input type="number" id="a_workingHours" min="4" max="12" step="0.5" class="has-suffix" oninput="markDirty()"><span class="input-suffix">hrs/day</span></div>
+          <span class="hint">Standard workday length used to compute QA utilisation ratio.</span>
+        </div>
+        <div class="admin-field">
+          <label>Existing test maintenance frequency</label>
+          <div class="input-wrap"><input type="number" id="a_maintFreq" min="1" max="12" step="1" class="has-suffix" oninput="markDirty()"><span class="input-suffix">× / yr</span></div>
+          <span class="hint">How many times per year existing tests are maintained/updated.</span>
+        </div>
+        <div class="admin-field">
+          <label>Sequential run cost per test</label>
+          <div class="input-wrap"><input type="number" id="a_seqRunCost" min="0" max="1" step="0.005" class="has-suffix" oninput="markDirty()"><span class="input-suffix">$/run</span></div>
+          <span class="hint">Infrastructure cost per individual sequential test execution.</span>
+        </div>
+        <div class="admin-field">
+          <label>Parallel + server cost per test</label>
+          <div class="input-wrap"><input type="number" id="a_parallelCost" min="0" max="500" step="10" class="has-suffix" oninput="markDirty()"><span class="input-suffix">$/yr</span></div>
+          <span class="hint">Annual infrastructure cost attributed per test in the suite.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plan pricing -->
+    <p class="admin-section-title">Plan pricing</p>
+    <div class="admin-card">
+      <div class="admin-grid">
+        <div class="admin-field">
+          <label>PoC plan</label>
+          <div class="input-wrap"><input type="number" id="a_poc" min="0" step="500" class="has-suffix" oninput="markDirty()"><span class="input-suffix">$/mo</span></div>
+        </div>
+        <div class="admin-field">
+          <label>Standard plan</label>
+          <div class="input-wrap"><input type="number" id="a_standard" min="0" step="500" class="has-suffix" oninput="markDirty()"><span class="input-suffix">$/mo</span></div>
+        </div>
+        <div class="admin-field">
+          <label>Pro plan</label>
+          <div class="input-wrap"><input type="number" id="a_pro" min="0" step="500" class="has-suffix" oninput="markDirty()"><span class="input-suffix">$/mo</span></div>
+        </div>
+        <div class="admin-field">
+          <label>Enterprise plan</label>
+          <div class="input-wrap"><input type="number" id="a_enterprise" min="0" step="1000" class="has-suffix" oninput="markDirty()"><span class="input-suffix">$/mo</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Salaries -->
+    <p class="admin-section-title">QA engineer salaries (annual)</p>
+    <div class="admin-card">
+      <div class="admin-grid">
+        <div class="admin-field">
+          <label>Switzerland / Western Europe</label>
+          <div class="input-wrap"><input type="number" id="a_sal_swiss" min="0" step="5000" class="has-suffix" oninput="markDirty()"><span class="input-suffix">$/yr</span></div>
+        </div>
+        <div class="admin-field">
+          <label>USA / Canada</label>
+          <div class="input-wrap"><input type="number" id="a_sal_usa" min="0" step="5000" class="has-suffix" oninput="markDirty()"><span class="input-suffix">$/yr</span></div>
+        </div>
+        <div class="admin-field">
+          <label>Eastern Europe</label>
+          <div class="input-wrap"><input type="number" id="a_sal_ee" min="0" step="2000" class="has-suffix" oninput="markDirty()"><span class="input-suffix">$/yr</span></div>
+        </div>
+        <div class="admin-field">
+          <label>India / China / APAC</label>
+          <div class="input-wrap"><input type="number" id="a_sal_india" min="0" step="1000" class="has-suffix" oninput="markDirty()"><span class="input-suffix">$/yr</span></div>
+        </div>
+        <div class="admin-field">
+          <label>Mixed / Global team</label>
+          <div class="input-wrap"><input type="number" id="a_sal_mixed" min="0" step="2000" class="has-suffix" oninput="markDirty()"><span class="input-suffix">$/yr</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security -->
+    <p class="admin-section-title">Security</p>
+    <div class="admin-card">
+      <div class="admin-grid" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="admin-field"><label>Current password</label><input type="password" id="pwCurrent" placeholder="••••••••"></div>
+        <div class="admin-field"><label>New password</label><input type="password" id="pwNew" placeholder="••••••••"></div>
+        <div class="admin-field"><label>Confirm new password</label><input type="password" id="pwConfirm" placeholder="••••••••"></div>
+      </div>
+      <div style="margin-top:16px;display:flex;align-items:center;gap:12px;">
+        <button class="btn btn-ghost" style="font-size:13px;padding:9px 18px;" onclick="changePassword()">Update password</button>
+        <span id="pwMsg" style="font-size:13px;color:var(--text3);"></span>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /view-admin -->
+
+<!-- Floating save bar -->
+<div class="save-bar" id="saveBar">
+  <span class="save-bar-msg"><strong>Unsaved changes</strong> — these won't apply until you save.</span>
+  <div class="save-bar-actions">
+    <button class="btn btn-ghost" style="padding:9px 18px;font-size:13px;" onclick="discardChanges()">Discard</button>
+    <button class="btn btn-success" style="padding:9px 18px;font-size:13px;" onclick="saveAssumptions()">Save changes</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Defaults (from Excel) ──
+const DEFAULTS = {
+  alpha:60, beta:80, gamma:60, costPerRun:0.10,
+  failureRate:7.5, maintenanceRate:40,
+  tFix:1.5, tMaint:3,
+  maintFreq:2, seqRunCost:0.03, workingHours:8,
+  workingDays:240, parallelCost:130,
+  poc:6000, standard:9000, pro:12000, enterprise:30000,
+  sal_swiss:120000, sal_usa:80000, sal_ee:40000, sal_india:12000, sal_mixed:45000,
+};
+const PW_KEY  = 'foreai_admin_pw';
+const ASS_KEY = 'foreai_assumptions';
+const DEFAULT_PW = 'foreai2024';
+
+function loadA() {
+  try { const r = localStorage.getItem(ASS_KEY); return r ? {...DEFAULTS,...JSON.parse(r)} : {...DEFAULTS}; }
+  catch(e) { return {...DEFAULTS}; }
+}
+function saveA(obj) { localStorage.setItem(ASS_KEY, JSON.stringify(obj)); }
+function getPW() { return localStorage.getItem(PW_KEY) || DEFAULT_PW; }
+
+let A = loadA();
+let isDirty = false;
+
+
+
+// ── View routing ──
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// Hash trigger: navigate to yoursite.html#admin to reach lock screen
+window.addEventListener('hashchange', () => { if(location.hash==='#admin'){ location.hash=''; showView('lock'); } });
+window.addEventListener('load', () => {
+  if(location.hash==='#admin'){ location.hash=''; showView('lock'); }
+});
+
+// ── Auth ──
+function tryUnlock() {
+  const pw = document.getElementById('lockPassword').value;
+  const err = document.getElementById('lockError');
+  if (pw === getPW()) {
+    document.getElementById('lockPassword').value = '';
+    err.textContent = '';
+    populateAdminForm();
+    showView('admin');
+  } else {
+    err.textContent = 'Incorrect password. Please try again.';
+    document.getElementById('lockPassword').select();
+  }
+}
+
+function adminLogout() {
+  if (isDirty && !confirm('You have unsaved changes. Leave anyway?')) return;
+  isDirty = false;
+  document.getElementById('saveBar').classList.remove('visible');
+  showView('calc');
+}
+
+// ── Admin form ──
+const FIELD_MAP = {
+  a_alpha:'alpha', a_beta:'beta', a_gamma:'gamma', a_costPerRun:'costPerRun',
+  a_failureRate:'failureRate', a_maintenanceRate:'maintenanceRate',
+  a_tFix:'tFix', a_tMaint:'tMaint',
+  a_maintFreq:'maintFreq', a_seqRunCost:'seqRunCost', a_workingHours:'workingHours',
+  a_workingDays:'workingDays', a_parallelCost:'parallelCost',
+  a_poc:'poc', a_standard:'standard', a_pro:'pro', a_enterprise:'enterprise',
+  a_sal_swiss:'sal_swiss', a_sal_usa:'sal_usa', a_sal_ee:'sal_ee',
+  a_sal_india:'sal_india', a_sal_mixed:'sal_mixed',
+};
+
+function populateAdminForm() {
+  const a = loadA();
+  for (const [id, key] of Object.entries(FIELD_MAP)) {
+    const el = document.getElementById(id);
+    if (el) el.value = a[key];
+  }
+  isDirty = false;
+  document.getElementById('saveBar').classList.remove('visible');
+}
+
+function markDirty() {
+  isDirty = true;
+  document.getElementById('saveBar').classList.add('visible');
+}
+
+function saveAssumptions() {
+  const updated = {};
+  for (const [id, key] of Object.entries(FIELD_MAP)) {
+    const val = parseFloat(document.getElementById(id)?.value);
+    if (!isNaN(val)) updated[key] = val;
+  }
+  saveA(updated);
+  A = loadA();
+  isDirty = false;
+  document.getElementById('saveBar').classList.remove('visible');
+  showToast('✓ Assumptions saved — active on next calculation');
+}
+
+function discardChanges() { populateAdminForm(); }
+
+function changePassword() {
+  const cur = document.getElementById('pwCurrent').value;
+  const nw  = document.getElementById('pwNew').value;
+  const con = document.getElementById('pwConfirm').value;
+  const msg = document.getElementById('pwMsg');
+  if (cur !== getPW())         { msg.style.color='var(--red)'; msg.textContent='Current password is incorrect.'; return; }
+  if (!nw || nw.length < 6)   { msg.style.color='var(--red)'; msg.textContent='New password must be at least 6 characters.'; return; }
+  if (nw !== con)              { msg.style.color='var(--red)'; msg.textContent='Passwords do not match.'; return; }
+  localStorage.setItem(PW_KEY, nw);
+  ['pwCurrent','pwNew','pwConfirm'].forEach(id => document.getElementById(id).value='');
+  msg.style.color='var(--green)'; msg.textContent='Password updated!';
+  setTimeout(() => msg.textContent='', 3000);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── Calculator ──
+let currentStep = 0;
+
+function goStep(n) {
+  if (n > currentStep) {
+    const checks = [['numFTEs','weeklyHours'],['existingTests','newTestsPerMonth','timeToGenerate'],['runsPerTest','timePerRun']];
+    for (let i = currentStep; i < n; i++) {
+      for (const id of (checks[i]||[])) {
+        const val = parseFloat(document.getElementById(id)?.value);
+        if (isNaN(val) || val < 0) { document.getElementById(id)?.focus(); return; }
+      }
+    }
+  }
+  document.querySelectorAll('.step-panel').forEach((p,i) => p.classList.toggle('active', i===n));
+  currentStep = n;
+  updateNav();
+}
+
+function updateNav() {
+  document.getElementById('progressFill').style.width = [25,50,75,100][currentStep]+'%';
+  for (let i=0;i<4;i++) {
+    const dot=document.getElementById('dot'+i), nav=document.getElementById('nav'+i);
+    dot.classList.toggle('active', i===currentStep);
+    dot.classList.toggle('done', i<currentStep);
+    nav.classList.toggle('active', i===currentStep);
+    dot.textContent = i<currentStep ? '✓' : i+1;
+  }
+}
+
+function v(id) { return parseFloat(document.getElementById(id).value)||0; }
+function fmt$(n) { return '$'+Math.round(n).toLocaleString(); }
+const SALARY_LABELS = { Swiss:'Switzerland', 'USA/Canada':'USA / Canada', 'East Europe':'East Europe', 'India/China':'India / APAC', Mixed:'Mixed' };
+
+// ── Core compute — accepts overrides for sensitivity sliders ──
+function compute(ov={}) {
+  A = loadA();
+  const SALARY = { Swiss:A.sal_swiss, 'USA/Canada':A.sal_usa, 'East Europe':A.sal_ee, 'India/China':A.sal_india, Mixed:A.sal_mixed };
+  const PP = { PoC:A.poc, Standard:A.standard, Pro:A.pro, Enterprise:A.enterprise };
+  const PLANS = ['PoC','Standard','Pro','Enterprise'];
+  const WH = A.workingHours, WD = A.workingDays, maintFreq = A.maintFreq, seqRunCost = A.seqRunCost;
+
+  const nFTE      = ov.nFTE      ?? v('numFTEs');
+  const wkH       = ov.wkH       ?? v('weeklyHours');
+  const region    = ov.region    ?? document.getElementById('qaRegion').value;
+  const tests     = ov.tests     ?? v('existingTests');
+  const newTests  = v('newTestsPerMonth');
+  const tGen      = ov.tGen      ?? v('timeToGenerate');
+  const runsPerDay= ov.runsPerDay?? v('runsPerTest');
+  const tRun      = v('timePerRun');
+  const tFix = A.tFix, tMaint = A.tMaint;
+  const failRate = A.failureRate/100, maintRate = A.maintenanceRate/100;
+  const alpha = A.alpha/100, beta = A.beta/100, gamma = A.gamma/100, cpRun = A.costPerRun;
+  const dailyH = wkH/5;
+  const monthlyRuns = Math.round(tests*runsPerDay*30*(1+newTests/Math.max(tests,1)));
+  const annualRuns  = monthlyRuns*12;
+  const genYr    = tGen*12*newTests;
+  const fixYr    = failRate*newTests*12*tFix;
+  const maintYr  = (newTests*12+tests*maintFreq)*maintRate*tMaint;
+  const totalYr  = Math.round(genYr+fixYr+maintYr);
+  const foreGenYr   = (genYr+fixYr)*(1-alpha);
+  const foreMaintYr = maintYr*(1-beta);
+  const foreYr   = Math.round(foreGenYr+foreMaintYr);
+  const hrsSaved = Math.round((totalYr-foreYr)/10)*10;
+  const daysSaved= Math.round(hrsSaved/24);
+  const annualHperFTE = Math.max(dailyH*WD, 500);
+  const ftesSaved= Math.round(hrsSaved/annualHperFTE*100)/100;
+  const runYr    = annualRuns*tRun/60;
+  const foreRunYr= annualRuns*(tRun*(1-gamma))/60;
+  const runSaved = runYr-foreRunYr;
+  const salary   = ov.salaryOverride ?? (SALARY[region]||A.sal_mixed);
+  const totalSalaryCost = salary*nFTE;
+  const adjustedQACost  = totalSalaryCost*(dailyH/WH);
+  const hrly     = Math.round(adjustedQACost/(WD*WH)*10)/10;
+  const parCost  = A.parallelCost*(tests+newTests*12);
+  const humanCost= Math.round(totalYr*hrly/100)*100;
+  const runBase  = annualRuns*seqRunCost;
+  const totalCostYr = Math.round((runBase+humanCost+parCost)/100)*100;
+  const foreHrCost  = Math.round(foreYr*hrly);
+  const foreRunCost = annualRuns*cpRun;
+  const minCost  = Math.round((foreHrCost+foreRunCost)/100)*100;
+  const sugMonthly  = Math.round(minCost/(12*10))*10;
+  const eligiblePlans = PLANS.filter(p => PP[p] <= sugMonthly);
+  const planName = eligiblePlans.length ? eligiblePlans[eligiblePlans.length-1] : PLANS[0];
+  const planMo   = PP[planName];
+  const curMo    = Math.round(totalCostYr/12/100)*100;
+  const netSave  = curMo-planMo;
+  // savePct: no floor here — we expose real value so the salary floor can react to it
+  const savePct  = (curMo-planMo)/Math.max(curMo,1);
+  const totalQAHrs = Math.max(nFTE*dailyH*WD, 500);
+  // Combined time % = (human authoring saved + run time saved) / (total authoring + total run time)
+  const totalTimeBase = Math.max(totalYr + runYr, 1);
+  const combinedTimePct = Math.min(Math.max((hrsSaved + runSaved) / totalTimeBase, 0.05), 0.99);
+  // ROI = minutes of total QA work saved per dollar spent on fore ai
+  const roi = Math.round((hrsSaved+runSaved)*60/Math.max(planMo*12,1)*10)/10;
+
+  return { nFTE,wkH,region,tests,newTests,tGen,runsPerDay,tRun,tFix,tMaint,
+           failRate,maintRate,alpha,beta,gamma,cpRun,WH,WD,maintFreq,seqRunCost,
+           dailyH,monthlyRuns,annualRuns,genYr,fixYr,maintYr,totalYr,
+           foreGenYr,foreMaintYr,foreYr,hrsSaved,daysSaved,annualHperFTE,ftesSaved,
+           runYr,foreRunYr,runSaved,salary,totalSalaryCost,adjustedQACost,hrly,
+           parCost,humanCost,runBase,totalCostYr,foreHrCost,foreRunCost,
+           minCost,sugMonthly,planName,planMo,curMo,netSave,savePct,combinedTimePct,roi,PP,PLANS };
+}
+
+// ── Render KPIs + plan cards (initial load and every slider change) ──
+function renderResults(r, name) {
+  const hrsMo = Math.round(r.hrsSaved / 12);
+  document.getElementById('kpiROI').textContent              = r.roi.toFixed(1);
+  document.getElementById('roiHeroCopyTitle').textContent    = `${fmt$(r.netSave*12)} saved/yr · ${hrsMo.toLocaleString()} hrs/mo freed · ${r.planName} plan`;
+  document.getElementById('kpiHoursSaved').textContent       = hrsMo.toLocaleString()+' hrs';
+  document.getElementById('kpiDaysSaved').textContent        = Math.round(hrsMo/8)+' working days/mo';
+  document.getElementById('kpiMonthlyCostSaved').textContent = fmt$(r.netSave);
+  document.getElementById('kpiAnnualCostSaved').textContent  = fmt$(r.netSave*12)+' saved per year';
+  document.getElementById('kpiCostReductionPct').textContent = Math.round(r.savePct*100)+'%';
+  document.getElementById('kpiCostReductionAbs').textContent = 'saving '+fmt$(r.netSave)+' every month';
+  document.getElementById('kpiTimeReductionPct').textContent = Math.round(r.combinedTimePct*100)+'%';
+  document.getElementById('planCards').innerHTML = r.PLANS.map(p => {
+    const rec = p===r.planName;
+    return `<div class="plan-card${rec?' recommended':''}">
+      ${rec?'<div class="plan-badge">Recommended</div>':''}
+      <div class="plan-name">${p}</div>
+      <div class="plan-price">${fmt$(r.PP[p])}<span>/mo</span></div>
+      <div class="plan-sub">${fmt$(r.PP[p]*12)}/year</div>
+    </div>`;
+  }).join('');
+  document.getElementById('ctaTitle').textContent = `${name} could save ${fmt$(r.netSave*12)}/year`;
+  document.getElementById('ctaBody').textContent  = `That's ${hrsMo.toLocaleString()} hours freed and ${fmt$(r.netSave)} back every month on the ${r.planName} plan — a ${Math.round(r.savePct*100)}% reduction in QA costs with ${Math.round(r.combinedTimePct*100)}% of total QA time reclaimed.`;
+}
+
+// ── Sensitivity slider state ──
+let _sensSalary = null;
+let _cachedSalaryFloor = 5000;
+let _sliderTimer = null;
+let _baseNFTE = 1;
+let _baseNewTests = 0;
+
+// Find the minimum salary (binary search) that keeps cost reduction >= 20%
+function salaryFloor(nFTE) {
+  let lo = 1000, hi = 500000;
+  for (let i = 0; i < 30; i++) {
+    const mid = Math.round((lo + hi) / 2);
+    const r = compute({ nFTE, salaryOverride: mid });
+    if (r.savePct >= 0.20) hi = mid; else lo = mid;
+  }
+  return Math.max(1000, Math.floor(hi / 1000) * 1000);
+}
+
+// Find salary at which sugMonthly >= targetPlanCost (so that plan becomes selectable)
+function salaryForPlan(nFTE, targetPlanCost) {
+  let lo = 1000, hi = 2000000;
+  for (let i = 0; i < 40; i++) {
+    const mid = Math.round((lo + hi) / 2);
+    const r = compute({ nFTE, salaryOverride: mid });
+    if (r.sugMonthly >= targetPlanCost) hi = mid; else lo = mid;
+  }
+  return Math.ceil(hi / 1000) * 1000;
+}
+
+function initSliders(r) {
+  _sensSalary = r.salary;
+  _baseNFTE = r.nFTE;
+  _baseNewTests = r.newTests;
+  _cachedSalaryFloor = salaryFloor(r.nFTE);  // computed once at init
+
+  // FTE slider: min = 50% of input, max = FTE needed to reach Enterprise plan
+  const sl_fte = document.getElementById('sl_fte');
+  sl_fte.min = Math.max(1, Math.floor(r.nFTE * 0.5));
+  // Find FTE count that makes sugMonthly reach Enterprise ($30k)
+  // Simple: scale from current nFTE — if current plan is PoC at nFTE, Enterprise needs ~5× more
+  const fteForEnterprise = Math.ceil(r.nFTE * (30000 / Math.max(r.sugMonthly, 1000)));
+  sl_fte.max = Math.max(fteForEnterprise, r.nFTE * 4, 20);
+  sl_fte.value = r.nFTE;
+  document.getElementById('sv_fte').textContent = r.nFTE + ' FTEs';
+
+  // Salary slider: min = floor (20% savings guaranteed), max = salary that reaches Enterprise
+  const salaryForEnterprise = salaryForPlan(r.nFTE, 30000);
+  const sl_salary = document.getElementById('sl_salary');
+  sl_salary.min = _cachedSalaryFloor;
+  sl_salary.max = Math.max(salaryForEnterprise, r.salary * 3, 200000);
+  sl_salary.value = Math.max(r.salary, _cachedSalaryFloor);
+  document.getElementById('sv_salary').textContent = fmt$(+sl_salary.value) + '/yr';
+}
+
+function showLoader() {
+  const el = document.getElementById('resultsLoader');
+  if (el) el.classList.add('loading');
+}
+function hideLoader() {
+  const el = document.getElementById('resultsLoader');
+  if (el) el.classList.remove('loading');
+}
+
+function onSlider() {
+  const nFTE   = parseInt(document.getElementById('sl_fte').value);
+  const salary = parseInt(document.getElementById('sl_salary').value);
+
+  // Update labels instantly so slider feels responsive
+  document.getElementById('sv_fte').textContent    = nFTE + ' FTEs';
+  document.getElementById('sv_salary').textContent = fmt$(salary) + '/yr';
+
+  // Show loader, debounce compute+render by 60ms
+  showLoader();
+  if (_sliderTimer) clearTimeout(_sliderTimer);
+  _sliderTimer = setTimeout(() => {
+    requestAnimationFrame(() => {
+      const name = document.getElementById('clientName').value || 'your team';
+      renderResults(compute({ nFTE, salaryOverride: salary }), name);
+      hideLoader();
+    });
+  }, 60);
+}
+
+function toggleBreakdown() {
+  const btn  = document.getElementById('breakdownToggle');
+  const body = document.getElementById('breakdownBody');
+  const open = body.classList.toggle('open');
+  btn.classList.toggle('open', open);
+}
+
+function calculateAndShow() {
+  const r = compute();
+  const name = document.getElementById('clientName').value||'your team';
+
+  // Heading with company name
+  document.getElementById('resultsHeading').innerHTML  = name && name!=='your team' ? `${name}'s ROI with <em>fore ai</em>` : 'Your ROI with <em>fore ai</em>';
+  document.getElementById('resultsSubtitle').textContent = `Based on ${name}'s inputs — here's what fore AI delivers.`;
+
+  renderResults(r, name);
+  initSliders(r);
+
+  // ── Detailed calculation flow (snapshot of original inputs only) ──
+  const fmtH  = n => Math.round(n).toLocaleString()+' hrs';
+  const fmtHd = n => (Math.round(n*10)/10).toLocaleString()+' hrs';
+
+  document.getElementById('d_tests').textContent       = r.tests.toLocaleString()+' tests';
+  document.getElementById('d_newTests').textContent    = r.newTests+' tests/mo';
+  document.getElementById('d_fte').textContent         = r.nFTE+' FTEs';
+  document.getElementById('d_wkH').textContent         = r.wkH+' hrs/wk';
+  document.getElementById('d_salary').textContent      = r.region+' — '+fmt$(r.salary)+'/yr per FTE';
+  document.getElementById('d_tGen').textContent        = r.tGen+' hrs';
+  document.getElementById('d_runsPerDay').textContent  = r.runsPerDay+' runs/day';
+  document.getElementById('d_tRun').textContent        = r.tRun+' mins';
+  document.getElementById('d_failRate').textContent    = A.failureRate+'%';
+  document.getElementById('d_maintRate').textContent   = A.maintenanceRate+'%';
+  document.getElementById('d_tFix').textContent        = r.tFix+' hrs';
+  document.getElementById('d_tMaint').textContent      = r.tMaint+' hrs';
+  document.getElementById('d_alpha').textContent       = A.alpha+'%';
+  document.getElementById('d_beta').textContent        = A.beta+'%';
+  document.getElementById('d_gamma').textContent       = A.gamma+'%';
+  document.getElementById('d_WD').textContent          = A.workingDays+' days';
+  document.getElementById('d_WH').textContent          = r.WH+' hrs/day';
+  document.getElementById('d_maintFreq').textContent   = r.maintFreq+'× per year';
+  document.getElementById('d_seqRunCost').textContent  = '$'+r.seqRunCost+'/run';
+  document.getElementById('d_parUnit').textContent     = fmt$(A.parallelCost)+'/test/yr';
+  document.getElementById('d_cpRun').textContent       = '$'+r.cpRun+'/run';
+  document.getElementById('d_monthlyRuns').textContent = r.monthlyRuns.toLocaleString()+' runs/mo';
+  document.getElementById('d_annualRuns').textContent  = r.annualRuns.toLocaleString()+' runs/yr';
+  document.getElementById('d_genYr').textContent       = fmtH(r.genYr)+'/yr';
+  document.getElementById('d_fixYr').textContent       = fmtH(r.fixYr)+'/yr';
+  document.getElementById('d_maintYr').textContent     = fmtH(r.maintYr)+'/yr';
+  document.getElementById('d_totalYr').textContent     = fmtH(r.totalYr)+'/yr';
+  document.getElementById('d_foreGenYr').textContent   = fmtH(r.foreGenYr)+'/yr';
+  document.getElementById('d_foreMaintYr').textContent = fmtH(r.foreMaintYr)+'/yr';
+  document.getElementById('d_foreYr').textContent      = fmtH(r.foreYr)+'/yr  ('+Math.round((1-r.foreYr/Math.max(r.totalYr,1))*100)+'% reduction)';
+  document.getElementById('d_hrsSaved').textContent    = fmtH(r.hrsSaved)+'/yr';
+  document.getElementById('d_daysSaved').textContent   = r.daysSaved+' days';
+  document.getElementById('d_annualHperFTE').textContent = fmtHd(r.annualHperFTE)+'/FTE';
+  document.getElementById('d_ftesSaved').textContent   = r.ftesSaved.toFixed(2)+' FTEs';
+  document.getElementById('d_runYr').textContent       = fmtH(r.runYr)+'/yr';
+  document.getElementById('d_foreRunYr').textContent   = fmtH(r.foreRunYr)+'/yr';
+  document.getElementById('d_runSaved').textContent    = fmtH(r.runSaved)+'/yr';
+  document.getElementById('d_totalSalary').textContent = fmt$(r.totalSalaryCost)+'/yr';
+  document.getElementById('d_utilRatio').textContent   = (Math.round(r.wkH/r.WH/5*1000)/10)+'%  ('+(r.wkH/5).toFixed(1)+' QA hrs ÷ '+r.WH+' working hrs)';
+  document.getElementById('d_adjQACost').textContent   = fmt$(r.adjustedQACost)+'/yr';
+  document.getElementById('d_hrly').textContent        = '$'+r.hrly+'/hr (team blended)';
+  document.getElementById('d_humanCost').textContent   = fmt$(r.humanCost)+'/yr';
+  document.getElementById('d_runBase').textContent     = fmt$(r.runBase)+'/yr';
+  document.getElementById('d_parCost').textContent     = fmt$(r.parCost)+'/yr';
+  document.getElementById('d_totalCostYr').textContent = fmt$(r.totalCostYr)+'/yr';
+  document.getElementById('d_curMo').textContent       = fmt$(r.curMo)+'/mo';
+  document.getElementById('d_foreHrCost').textContent  = fmt$(r.foreHrCost)+'/yr';
+  document.getElementById('d_foreRunCost').textContent = fmt$(r.foreRunCost)+'/yr';
+  document.getElementById('d_minCost').textContent     = fmt$(r.minCost)+'/yr';
+  document.getElementById('d_sugMonthly').textContent  = fmt$(r.sugMonthly)+'/mo';
+  document.getElementById('d_sugMonthly2').textContent = fmt$(r.sugMonthly)+'/mo';
+  document.getElementById('d_planName').textContent    = r.planName+' — '+fmt$(r.planMo)+'/mo';
+  document.getElementById('d_planMo').textContent      = fmt$(r.planMo)+'/mo';
+  document.getElementById('d_curMo2').textContent      = fmt$(r.curMo)+'/mo';
+  document.getElementById('d_netSave').textContent     = fmt$(r.netSave)+'/mo  ('+fmt$(r.netSave*12)+'/yr)';
+  document.getElementById('d_savePct').textContent     = Math.round(r.savePct*100)+'%';
+  document.getElementById('d_roi').textContent         = r.roi.toFixed(1)+' mins saved / $';
+
+  goStep(3);
+}
+
+function resetCalc() { currentStep=0; goStep(0); }
+</script>
+</body>
+</html>

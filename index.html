@@ -1385,6 +1385,37 @@
           </table>
         </div>
 
+        <!-- Sliders — collapsible -->
+        <div class="toggle-wrap animate">
+          <div class="toggle-header" onclick="toggleSection('b-sliders')">
+            <span class="toggle-title">Adjust assumptions</span>
+            <span class="toggle-arrow" id="b-sliders-arrow">▼</span>
+          </div>
+          <div class="toggle-body" id="b-sliders-body">
+            <div class="sensitivity-card" style="margin-bottom:0;border:none;background:transparent;padding:16px 0 4px;">
+              <p class="sens-sub" style="margin-bottom:14px;">Drag to see how all values update in real time.</p>
+              <div class="sliders-grid">
+                <div class="slider-field">
+                  <div class="slider-top"><span class="slider-label">Total test cases</span><span class="slider-val" id="b-sv-tests">—</span></div>
+                  <input type="range" id="b-sl-tests" min="50" max="2000" step="50" oninput="onBlendedSlider()">
+                </div>
+                <div class="slider-field">
+                  <div class="slider-top"><span class="slider-label">Runs per week</span><span class="slider-val" id="b-sv-rpw">—</span></div>
+                  <input type="range" id="b-sl-rpw" min="1" max="100" step="1" oninput="onBlendedSlider()">
+                </div>
+                <div class="slider-field">
+                  <div class="slider-top"><span class="slider-label">Manual testers</span><span class="slider-val" id="b-sv-mfte">—</span></div>
+                  <input type="range" id="b-sl-mfte" min="0" max="50" step="1" oninput="onBlendedSlider()">
+                </div>
+                <div class="slider-field">
+                  <div class="slider-top"><span class="slider-label">Automation engineers</span><span class="slider-val" id="b-sv-afte">—</span></div>
+                  <input type="range" id="b-sl-afte" min="0" max="50" step="1" oninput="onBlendedSlider()">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Collapsible: Detailed calculation -->
         <div class="toggle-wrap animate">
           <div class="toggle-header" onclick="toggleSection('b-detail')">
@@ -1430,30 +1461,6 @@
               <div class="summary-row"><span class="summary-label">Total execution / run (infraPerTest × autoTests)</span><span class="summary-value" id="d-cur-exec-run">—</span></div>
               <div class="summary-row" style="background:var(--teal-dim);border-left:3px solid var(--teal);"><span class="summary-label" style="font-weight:700;color:var(--teal);">Execution — fore ai ($0.05 / test / run, replaces all infra)</span><span class="summary-value" id="d-fore-exec-total">—</span></div>
               <div class="summary-row"><span class="summary-label">Total fore ai execution / run ($0.05 × totalTests)</span><span class="summary-value" id="d-fore-exec-run">—</span></div>
-            </div>
-
-            <!-- Sliders -->
-            <div class="sensitivity-card" style="margin-bottom:4px;">
-              <h3>Adjust assumptions</h3>
-              <p class="sens-sub">Drag to see how all values update in real time.</p>
-              <div class="sliders-grid">
-                <div class="slider-field">
-                  <div class="slider-top"><span class="slider-label">Total test cases</span><span class="slider-val" id="b-sv-tests">—</span></div>
-                  <input type="range" id="b-sl-tests" min="50" max="2000" step="50" oninput="onBlendedSlider()">
-                </div>
-                <div class="slider-field">
-                  <div class="slider-top"><span class="slider-label">Runs per week</span><span class="slider-val" id="b-sv-rpw">—</span></div>
-                  <input type="range" id="b-sl-rpw" min="1" max="100" step="1" oninput="onBlendedSlider()">
-                </div>
-                <div class="slider-field">
-                  <div class="slider-top"><span class="slider-label">Manual testers</span><span class="slider-val" id="b-sv-mfte">—</span></div>
-                  <input type="range" id="b-sl-mfte" min="0" max="50" step="1" oninput="onBlendedSlider()">
-                </div>
-                <div class="slider-field">
-                  <div class="slider-top"><span class="slider-label">Automation engineers</span><span class="slider-val" id="b-sv-afte">—</span></div>
-                  <input type="range" id="b-sl-afte" min="0" max="50" step="1" oninput="onBlendedSlider()">
-                </div>
-              </div>
             </div>
 
           </div><!-- /toggle-body -->
@@ -1774,12 +1781,6 @@
       st('d-fore-exec-run',     fmtFull(r.foreExecution) + ' / run  ($0.05 × ' + r.totalTests.toLocaleString() + ' total tests)');
       st('d-fore-exec-total',   fmtFull(r.foreExecution) + '/run');
 
-      // sliders
-      document.getElementById('b-sl-tests').value = r.totalTests; st('b-sv-tests', r.totalTests.toLocaleString() + ' tests');
-      document.getElementById('b-sl-rpw').value   = r.rpw;        st('b-sv-rpw',   r.rpw + ' runs/wk');
-      document.getElementById('b-sl-mfte').value  = r.manFTEs;    st('b-sv-mfte',  r.manFTEs + ' manual FTEs');
-      document.getElementById('b-sl-afte').value  = r.autoFTEs;   st('b-sv-afte',  r.autoFTEs + ' auto FTEs');
-
       // fore ai annual package
       const foreAnnual = r.foreTotalPerRun * r.runsPerMonth * 12;
       st('b-annual-cost', '$' + (Math.round(foreAnnual / 5000) * 5000).toLocaleString() + ' / yr');
@@ -1831,6 +1832,11 @@
     function runCalc() {
       const r = computeBlended();
       renderBlended(r);
+      // Initialise sliders to match the computed inputs
+      document.getElementById('b-sl-tests').value = r.totalTests; st('b-sv-tests', r.totalTests.toLocaleString() + ' tests');
+      document.getElementById('b-sl-rpw').value   = r.rpw;        st('b-sv-rpw',   r.rpw + ' runs/wk');
+      document.getElementById('b-sl-mfte').value  = r.manFTEs;    st('b-sv-mfte',  r.manFTEs + ' manual FTEs');
+      document.getElementById('b-sl-afte').value  = r.autoFTEs;   st('b-sv-afte',  r.autoFTEs + ' auto FTEs');
       const reg = _region ? ' · ' + _region : '';
       const ind = _industry ? ' · ' + _industry : '';
       st('resultsSub', r.totalTests + ' tests' + ind + reg + ' · ' + r.manTests + ' manual / ' + r.autoTests + ' automated');

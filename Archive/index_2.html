@@ -1,0 +1,2045 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fore ai — Cost Per Test Run</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/@fontsource/nohemi/index.css" onerror="this.remove()">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --surface2: #f6f8f9;
+      --surface3: #eef1f0;
+      --border: #e5e7eb;
+      --text: #101010;
+      --muted: #6b7280;
+      --teal: #075056;
+      --teal-dim: rgba(7, 80, 86, 0.08);
+      --teal-mid: rgba(7, 80, 86, 0.15);
+      --amber: #d97706;
+      --amber-dim: rgba(217, 119, 6, 0.08);
+      --amber-mid: rgba(217, 119, 6, 0.2);
+      --blue: #1d4ed8;
+      --blue-dim: rgba(29, 78, 216, 0.07);
+      --blue-mid: rgba(29, 78, 216, 0.18);
+      --font: 'Inter', -apple-system, sans-serif;
+      --r: 12px;
+      --r2: 8px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .topnav {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 57px;
+      display: flex;
+      align-items: center;
+    }
+
+    .topnav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .nav-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo-text {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .nav-cta {
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 9px 18px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity .15s;
+    }
+
+    .nav-cta:hover {
+      opacity: .88;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    @media(max-width:600px) {
+      .page {
+        padding: 32px 16px 60px;
+      }
+    }
+
+    .logo-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--teal-dim);
+      border: 1px solid var(--teal-mid);
+      padding: 4px 12px 4px 10px;
+      border-radius: 99px;
+      font-size: 11px;
+      color: var(--teal);
+      margin-bottom: 20px;
+      font-weight: 500;
+      letter-spacing: .04em;
+    }
+
+    .logo-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+
+    h1 {
+      font-family: 'Nohemi', 'Inter', sans-serif;
+      font-size: clamp(26px, 5vw, 40px);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -.4px;
+      color: #000;
+      margin-bottom: 12px;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--teal);
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.65;
+      max-width: 540px;
+      margin-bottom: 36px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      margin: 28px 0 14px;
+    }
+
+    /* Region pills */
+    .region-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .reg-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 99px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .15s;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .reg-pill:hover {
+      border-color: var(--teal);
+    }
+
+    .reg-pill.active {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #fff;
+    }
+
+    /* Role toggle pills */
+    .role-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .role-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 18px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 99px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .15s;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .role-pill:hover {
+      border-color: var(--teal);
+    }
+
+    .role-pill.active {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #fff;
+    }
+
+    .role-pill .role-icon {
+      font-size: 15px;
+    }
+
+    /* Form */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 16px 20px 0;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+      margin-bottom: 4px;
+    }
+
+    .card-header-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .card-header-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .card-body {
+      padding: 20px 20px 24px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media(max-width:580px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field.full {
+      grid-column: 1/-1;
+    }
+
+    label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .03em;
+      color: var(--text);
+    }
+
+    label span {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 400;
+      margin-left: 3px;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+    }
+
+    .input-wrap input {
+      flex: 1;
+    }
+
+    .input-suffix {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--teal);
+      pointer-events: none;
+      background: var(--teal-dim);
+      border-left: 1px solid var(--teal-mid);
+      padding: 0 10px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      border-radius: 0 var(--r2) var(--r2) 0;
+    }
+
+    .input-prefix {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--teal);
+      pointer-events: none;
+      background: var(--teal-dim);
+      border-right: 1px solid var(--teal-mid);
+      padding: 0 10px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      border-radius: var(--r2) 0 0 var(--r2);
+    }
+
+    input[type=number] {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      padding: 10px 12px;
+      border-radius: var(--r2);
+      outline: none;
+      transition: border-color .15s;
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    input.has-suffix {
+      padding-right: 56px;
+    }
+
+    input.has-prefix {
+      padding-left: 52px;
+    }
+
+    input:focus {
+      border-color: var(--teal);
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border);
+      outline: none;
+      cursor: pointer;
+      accent-color: var(--teal);
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--teal);
+      cursor: pointer;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 2px var(--teal-mid);
+    }
+
+    input[type=range]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--teal);
+      border: 2px solid #fff;
+      cursor: pointer;
+    }
+
+    .calc-btn {
+      width: 100%;
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 14px 22px;
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: opacity .15s;
+    }
+
+    .calc-btn:hover {
+      opacity: .88;
+    }
+
+    /* ── RESULTS ── */
+    .back-btn {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .15s;
+      margin-bottom: 28px;
+    }
+
+    .back-btn:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+
+    .results-header {
+      margin-bottom: 24px;
+    }
+
+    .results-header h2 {
+      font-family: 'Nohemi', 'Inter', sans-serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: #000;
+      letter-spacing: -.4px;
+      line-height: 1.15;
+    }
+
+    .results-header h2 em {
+      font-style: italic;
+      color: var(--teal);
+    }
+
+    .results-header p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* Tab switcher */
+    .tab-row {
+      display: flex;
+      gap: 0;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      background: var(--surface2);
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 11px 16px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      transition: all .15s;
+      border-right: 1.5px solid var(--border);
+      text-align: center;
+    }
+
+    .tab-btn:last-child {
+      border-right: none;
+    }
+
+    .tab-btn.active {
+      background: #fff;
+      color: var(--text);
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .06);
+    }
+
+    /* Hero comparison cards */
+    .compare-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    @media(max-width:540px) {
+      .compare-hero {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero-card {
+      border-radius: var(--r);
+      padding: 24px 22px;
+    }
+
+    .hero-card.manual-card {
+      background: var(--amber-dim);
+      border: 1px solid var(--amber-mid);
+    }
+
+    .hero-card.auto-card {
+      background: var(--blue-dim);
+      border: 1px solid var(--blue-mid);
+    }
+
+    .hero-card.foreai-card {
+      background: var(--teal);
+      border: 1px solid var(--teal);
+    }
+
+    .hero-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .manual-card .hero-tag {
+      color: var(--amber);
+    }
+
+    .auto-card .hero-tag {
+      color: var(--blue);
+    }
+
+    .foreai-card .hero-tag {
+      color: rgba(255, 255, 255, .65);
+    }
+
+    .hero-cpr {
+      font-family: 'Nohemi', 'Inter', sans-serif;
+      font-size: 48px;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -2px;
+      margin-bottom: 4px;
+    }
+
+    .manual-card .hero-cpr {
+      color: var(--text);
+    }
+
+    .auto-card .hero-cpr {
+      color: var(--text);
+    }
+
+    .foreai-card .hero-cpr {
+      color: #fff;
+    }
+
+    .hero-unit {
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .manual-card .hero-unit,
+    .auto-card .hero-unit {
+      color: var(--muted);
+    }
+
+    .foreai-card .hero-unit {
+      color: rgba(255, 255, 255, .65);
+    }
+
+    .hero-breakdown {
+      border-top: 1px solid;
+      padding-top: 14px;
+    }
+
+    .manual-card .hero-breakdown {
+      border-color: var(--amber-mid);
+    }
+
+    .auto-card .hero-breakdown {
+      border-color: var(--blue-mid);
+    }
+
+    .foreai-card .hero-breakdown {
+      border-color: rgba(255, 255, 255, .2);
+    }
+
+    .hero-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      padding: 3px 0;
+    }
+
+    .manual-card .hero-line .lname,
+    .auto-card .hero-line .lname {
+      color: var(--muted);
+    }
+
+    .manual-card .hero-line .lval,
+    .auto-card .hero-line .lval {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .foreai-card .hero-line .lname {
+      color: rgba(255, 255, 255, .65);
+    }
+
+    .foreai-card .hero-line .lval {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* Savings strip */
+    .savings-strip {
+      background: var(--teal-dim);
+      border: 1px solid var(--teal-mid);
+      border-radius: var(--r);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .sl-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--teal);
+      margin-bottom: 4px;
+    }
+
+    .sl-sub {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .savings-big {
+      font-family: 'Nohemi', 'Inter', sans-serif;
+      font-size: 42px;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -1.5px;
+      color: var(--teal);
+    }
+
+    .savings-pct {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--teal);
+      margin-top: 2px;
+    }
+
+    /* Sensitivity sliders */
+    .sensitivity-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 20px 22px;
+      margin-bottom: 12px;
+    }
+
+    .sensitivity-card h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+
+    .sens-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .sliders-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 28px;
+    }
+
+    @media(max-width:580px) {
+      .sliders-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .slider-field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .slider-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .slider-label {
+      font-size: 12px;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .slider-val {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--teal);
+      min-width: 80px;
+      text-align: right;
+    }
+
+    /* Summary table */
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .summary-row:last-child {
+      border-bottom: none;
+    }
+
+    .summary-row.total {
+      background: var(--teal-dim);
+      border-top: 1px solid var(--teal-mid);
+    }
+
+    .summary-label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .summary-value {
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .summary-value.positive {
+      color: var(--teal);
+    }
+
+    .summary-value.highlight {
+      color: var(--teal);
+      font-size: 14px;
+    }
+
+    .calc-section-label {
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      font-weight: 600;
+      margin: 20px 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .calc-section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* CTA */
+    .cta-card {
+      background: var(--teal);
+      border-radius: var(--r);
+      padding: 32px;
+      text-align: center;
+      margin-bottom: 20px;
+      margin-top: 8px;
+    }
+
+    .cta-card h3 {
+      font-family: 'Nohemi', 'Inter', sans-serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: #fff;
+      letter-spacing: -.3px;
+      margin-bottom: 8px;
+    }
+
+    .cta-card p {
+      font-size: 13px;
+      color: rgba(255, 255, 255, .75);
+      margin-bottom: 20px;
+      line-height: 1.65;
+      max-width: 460px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 11px 22px;
+      border-radius: 10px;
+      border: none;
+      transition: opacity .15s;
+    }
+
+    .btn-primary {
+      background: #fff;
+      color: var(--teal);
+    }
+
+    .btn-primary:hover {
+      opacity: .92;
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, .15);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, .25);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, .25);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate {
+      animation: fadeUp .25s ease;
+    }
+
+    /* Breakdown table */
+    .breakdown-table {
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+
+    .breakdown-table table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .breakdown-table thead tr {
+      background: var(--surface2);
+    }
+
+    .breakdown-table th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .breakdown-table th:not(:first-child) {
+      text-align: right;
+    }
+
+    .breakdown-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .breakdown-table td:not(:first-child) {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+    }
+
+    .breakdown-table td.saving {
+      color: var(--teal);
+      font-weight: 600;
+    }
+
+    .breakdown-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .breakdown-table tbody tr:hover td {
+      background: var(--surface2);
+    }
+
+    .breakdown-table tr.table-total td {
+      background: var(--teal-dim);
+      font-weight: 600;
+      border-top: 2px solid var(--teal-mid);
+      border-bottom: none;
+    }
+
+    .breakdown-table tr.table-total td.saving {
+      color: var(--teal);
+    }
+
+    .row-label {
+      line-height: 1.3;
+    }
+
+    .row-hint {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    /* Panel hide/show */
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* View tabs (per test / per run / monthly / yearly) */
+    .view-tab-row {
+      display: flex;
+      gap: 0;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      background: var(--surface2);
+    }
+
+    .view-tab-btn {
+      flex: 1;
+      padding: 9px 8px;
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      transition: all .15s;
+      border-right: 1.5px solid var(--border);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .view-tab-btn:last-child {
+      border-right: none;
+    }
+
+    .view-tab-btn.active {
+      background: #fff;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    /* Savings summary row below hero */
+    .saving-summary {
+      background: var(--teal-dim);
+      border: 1px solid var(--teal-mid);
+      border-radius: var(--r);
+      padding: 14px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .saving-summary .ss-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--teal);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    .saving-summary .ss-amount {
+      font-family: 'Nohemi', 'Inter', sans-serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--teal);
+      letter-spacing: -1px;
+    }
+
+    .saving-summary .ss-pct {
+      font-size: 12px;
+      color: var(--teal);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* Collapsible toggle */
+    .toggle-wrap {
+      margin-bottom: 12px;
+    }
+
+    .toggle-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      cursor: pointer;
+      user-select: none;
+      transition: background .15s;
+    }
+
+    .toggle-header:hover {
+      background: var(--surface3);
+    }
+
+    .toggle-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .07em;
+    }
+
+    .toggle-arrow {
+      font-size: 12px;
+      color: var(--muted);
+      transition: transform .2s;
+    }
+
+    .toggle-arrow.open {
+      transform: rotate(180deg);
+    }
+
+    .toggle-body {
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 var(--r) var(--r);
+      padding: 16px;
+      background: var(--surface);
+      display: none;
+    }
+
+    .toggle-body.open {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <a class="nav-logo" href="https://foreai.co">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <rect width="24" height="24" rx="6" fill="#075056" />
+          <path d="M7 8h10M7 12h7M7 16h4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+        <span class="nav-logo-text">fore ai</span>
+      </a>
+      <a class="nav-cta" href="https://meet.fore-ai.com/teams" target="_blank">Request Demo →</a>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <!-- ══════════════ STEP 1: INPUTS ══════════════ -->
+    <div id="inputSection">
+      <header>
+        <h1>Check how much you can save with <em>fore ai</em> on every run</h1>
+      </header>
+
+      <!-- Region -->
+      <div class="section-label">Where are your testers based?</div>
+      <div class="region-row">
+        <div class="reg-pill" id="reg-Swiss" onclick="selectRegion('Swiss')">Switzerland / W. Europe</div>
+        <div class="reg-pill" id="reg-USA/Canada" onclick="selectRegion('USA/Canada')">USA / Canada</div>
+        <div class="reg-pill" id="reg-East Europe" onclick="selectRegion('East Europe')">Eastern Europe</div>
+        <div class="reg-pill" id="reg-India/China" onclick="selectRegion('India/China')">India / APAC</div>
+        <div class="reg-pill" id="reg-Mixed" onclick="selectRegion('Mixed')">Mixed / Global</div>
+      </div>
+
+      <!-- Role type -->
+      <div class="section-label" style="margin-top:20px;">Type of tester</div>
+      <div class="role-row">
+        <div class="role-pill active" id="role-manual" onclick="selectRole('manual')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          Manual tester
+        </div>
+        <div class="role-pill" id="role-auto" onclick="selectRole('auto')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0">
+            <rect x="2" y="3" width="20" height="14" rx="2" />
+            <path d="M8 21h8M12 17v4" />
+            <polyline points="10 9 8 11 10 13" />
+            <polyline points="14 9 16 11 14 13" />
+          </svg>
+          Automation engineer
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:8px;" id="salaryRoleHint"></p>
+
+      <!-- Shared inputs -->
+      <div class="section-label" style="margin-top:24px;">Team &amp; test suite</div>
+      <div class="card">
+        <div class="card-body">
+          <div class="form-grid">
+
+            <div class="field">
+              <label>Total test cases</label>
+              <div class="input-wrap">
+                <input type="number" id="numTests" min="10" max="10000" step="10" value="300" class="has-suffix">
+                <span class="input-suffix">tests</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Runs per week</label>
+              <div class="input-wrap">
+                <input type="number" id="runsPerWeek" min="1" max="100" step="1" value="20" class="has-suffix">
+                <span class="input-suffix">runs/wk</span>
+              </div>
+              <span class="hint">Full suite executions per week</span>
+            </div>
+
+            <div class="field">
+              <label>QA engineers (FTEs)</label>
+              <div class="input-wrap">
+                <input type="number" id="numFTEs" min="1" max="200" step="1" value="10" class="has-suffix">
+                <span class="input-suffix">FTEs</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Annual salary per tester</label>
+              <div class="input-wrap">
+                <span class="input-prefix">$</span>
+                <input type="number" id="salaryInput" min="5000" max="400000" step="1000" value="80000"
+                  class="has-prefix">
+              </div>
+              <span class="hint" id="salaryHint"></span>
+            </div>
+
+            <div class="field full" style="display:none;">
+              <label>Avg time per test case <span>— manual execution only</span></label>
+              <div class="input-wrap">
+                <input type="number" id="minsPerTest" min="1" max="120" step="1" value="30" class="has-suffix">
+                <span class="input-suffix">mins</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <button class="calc-btn" onclick="runCalc()">Calculate cost per run →</button>
+    </div>
+
+    <!-- ══════════════ STEP 2: RESULTS ══════════════ -->
+    <div id="resultsSection" style="display:none;">
+
+      <button class="back-btn" onclick="resetCalc()">← Recalculate</button>
+
+      <div class="results-header animate">
+        <h2>Manual · Automated · <em>fore ai</em></h2>
+        <p id="resultsSub"></p>
+      </div>
+
+      <!-- Tab switcher -->
+      <div class="tab-row animate">
+        <button class="tab-btn active" id="tab-manual" onclick="switchTab('manual')">Manual vs fore ai</button>
+        <button class="tab-btn" id="tab-auto" onclick="switchTab('auto')">Automated vs fore ai</button>
+      </div>
+
+      <!-- ── TAB: MANUAL vs FORE AI ── -->
+      <div class="tab-panel active" id="panel-manual">
+
+        <!-- Hero cards -->
+        <div class="compare-hero animate">
+          <div class="hero-card manual-card">
+            <div class="hero-tag">Manual Testing</div>
+            <div class="hero-cpr" id="m-hero-manual">—</div>
+            <div class="hero-unit" id="m-hero-unit">cost per test</div>
+          </div>
+          <div class="hero-card foreai-card">
+            <div class="hero-tag">With fore ai</div>
+            <div class="hero-cpr" id="m-hero-fore">—</div>
+            <div class="hero-unit" id="m-fore-unit">cost per test</div>
+          </div>
+        </div>
+
+        <!-- View tabs -->
+        <div class="view-tab-row animate">
+          <button class="view-tab-btn active" id="m-vt-test" onclick="mViewTab('test')">Per Test</button>
+          <button class="view-tab-btn" id="m-vt-run" onclick="mViewTab('run')">Per Run</button>
+          <button class="view-tab-btn" id="m-vt-monthly" onclick="mViewTab('monthly')">Monthly</button>
+          <button class="view-tab-btn" id="m-vt-yearly" onclick="mViewTab('yearly')">Yearly</button>
+        </div>
+
+        <!-- Saving summary -->
+        <div class="saving-summary animate">
+          <div>
+            <div class="ss-label">Saving vs manual</div>
+            <div class="ss-pct" id="m-save-pct">—</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="ss-amount" id="m-save-run">—</div>
+          </div>
+        </div>
+
+        <!-- Collapsible: Cost breakdown -->
+        <div class="toggle-wrap animate">
+          <div class="toggle-header" onclick="toggleSection('m-detail')">
+            <span class="toggle-title">Cost breakdown &amp; assumptions</span>
+            <span class="toggle-arrow" id="m-detail-arrow">▼</span>
+          </div>
+          <div class="toggle-body" id="m-detail-body">
+
+            <!-- Breakdown table -->
+            <!-- <div class="breakdown-table" style="margin-bottom:16px;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Cost component</th>
+                    <th>Manual / test</th>
+                    <th>Fore AI / test</th>
+                    <th>Saving / test</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="row-label">Test execution labour
+                    </td>
+                    <td id="m-t-exec">—</td>
+                    <td>$0.00</td>
+                    <td class="saving" id="m-t-save-exec">—</td>
+                  </tr>
+                  <tr>
+                    <td class="row-label">Test authoring &amp; maintenance
+                    </td>
+                    <td>$0.00</td>
+                    <td id="m-t-fore-auth">—</td>
+                    <td id="m-t-save-auth" style="color:var(--amber);">—</td>
+                  </tr>
+                  <tr>
+                    <td class="row-label">Fore AI platform fee
+                    </td>
+                    <td>$0.00</td>
+                    <td id="m-t-platform">—</td>
+                    <td id="m-t-save-platform" style="color:var(--amber);">—</td>
+                  </tr>
+                  <tr class="table-total">
+                    <td>Total cost / test</td>
+                    <td id="m-t-total-man">—</td>
+                    <td id="m-t-total-fore">—</td>
+                    <td class="saving" id="m-t-total-save">—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div> -->
+
+            <!-- Sliders -->
+            <div class="sensitivity-card" style="margin-bottom:16px;">
+              <h3>Adjust assumptions</h3>
+              <p class="sens-sub">Drag to see how inputs affect costs in real time.</p>
+              <div class="sliders-grid">
+                <div class="slider-field">
+                  <div class="slider-top"><span class="slider-label">Test cases</span><span class="slider-val"
+                      id="m-sv-tests">—</span></div>
+                  <input type="range" id="m-sl-tests" min="50" max="2000" step="50" oninput="onManualSlider()">
+                </div>
+                <div class="slider-field">
+                  <div class="slider-top"><span class="slider-label">Runs per week</span><span class="slider-val"
+                      id="m-sv-rpw">—</span></div>
+                  <input type="range" id="m-sl-rpw" min="1" max="100" step="1" oninput="onManualSlider()">
+                </div>
+                <div class="slider-field">
+                  <div class="slider-top"><span class="slider-label">Mins per test</span><span class="slider-val"
+                      id="m-sv-mpt">—</span></div>
+                  <input type="range" id="m-sl-mpt" min="1" max="60" step="1" oninput="onManualSlider()">
+                </div>
+                <div class="slider-field">
+                  <div class="slider-top"><span class="slider-label">FTEs</span><span class="slider-val"
+                      id="m-sv-fte">—</span></div>
+                  <input type="range" id="m-sl-fte" min="1" max="100" step="1" oninput="onManualSlider()">
+                </div>
+              </div>
+            </div>
+
+            <!-- Assumptions -->
+            <div class="summary-card">
+              <div class="summary-row"><span class="summary-label">Hourly rate (salary ÷ 240d × 8h)</span><span
+                  class="summary-value" id="m-a-hrly">—</span></div>
+              <div class="summary-row"><span class="summary-label">Manual execution cost / test</span><span
+                  class="summary-value" id="m-a-exec">—</span></div>
+              <div class="summary-row"><span class="summary-label">Fore AI writing cost / test / run (60% faster,
+                  amortised)</span><span class="summary-value" id="m-a-fore-writing">—</span></div>
+              <div class="summary-row"><span class="summary-label">Fore AI maintenance cost / test / run (80% faster,
+                  amortised)</span><span class="summary-value" id="m-a-fore-maint">—</span></div>
+              <div class="summary-row"><span class="summary-label">Fore AI platform fee</span><span
+                  class="summary-value" id="m-a-platform">—</span></div>
+            </div>
+
+          </div><!-- /toggle-body -->
+        </div><!-- /toggle-wrap -->
+
+        <!-- hidden data holders for view tabs -->
+        <span id="m-d-runs-mo" style="display:none">—</span>
+        <span id="m-d-man-mo" style="display:none">—</span>
+        <span id="m-d-fore-mo" style="display:none">—</span>
+        <span id="m-d-save-mo" style="display:none">—</span>
+        <span id="m-bk-exec" style="display:none">—</span>
+        <span id="m-bk-fore-auth" style="display:none">—</span>
+        <span id="m-bk-platform" style="display:none">—</span>
+
+      </div><!-- /panel-manual -->
+
+      <!-- ── TAB: AUTOMATED vs FORE AI ── -->
+      <div class="tab-panel" id="panel-auto">
+
+        <!-- Hero cards -->
+        <div class="compare-hero animate">
+          <div class="hero-card auto-card">
+            <div class="hero-tag">Automated Testing</div>
+            <div class="hero-cpr" id="a-hero-auto">—</div>
+            <div class="hero-unit" id="a-hero-unit">cost per test</div>
+          </div>
+          <div class="hero-card foreai-card">
+            <div class="hero-tag">With fore ai</div>
+            <div class="hero-cpr" id="a-hero-fore">—</div>
+            <div class="hero-unit" id="a-fore-unit">cost per test</div>
+          </div>
+        </div>
+
+        <!-- View tabs -->
+        <div class="view-tab-row animate">
+          <button class="view-tab-btn active" id="a-vt-test" onclick="aViewTab('test')">Per Test</button>
+          <button class="view-tab-btn" id="a-vt-run" onclick="aViewTab('run')">Per Run</button>
+          <button class="view-tab-btn" id="a-vt-monthly" onclick="aViewTab('monthly')">Monthly</button>
+          <button class="view-tab-btn" id="a-vt-yearly" onclick="aViewTab('yearly')">Yearly</button>
+        </div>
+
+        <!-- Saving summary -->
+        <div class="saving-summary animate">
+          <div>
+            <div class="ss-label">Saving vs automated</div>
+            <div class="ss-pct" id="a-save-pct">—</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="ss-amount" id="a-save-run">—</div>
+          </div>
+        </div>
+
+        <!-- Collapsible: Cost breakdown -->
+        <div class="toggle-wrap animate">
+          <div class="toggle-header" onclick="toggleSection('a-detail')">
+            <span class="toggle-title">Cost breakdown &amp; assumptions</span>
+            <span class="toggle-arrow" id="a-detail-arrow">▼</span>
+          </div>
+          <div class="toggle-body" id="a-detail-body">
+
+            <!-- Breakdown table -->
+            <div class="breakdown-table" style="margin-bottom:16px;">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Cost component</th>
+                    <th>Automated / test</th>
+                    <th>Fore AI / test</th>
+                    <th>Saving / test</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="row-label">Script authoring &amp; maintenance
+                    </td>
+                    <td id="a-t-labour">—</td>
+                    <td id="a-t-fore-labour">—</td>
+                    <td class="saving" id="a-t-save-labour">—</td>
+                  </tr>
+                  <tr>
+                    <td class="row-label">Result reco
+                    </td>
+                    <td id="a-t-triage">—</td>
+                    <td id="a-t-fore-triage">—</td>
+                    <td class="saving" id="a-t-save-triage">—</td>
+                  </tr>
+                  <tr>
+                    <td class="row-label">Infra / execution cost
+                    </td>
+                    <td id="a-t-infra">—</td>
+                    <td id="a-t-platform">—</td>
+                    <td class="saving" id="a-t-save-infra">—</td>
+                  </tr>
+                  <tr class="table-total">
+                    <td>Total cost / test</td>
+                    <td id="a-t-total-auto">—</td>
+                    <td id="a-t-total-fore">—</td>
+                    <td class="saving" id="a-t-total-save">—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Sliders -->
+            <div class="sensitivity-card" style="margin-bottom:16px;">
+              <h3>Adjust assumptions</h3>
+              <p class="sens-sub">Drag to see how inputs affect costs in real time.</p>
+              <div class="sliders-grid">
+                <div class="slider-field">
+                  <div class="slider-top"><span class="slider-label">Test cases</span><span class="slider-val"
+                      id="a-sv-tests">—</span></div>
+                  <input type="range" id="a-sl-tests" min="50" max="2000" step="50" oninput="onAutoSlider()">
+                </div>
+                <div class="slider-field">
+                  <div class="slider-top"><span class="slider-label">Runs per week</span><span class="slider-val"
+                      id="a-sv-rpw">—</span></div>
+                  <input type="range" id="a-sl-rpw" min="1" max="100" step="1" oninput="onAutoSlider()">
+                </div>
+                <div class="slider-field">
+                  <div class="slider-top"><span class="slider-label">FTEs</span><span class="slider-val"
+                      id="a-sv-fte">—</span></div>
+                  <input type="range" id="a-sl-fte" min="1" max="100" step="1" oninput="onAutoSlider()">
+                </div>
+              </div>
+            </div>
+
+            <!-- Assumptions -->
+            <div class="summary-card">
+              <div class="summary-row"><span class="summary-label">Hourly rate (salary ÷ 240d × 8h)</span><span
+                  class="summary-value" id="a-a-hrly">—</span></div>
+              <div class="summary-row"><span class="summary-label">Writing cost / test / run (3h write + 0.11h fix) ×
+                  hrly ÷ annual runs</span><span class="summary-value" id="a-a-writing">—</span></div>
+              <div class="summary-row"><span class="summary-label">Maintenance cost / test / run (50% × 3h × 2 cycles) ×
+                  hrly ÷ annual runs</span><span class="summary-value" id="a-a-maint">—</span></div>
+              <div class="summary-row"><span class="summary-label">Infra cost / test / run ($0.03 seq + $130/yr ÷ annual
+                  runs)</span><span class="summary-value" id="a-a-infra">—</span></div>
+              <div class="summary-row"><span class="summary-label">Triage cost / test / run (30 min fixed per run ÷
+                  tests)</span><span class="summary-value" id="a-a-triage">—</span></div>
+              <div class="summary-row"><span class="summary-label">Fore AI writing cost / test / run (60%
+                  faster)</span><span class="summary-value" id="a-a-fore-writing">—</span></div>
+              <div class="summary-row"><span class="summary-label">Fore AI maintenance cost / test / run (80%
+                  faster)</span><span class="summary-value" id="a-a-fore-maint">—</span></div>
+              <div class="summary-row"><span class="summary-label">Fore AI platform fee ($0.10 flat, replaces
+                  infra)</span><span class="summary-value" id="a-a-platform">—</span></div>
+            </div>
+
+          </div><!-- /toggle-body -->
+        </div><!-- /toggle-wrap -->
+
+        <!-- hidden data holders -->
+        <span id="a-d-runs-mo" style="display:none">—</span>
+        <span id="a-d-auto-mo" style="display:none">—</span>
+        <span id="a-d-fore-mo" style="display:none">—</span>
+        <span id="a-d-save-mo" style="display:none">—</span>
+        <span id="a-bk-labour" style="display:none">—</span>
+        <span id="a-bk-infra" style="display:none">—</span>
+        <span id="a-bk-fore-labour" style="display:none">—</span>
+        <span id="a-bk-platform" style="display:none">—</span>
+        <span id="a-save-sub" style="display:none">—</span>
+
+      </div><!-- /panel-auto -->
+
+      <!-- CTA -->
+      <div class="cta-card animate">
+        <h3>Ready to cut your cost per test run?</h3>
+        <p>Book a demo and see exactly how fore ai fits your workflow and test suite.</p>
+        <div class="cta-row">
+          <button class="btn btn-primary" onclick="window.open('https://meet.fore-ai.com/teams','_blank')">Book a demo
+            →</button>
+          <button class="btn btn-ghost" onclick="resetCalc()">← Recalculate</button>
+        </div>
+      </div>
+
+    </div><!-- /resultsSection -->
+  </div><!-- /page -->
+
+  <script>
+    // ══════════════════════════════════════════════════════════
+    // MODEL ASSUMPTIONS
+    // ══════════════════════════════════════════════════════════
+    const M = {
+      // Automated authoring
+      timeToGenerate: 3,      // hrs to write one script
+      failureRate: 0.075,  // 7.5% of new scripts fail initial run
+      tFix: 1.5,    // hrs to fix one failing script
+      maintenanceRate: 0.50,   // 50% of scripts need maintenance per cycle
+      tMaint: 3,      // hrs to maintain one script
+      maintFreq: 2,      // maintenance cycles per year
+      // Infra (automated)
+      seqRunCost: 0.05,   // $ per test per run (sequential infra)
+      parallelCost: 130,    // $ per test per year (parallel + server)
+      // Calendar
+      workingDays: 240,
+      workingHours: 8,
+      // Fore AI
+      alpha: 0.60,   // generation speed-up (60% less time)
+      beta: 0.80,   // maintenance speed-up (80% less time)
+      platformPerRun: 0.10,   // $ per test per run
+      // Automated suite churn: assume 8% of suite size is new scripts added each month
+      newTestsChurnRate: 0.08,
+    };
+
+    // Manual tester salaries (QA analyst, click-through testing)
+    const SALARIES_MANUAL = {
+      'Swiss': 75000,
+      'USA/Canada': 60000,
+      'East Europe': 25000,
+      'India/China': 8000,
+      'Mixed': 30000,
+    };
+
+    // Automation engineer salaries (SDET, scripting, CI/CD)
+    const SALARIES_AUTO = {
+      'Swiss': 120000,
+      'USA/Canada': 80000,
+      'East Europe': 40000,
+      'India/China': 12000,
+      'Mixed': 45000,
+    };
+
+    let _region = null;
+    let _role = 'manual';   // 'manual' | 'auto'
+    let _timer = null;
+
+    // ── helpers ─────────────────────────────────────────────
+    function fmt2(n) { return '$' + Math.abs(n).toFixed(2); }
+    function fmtFull(n) { return '$' + Math.round(Math.abs(n)).toLocaleString(); }
+    function gv(id) { return parseFloat(document.getElementById(id).value) || 0; }
+    function st(id, t) { const el = document.getElementById(id); if (el) el.textContent = t; }
+
+    // ── role selection ───────────────────────────────────────
+    function selectRole(role) {
+      _role = role;
+      document.querySelectorAll('.role-pill').forEach(p => p.classList.remove('active'));
+      document.getElementById('role-' + role).classList.add('active');
+      // Re-apply region salary if one is already selected
+      if (_region) applyRegionSalary();
+      else {
+        const hint = role === 'manual'
+          ? ''
+          : '';
+        document.getElementById('salaryRoleHint').textContent = hint;
+      }
+    }
+
+    // ── region selection ─────────────────────────────────────
+    function selectRegion(r) {
+      _region = r;
+      document.querySelectorAll('.reg-pill').forEach(p => p.classList.remove('active'));
+      document.getElementById('reg-' + r).classList.add('active');
+      // Cap runs/wk to 80 for low-income regions
+      const rpwInput = document.getElementById('runsPerWeek');
+      if (r === 'India/China') {
+        rpwInput.max = 80;
+        if (+rpwInput.value > 80) rpwInput.value = 80;
+      } else {
+        rpwInput.max = 100;
+      }
+      applyRegionSalary();
+    }
+
+    function applyRegionSalary() {
+      const table = _role === 'auto' ? SALARIES_AUTO : SALARIES_MANUAL;
+      const sal = table[_region];
+      const label = _role === 'auto' ? 'Automation engineer' : 'Manual tester';
+      document.getElementById('salaryInput').value = sal;
+      document.getElementById('salaryHint').textContent = '';
+      document.getElementById('salaryRoleHint').textContent =
+        '';
+    }
+
+    // ── tabs ─────────────────────────────────────────────────
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('tab-' + tab).classList.add('active');
+      document.getElementById('panel-' + tab).classList.add('active');
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // COMPUTE — MANUAL MODEL
+    //
+    // No test generation, maintenance, or triage.
+    // Cost per run = pure execution labour only.
+    //
+    //   execCostPerRun = (minsPerTest / 60) × tests × hrly
+    //   (One tester executes all tests; cost is the time, not headcount multiplied)
+    //
+    //   Fore AI:
+    //   foreExecPerRun = platformPerRun × tests   ($0.10/test)
+    // ══════════════════════════════════════════════════════════
+    function computeManual(ov) {
+      ov = ov || {};
+      const tests = ov.tests !== undefined ? ov.tests : gv('numTests');
+      const rpw = ov.rpw !== undefined ? ov.rpw : gv('runsPerWeek');
+      const nFTE = ov.nFTE !== undefined ? ov.nFTE : gv('numFTEs');
+      const minsPerTest = ov.mpt !== undefined ? ov.mpt : gv('minsPerTest');
+      const salary = gv('salaryInput');
+
+      const hrly = salary / (M.workingDays * M.workingHours);
+      const runsPerMonth = rpw * 4.33;
+      const annualRuns = runsPerMonth * 12;
+
+      // Manual: cost per single test execution = hrly × (minsPerTest ÷ 60)
+      const execCostPerRun = (minsPerTest / 60) * hrly;
+      const manualTotalPerRun = execCostPerRun;
+
+      // Fore AI: authoring amortised over runs (same model as automated)
+      //   + platform execution fee — fore AI must author tests to run them
+      const foreWritingPerRun = (M.timeToGenerate + M.failureRate * M.tFix) * hrly * (1 - M.alpha) / annualRuns;
+      const foreMaintPerRun = M.maintenanceRate * M.tMaint * M.maintFreq * hrly * (1 - M.beta) / annualRuns;
+      const foreExecPerRun = M.platformPerRun;   // $0.10/test/run
+      const foreTotalPerRun = foreWritingPerRun + foreMaintPerRun + foreExecPerRun;
+
+      const savingPerRun = manualTotalPerRun - foreTotalPerRun;
+      const savingPct = manualTotalPerRun > 0 ? (savingPerRun / manualTotalPerRun) * 100 : 0;
+
+      return {
+        tests, rpw, nFTE, minsPerTest, hrly,
+        runsPerMonth, annualRuns,
+        execCostPerRun, manualTotalPerRun,
+        foreWritingPerRun, foreMaintPerRun, foreExecPerRun, foreTotalPerRun,
+        savingPerRun, savingPct,
+      };
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // COMPUTE — AUTOMATED MODEL
+    //
+    // Cost per test per run — derived purely from time variables,
+    // no new-test/month churn figure needed.
+    //
+    // One automated test incurs three costs each time it runs:
+    //
+    //   1. Authoring (amortised one-time cost):
+    //      writingCostPerRun = (timeToGenerate + failureRate × tFix) × hrly / annualRuns
+    //
+    //   2. Maintenance (amortised annual cost):
+    //      maintCostPerRun = maintenanceRate × tMaint × maintFreq × hrly / annualRuns
+    //
+    //   3. Infra (marginal per run):
+    //      infraCostPerRun = seqRunCost + parallelCost / annualRuns
+    //
+    //   Fore AI:
+    //      foreWritingPerRun = writingCostPerRun × (1 − alpha)   [60% faster generation]
+    //      foreMaintPerRun   = maintCostPerRun   × (1 − beta)    [80% faster maintenance]
+    //      foreInfraPerRun   = platformPerRun                     [$0.10/test/run]
+    // ══════════════════════════════════════════════════════════
+    function computeAuto(ov) {
+      ov = ov || {};
+      const tests = ov.tests !== undefined ? ov.tests : gv('numTests');
+      const rpw = ov.rpw !== undefined ? ov.rpw : gv('runsPerWeek');
+      const nFTE = ov.nFTE !== undefined ? ov.nFTE : gv('numFTEs');
+      const salary = gv('salaryInput');
+
+      const hrly = salary / (M.workingDays * M.workingHours);
+      const runsPerMonth = rpw * 4.33;
+      const annualRuns = runsPerMonth * 12;
+
+      // ── Automated: cost per test per run ─────────────────────
+      // Authoring: one-time write + expected fix cost, amortised over lifetime runs
+      const writingCostPerRun = (M.timeToGenerate + M.failureRate * M.tFix) * hrly / annualRuns;
+
+      // Maintenance: annual upkeep per test, amortised over runs in the year
+      const maintCostPerRun = M.maintenanceRate * M.tMaint * M.maintFreq * hrly / annualRuns;
+
+      // Infra: sequential run cost + annualised parallel/server cost
+      const infraCostPerRun = M.seqRunCost + M.parallelCost / annualRuns;
+
+      // Triage: 30 min fixed per run, spread per test (engineer reviews results after every run)
+      const TRIAGE_MINS = 30;
+      const triageCostPerTest = (TRIAGE_MINS / 60) * hrly / tests;  // total triage cost ÷ tests
+
+      const autoTotalPerTest = writingCostPerRun + maintCostPerRun + triageCostPerTest + infraCostPerRun;
+
+      // ── Fore AI: cost per test per run ───────────────────────
+      const foreWritingPerRun = writingCostPerRun * (1 - M.alpha);  // 60% faster generation
+      const foreMaintPerRun = maintCostPerRun * (1 - M.beta);   // 80% faster maintenance
+      const foreInfraPerRun = M.platformPerRun;                    // $0.10/test/run flat
+      // Triage applies to fore AI too — already captured in maintenance reduction above
+
+      const foreTotalPerTest = foreWritingPerRun + foreMaintPerRun + foreInfraPerRun;
+
+      const savingPerTest = autoTotalPerTest - foreTotalPerTest;
+      const savingPct = autoTotalPerTest > 0 ? (savingPerTest / autoTotalPerTest) * 100 : 0;
+
+      return {
+        tests, rpw, nFTE, hrly,
+        runsPerMonth, annualRuns,
+        writingCostPerRun, maintCostPerRun, triageCostPerTest, infraCostPerRun, autoTotalPerTest,
+        foreWritingPerRun, foreMaintPerRun, foreInfraPerRun, foreTotalPerTest,
+        savingPerTest, savingPct,
+      };
+    }
+    // ── render manual tab ─────────────────────────────────────
+    let _mData = null;
+    function renderManual(r) {
+      _mData = r;
+
+      // breakdown table (always per test)
+      st('m-t-exec', fmt2(r.execCostPerRun));
+      st('m-t-save-exec', fmt2(r.execCostPerRun));
+      st('m-t-fore-auth', fmt2(r.foreWritingPerRun + r.foreMaintPerRun));
+      st('m-t-save-auth', fmt2(-(r.foreWritingPerRun + r.foreMaintPerRun)));
+      st('m-t-platform', fmt2(r.foreExecPerRun));
+      st('m-t-total-man', fmt2(r.manualTotalPerRun));
+      st('m-t-total-fore', fmt2(r.foreTotalPerRun));
+      st('m-t-total-save', fmt2(r.savingPerRun) + '/test');
+
+      // hidden data stores
+      st('m-d-runs-mo', Math.round(r.runsPerMonth).toLocaleString() + ' runs/mo');
+      st('m-d-man-mo', fmtFull(r.manualTotalPerRun * r.tests * r.runsPerMonth));
+      st('m-d-fore-mo', fmtFull(r.foreTotalPerRun * r.tests * r.runsPerMonth));
+      st('m-d-save-mo', fmtFull((r.manualTotalPerRun - r.foreTotalPerRun) * r.tests * r.runsPerMonth));
+
+      // assumptions
+      st('m-a-hrly', '$' + r.hrly.toFixed(2) + '/hr');
+      st('m-a-exec', '$' + r.hrly.toFixed(2) + '/hr × (' + r.minsPerTest + ' mins ÷ 60) = ' + fmt2(r.execCostPerRun) + '/test');
+      st('m-a-fore-writing', fmt2(r.foreWritingPerRun) + '/test/run');
+      st('m-a-fore-maint', fmt2(r.foreMaintPerRun) + '/test/run');
+      st('m-a-platform', fmt2(r.foreExecPerRun) + '/test');
+
+      // sliders
+      document.getElementById('m-sl-tests').value = r.tests; st('m-sv-tests', r.tests.toLocaleString() + ' tests');
+      const mRpwMax = _region === 'India/China' ? 80 : 200;
+      document.getElementById('m-sl-rpw').max = mRpwMax;
+      document.getElementById('m-sl-rpw').value = Math.min(r.rpw, mRpwMax); st('m-sv-rpw', Math.min(r.rpw, mRpwMax) + ' runs/wk');
+      document.getElementById('m-sl-mpt').value = r.minsPerTest; st('m-sv-mpt', r.minsPerTest + ' mins/test');
+      document.getElementById('m-sl-fte').value = r.nFTE; st('m-sv-fte', r.nFTE + ' FTEs');
+
+      // refresh view tab
+      const activeBtn = document.querySelector('#panel-manual .view-tab-btn.active');
+      const activeView = activeBtn ? activeBtn.id.replace('m-vt-', '') : 'test';
+      mViewTab(activeView);
+    }
+
+    function mViewTab(view) {
+      document.querySelectorAll('#panel-manual .view-tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('m-vt-' + view).classList.add('active');
+      if (!_mData) return;
+      const r = _mData;
+      const labels = { test: 'cost per test', run: 'cost per run', monthly: 'cost per month', yearly: 'cost per year' };
+      st('m-hero-unit', labels[view]);
+      st('m-fore-unit', labels[view]);
+      const runsPerMonth = r.runsPerMonth;
+      if (view === 'test') {
+        st('m-hero-manual', fmt2(r.manualTotalPerRun));
+        st('m-hero-fore', fmt2(r.foreTotalPerRun));
+        st('m-save-run', fmt2(r.savingPerRun) + ' / test');
+        st('m-save-pct', '');
+      } else if (view === 'run') {
+        st('m-hero-manual', fmtFull(r.manualTotalPerRun * r.tests));
+        st('m-hero-fore', fmtFull(r.foreTotalPerRun * r.tests));
+        st('m-save-run', fmtFull(r.savingPerRun * r.tests) + ' / run');
+        st('m-save-pct', '');
+      } else if (view === 'monthly') {
+        const manMo = r.manualTotalPerRun * r.tests * runsPerMonth;
+        const forMo = r.foreTotalPerRun * r.tests * runsPerMonth;
+        st('m-hero-manual', fmtFull(manMo));
+        st('m-hero-fore', fmtFull(forMo));
+        st('m-save-run', fmtFull(manMo - forMo) + ' / month');
+        st('m-save-pct', '');
+      } else {
+        const manYr = r.manualTotalPerRun * r.tests * runsPerMonth * 12;
+        const forYr = r.foreTotalPerRun * r.tests * runsPerMonth * 12;
+        st('m-hero-manual', fmtFull(manYr));
+        st('m-hero-fore', fmtFull(forYr));
+        st('m-save-run', fmtFull(manYr - forYr) + ' / year');
+        st('m-save-pct', '');
+      }
+    }
+
+    // ── render automated tab ──────────────────────────────────
+    let _aData = null;
+    function renderAuto(r) {
+      _aData = r;
+
+      // breakdown table (always per test)
+      st('a-t-labour', fmt2(r.writingCostPerRun + r.maintCostPerRun));
+      st('a-t-fore-labour', fmt2(r.foreWritingPerRun + r.foreMaintPerRun));
+      st('a-t-save-labour', fmt2((r.writingCostPerRun + r.maintCostPerRun) - (r.foreWritingPerRun + r.foreMaintPerRun)));
+      st('a-t-triage', fmt2(r.triageCostPerTest));
+      st('a-t-fore-triage', '$0.00');
+      st('a-t-save-triage', fmt2(r.triageCostPerTest));
+      st('a-t-infra', fmt2(r.infraCostPerRun));
+      st('a-t-platform', fmt2(r.foreInfraPerRun));
+      st('a-t-save-infra', fmt2(r.infraCostPerRun - r.foreInfraPerRun));
+      st('a-t-total-auto', fmt2(r.autoTotalPerTest));
+      st('a-t-total-fore', fmt2(r.foreTotalPerTest));
+      st('a-t-total-save', fmt2(r.savingPerTest) + '/test');
+
+      // hidden data stores
+      st('a-d-runs-mo', Math.round(r.runsPerMonth).toLocaleString() + ' runs/mo');
+      st('a-d-auto-mo', fmtFull(r.autoTotalPerTest * r.tests * r.runsPerMonth));
+      st('a-d-fore-mo', fmtFull(r.foreTotalPerTest * r.tests * r.runsPerMonth));
+      st('a-d-save-mo', fmtFull(r.savingPerTest * r.tests * r.runsPerMonth));
+
+      // assumptions
+      st('a-a-hrly', '$' + r.hrly.toFixed(2) + '/hr');
+      st('a-a-writing', fmt2(r.writingCostPerRun) + '/test/run');
+      st('a-a-maint', fmt2(r.maintCostPerRun) + '/test/run');
+      st('a-a-infra', fmt2(r.infraCostPerRun) + '/test/run');
+      st('a-a-triage', fmt2(r.triageCostPerTest) + '/test/run  (30 min ÷ 60 × hrly ÷ tests, fore AI: 80% less)');
+      st('a-a-fore-writing', fmt2(r.foreWritingPerRun) + '/test/run');
+      st('a-a-fore-maint', fmt2(r.foreMaintPerRun) + '/test/run');
+      st('a-a-platform', fmt2(r.foreInfraPerRun) + '/test/run');
+
+      // sliders
+      document.getElementById('a-sl-tests').value = r.tests; st('a-sv-tests', r.tests.toLocaleString() + ' tests');
+      const aRpwMax = maxSafeRpw(r.tests, gv('salaryInput') || (SALARIES_AUTO[_region] || 80000));
+      document.getElementById('a-sl-rpw').max = aRpwMax;
+      document.getElementById('a-sl-rpw').value = Math.min(r.rpw, aRpwMax); st('a-sv-rpw', Math.min(r.rpw, aRpwMax) + ' runs/wk');
+      document.getElementById('a-sl-fte').value = r.nFTE; st('a-sv-fte', r.nFTE + ' FTEs');
+
+      // refresh view tab
+      const activeBtn = document.querySelector('#panel-auto .view-tab-btn.active');
+      const activeView = activeBtn ? activeBtn.id.replace('a-vt-', '') : 'test';
+      aViewTab(activeView);
+    }
+
+    function aViewTab(view) {
+      document.querySelectorAll('#panel-auto .view-tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('a-vt-' + view).classList.add('active');
+      if (!_aData) return;
+      const r = _aData;
+      const labels = { test: 'cost per test', run: 'cost per run', monthly: 'cost per month', yearly: 'cost per year' };
+      st('a-hero-unit', labels[view]);
+      st('a-fore-unit', labels[view]);
+      const runsPerMonth = r.runsPerMonth;
+      if (view === 'test') {
+        st('a-hero-auto', fmt2(r.autoTotalPerTest));
+        st('a-hero-fore', fmt2(r.foreTotalPerTest));
+        st('a-save-run', fmt2(r.savingPerTest) + ' / test');
+        st('a-save-pct', '');
+      } else if (view === 'run') {
+        st('a-hero-auto', fmtFull(r.autoTotalPerTest * r.tests));
+        st('a-hero-fore', fmtFull(r.foreTotalPerTest * r.tests));
+        st('a-save-run', fmtFull(r.savingPerTest * r.tests) + ' / run');
+        st('a-save-pct', '');
+      } else if (view === 'monthly') {
+        const autoMo = r.autoTotalPerTest * r.tests * runsPerMonth;
+        const forMo = r.foreTotalPerTest * r.tests * runsPerMonth;
+        st('a-hero-auto', fmtFull(autoMo));
+        st('a-hero-fore', fmtFull(forMo));
+        st('a-save-run', fmtFull(autoMo - forMo) + ' / month');
+        st('a-save-pct', '');
+      } else {
+        const autoYr = r.autoTotalPerTest * r.tests * runsPerMonth * 12;
+        const forYr = r.foreTotalPerTest * r.tests * runsPerMonth * 12;
+        st('a-hero-auto', fmtFull(autoYr));
+        st('a-hero-fore', fmtFull(forYr));
+        st('a-save-run', fmtFull(autoYr - forYr) + ' / year');
+        st('a-save-pct', '');
+      }
+    }
+    // ── flow ─────────────────────────────────────────────────
+    // ── Compute max rpw where fore AI is still cheaper than automated ────────
+    // Searches from 1 to 100 rpw, finds crossover, rounds down to nearest 10.
+    // Hard cap: 100 rpw. India/China: additionally capped at 80.
+    function maxSafeRpw(tests, salary) {
+      const hrly = salary / (M.workingDays * M.workingHours);
+      const authHrs = M.timeToGenerate + M.failureRate * M.tFix;
+      const maintHrs = M.maintenanceRate * M.tMaint * M.maintFreq;
+      const hrsSaved = authHrs * M.alpha + maintHrs * M.beta;
+      const HARD_MAX = _region === 'India/China' ? 80 : 100;
+      let safeRpw = HARD_MAX;  // default to cap if always cheaper
+
+      for (let rpw = 1; rpw <= HARD_MAX; rpw++) {
+        const annualRuns = rpw * 4.33 * 12;
+        const writingCostPerRun = authHrs * hrly / annualRuns;
+        const maintCostPerRun = maintHrs * hrly / annualRuns;
+        const infraCostPerRun = M.seqRunCost + M.parallelCost / annualRuns;
+        const autoTotal = writingCostPerRun + maintCostPerRun + infraCostPerRun;
+        const labourSaved = hrsSaved * hrly / annualRuns;
+        const foreLabour = (salary / annualRuns / tests) - labourSaved;
+        const foreTotal = foreLabour + M.platformPerRun;
+        if (foreTotal >= autoTotal) {
+          // Crossover found — safe max is the rpw just before this
+          const raw = rpw - 1;
+          safeRpw = Math.max(10, Math.floor(raw / 10) * 10);  // round down to nearest 10
+          break;
+        }
+      }
+      return safeRpw;
+    }
+
+    function runCalc() {
+      const rm = computeManual();
+      const ra = computeAuto();
+      renderManual(rm);
+      renderAuto(ra);
+
+      const reg = _region ? ' · ' + _region : '';
+      st('resultsSub', rm.tests + ' tests' + reg + ' · ' + rm.rpw + ' runs/wk');
+
+      // Show/hide automated tab based on selected role
+      const isManual = _role === 'manual';
+      document.getElementById('tab-auto').style.display = isManual ? 'none' : '';
+      document.getElementById('tab-manual').style.display = isManual ? '' : 'none';
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      if (isManual) {
+        document.getElementById('tab-manual').classList.add('active');
+        document.getElementById('panel-manual').classList.add('active');
+      } else {
+        document.getElementById('tab-auto').classList.add('active');
+        document.getElementById('panel-auto').classList.add('active');
+      }
+
+      document.getElementById('inputSection').style.display = 'none';
+      document.getElementById('resultsSection').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function onManualSlider() {
+      const tests = +document.getElementById('m-sl-tests').value;
+      const rpw = +document.getElementById('m-sl-rpw').value;
+      const mpt = +document.getElementById('m-sl-mpt').value;
+      const nFTE = +document.getElementById('m-sl-fte').value;
+      st('m-sv-tests', tests.toLocaleString() + ' tests');
+      st('m-sv-rpw', rpw + ' runs/wk');
+      st('m-sv-mpt', mpt + ' mins/test');
+      st('m-sv-fte', nFTE + ' FTEs');
+      if (_timer) clearTimeout(_timer);
+      _timer = setTimeout(() => renderManual(computeManual({ tests, rpw, nFTE, mpt })), 60);
+    }
+
+    function onAutoSlider() {
+      const tests = +document.getElementById('a-sl-tests').value;
+      const rpw = +document.getElementById('a-sl-rpw').value;
+      const nFTE = +document.getElementById('a-sl-fte').value;
+      st('a-sv-tests', tests.toLocaleString() + ' tests');
+      st('a-sv-rpw', rpw + ' runs/wk');
+      st('a-sv-fte', nFTE + ' FTEs');
+      if (_timer) clearTimeout(_timer);
+      _timer = setTimeout(() => renderAuto(computeAuto({ tests, rpw, nFTE })), 60);
+    }
+
+    function toggleSection(id) {
+      const body = document.getElementById(id + '-body');
+      const arrow = document.getElementById(id + '-arrow');
+      const open = body.classList.toggle('open');
+      arrow.classList.toggle('open', open);
+    }
+
+    function resetCalc() {
+      document.getElementById('resultsSection').style.display = 'none';
+      document.getElementById('inputSection').style.display = 'block';
+      switchTab('manual');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>

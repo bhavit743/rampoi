@@ -263,7 +263,11 @@
       margin-top: 10px;
       display: none;
     }
-    .split-bar-wrap.visible { display: block; }
+
+    .split-bar-wrap.visible {
+      display: block;
+    }
+
     .split-bar {
       display: flex;
       height: 8px;
@@ -272,22 +276,36 @@
       background: var(--border);
       margin-bottom: 6px;
     }
+
     .split-bar-manual {
       background: var(--amber);
       transition: width .3s;
     }
+
     .split-bar-auto {
       background: var(--blue);
       transition: width .3s;
     }
+
     .split-legend {
       display: flex;
       gap: 16px;
       font-size: 11px;
       color: var(--muted);
     }
-    .split-legend span { display: flex; align-items: center; gap: 5px; }
-    .split-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    .split-legend span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .split-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
 
     /* Form */
     .card {
@@ -979,8 +997,14 @@
     }
 
     @media(max-width:600px) {
-      .breakdown-table table { font-size: 11px; }
-      .breakdown-table th, .breakdown-table td { padding: 8px 8px; }
+      .breakdown-table table {
+        font-size: 11px;
+      }
+
+      .breakdown-table th,
+      .breakdown-table td {
+        padding: 8px 8px;
+      }
     }
 
     .breakdown-table thead tr {
@@ -1212,18 +1236,62 @@
       </header>
 
       <!-- Industry Preset -->
-      <div class="section-label">Your industry <span style="font-size:11px;font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0;">— select to auto-fill typical values</span></div>
+      <div class="section-label">Your industry <span
+          style="font-size:11px;font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0;">— select to
+          auto-fill typical values</span></div>
       <div class="industry-row" id="industry-row">
-        <div class="ind-pill" id="ind-banking" onclick="selectIndustry('banking')"><svg class="ind-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg> Banking &amp; Finance</div>
-        <div class="ind-pill" id="ind-insurance" onclick="selectIndustry('insurance')"><svg class="ind-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Insurance</div>
-        <div class="ind-pill" id="ind-travel" onclick="selectIndustry('travel')"><svg class="ind-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> Travel</div>
-        <div class="ind-pill" id="ind-ecommerce" onclick="selectIndustry('ecommerce')"><svg class="ind-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> E-Commerce</div>
-        <div class="ind-pill" id="ind-media" onclick="selectIndustry('media')"><svg class="ind-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg> Media</div>
-        <div class="ind-pill" id="ind-saas" onclick="selectIndustry('saas')"><svg class="ind-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg> B2B SaaS</div>
-        <div class="ind-pill" id="ind-other" onclick="selectIndustry('other')"><svg class="ind-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg> Other</div>
+        <div class="ind-pill" id="ind-banking" onclick="selectIndustry('banking')"><svg class="ind-icon" width="14"
+            height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <line x1="3" y1="22" x2="21" y2="22" />
+            <line x1="6" y1="18" x2="6" y2="11" />
+            <line x1="10" y1="18" x2="10" y2="11" />
+            <line x1="14" y1="18" x2="14" y2="11" />
+            <line x1="18" y1="18" x2="18" y2="11" />
+            <polygon points="12 2 20 7 4 7" />
+          </svg> Banking &amp; Finance</div>
+        <div class="ind-pill" id="ind-insurance" onclick="selectIndustry('insurance')"><svg class="ind-icon" width="14"
+            height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg> Insurance</div>
+        <div class="ind-pill" id="ind-travel" onclick="selectIndustry('travel')"><svg class="ind-icon" width="14"
+            height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path
+              d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+          </svg> Travel</div>
+        <div class="ind-pill" id="ind-ecommerce" onclick="selectIndustry('ecommerce')"><svg class="ind-icon" width="14"
+            height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          </svg> E-Commerce</div>
+        <div class="ind-pill" id="ind-media" onclick="selectIndustry('media')"><svg class="ind-icon" width="14"
+            height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="15" rx="2" />
+            <polyline points="17 2 12 7 7 2" />
+          </svg> Media</div>
+        <div class="ind-pill" id="ind-saas" onclick="selectIndustry('saas')"><svg class="ind-icon" width="14"
+            height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" />
+            <path d="M8 21h8M12 17v4" />
+          </svg> B2B SaaS</div>
+        <div class="ind-pill" id="ind-other" onclick="selectIndustry('other')"><svg class="ind-icon" width="14"
+            height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" />
+          </svg> Other</div>
       </div>
       <div id="preset-info" style="display:none;" class="preset-badge">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
         <span id="preset-info-text">Preset applied</span>
       </div>
 
@@ -1337,7 +1405,6 @@
         <!-- View tabs -->
         <div class="view-tab-row animate">
           <button class="view-tab-btn active" id="b-vt-test" onclick="bViewTab('test')">Per Test</button>
-          <button class="view-tab-btn" id="b-vt-run" onclick="bViewTab('run')">Per Run</button>
         </div>
 
         <!-- fore ai Annual Package card -->
@@ -1367,12 +1434,14 @@
                 <td id="b-t-fore-authoring-pt">—</td>
               </tr>
               <tr>
-                <td class="row-label"><strong>Maintenance</strong></td>
+                <td class="row-label"><strong>Maintenance</strong><span class="row-hint">Automated tests only — no
+                    maintenance for manual</span></td>
                 <td id="b-t-maint-pt">—</td>
                 <td id="b-t-fore-maint-pt">—</td>
               </tr>
               <tr>
-                <td class="row-label"><strong>Execution</strong></td>
+                <td class="row-label"><strong>Execution</strong><span class="row-hint">Includes manual tester labour
+                    cost</span></td>
                 <td id="b-t-exec-pt">—</td>
                 <td id="b-t-fore-exec-pt">—</td>
               </tr>
@@ -1392,23 +1461,28 @@
             <span class="toggle-arrow" id="b-sliders-arrow">▼</span>
           </div>
           <div class="toggle-body" id="b-sliders-body">
-            <div class="sensitivity-card" style="margin-bottom:0;border:none;background:transparent;padding:16px 0 4px;">
+            <div class="sensitivity-card"
+              style="margin-bottom:0;border:none;background:transparent;padding:16px 0 4px;">
               <p class="sens-sub" style="margin-bottom:14px;">Drag to see how all values update in real time.</p>
               <div class="sliders-grid">
                 <div class="slider-field">
-                  <div class="slider-top"><span class="slider-label">Total test cases</span><span class="slider-val" id="b-sv-tests">—</span></div>
+                  <div class="slider-top"><span class="slider-label">Total test cases</span><span class="slider-val"
+                      id="b-sv-tests">—</span></div>
                   <input type="range" id="b-sl-tests" min="50" max="2000" step="50" oninput="onBlendedSlider()">
                 </div>
                 <div class="slider-field">
-                  <div class="slider-top"><span class="slider-label">Runs per week</span><span class="slider-val" id="b-sv-rpw">—</span></div>
+                  <div class="slider-top"><span class="slider-label">Runs per week</span><span class="slider-val"
+                      id="b-sv-rpw">—</span></div>
                   <input type="range" id="b-sl-rpw" min="1" max="100" step="1" oninput="onBlendedSlider()">
                 </div>
                 <div class="slider-field">
-                  <div class="slider-top"><span class="slider-label">Manual testers</span><span class="slider-val" id="b-sv-mfte">—</span></div>
+                  <div class="slider-top"><span class="slider-label">Manual testers</span><span class="slider-val"
+                      id="b-sv-mfte">—</span></div>
                   <input type="range" id="b-sl-mfte" min="0" max="50" step="1" oninput="onBlendedSlider()">
                 </div>
                 <div class="slider-field">
-                  <div class="slider-top"><span class="slider-label">Automation engineers</span><span class="slider-val" id="b-sv-afte">—</span></div>
+                  <div class="slider-top"><span class="slider-label">Automation engineers</span><span class="slider-val"
+                      id="b-sv-afte">—</span></div>
                   <input type="range" id="b-sl-afte" min="0" max="50" step="1" oninput="onBlendedSlider()">
                 </div>
               </div>
@@ -1424,43 +1498,78 @@
           </div>
           <div class="toggle-body" id="b-detail-body">
             <div class="summary-card" style="margin-bottom:10px;">
-              <div class="summary-row" style="background:var(--surface2);"><span class="summary-label" style="font-weight:700;color:var(--text);">Team &amp; split</span><span class="summary-value"></span></div>
-              <div class="summary-row"><span class="summary-label">Manual tester hourly rate</span><span class="summary-value" id="d-man-hrly">—</span></div>
-              <div class="summary-row"><span class="summary-label">Automation engineer hourly rate</span><span class="summary-value" id="d-auto-hrly">—</span></div>
-              <div class="summary-row"><span class="summary-label">Manual tests (manFTEs ÷ totalFTEs × total)</span><span class="summary-value" id="d-man-tests">—</span></div>
-              <div class="summary-row"><span class="summary-label">Automated tests (autoFTEs ÷ totalFTEs × total)</span><span class="summary-value" id="d-auto-tests">—</span></div>
-              <div class="summary-row"><span class="summary-label">Annual runs (runs/wk × 4.33 × 12)</span><span class="summary-value" id="d-annual-runs">—</span></div>
+              <div class="summary-row" style="background:var(--surface2);"><span class="summary-label"
+                  style="font-weight:700;color:var(--text);">Team &amp; split</span><span class="summary-value"></span>
+              </div>
+              <div class="summary-row"><span class="summary-label">Manual tester hourly rate</span><span
+                  class="summary-value" id="d-man-hrly">—</span></div>
+              <div class="summary-row"><span class="summary-label">Automation engineer hourly rate</span><span
+                  class="summary-value" id="d-auto-hrly">—</span></div>
+              <div class="summary-row"><span class="summary-label">Manual tests (manFTEs ÷ totalFTEs ×
+                  total)</span><span class="summary-value" id="d-man-tests">—</span></div>
+              <div class="summary-row"><span class="summary-label">Automated tests (autoFTEs ÷ totalFTEs ×
+                  total)</span><span class="summary-value" id="d-auto-tests">—</span></div>
+              <div class="summary-row"><span class="summary-label">Annual runs (runs/wk × 4.33 × 12)</span><span
+                  class="summary-value" id="d-annual-runs">—</span></div>
             </div>
 
             <div class="summary-card" style="margin-bottom:10px;">
-              <div class="summary-row" style="background:var(--amber-dim);border-left:3px solid var(--amber);"><span class="summary-label" style="font-weight:700;color:var(--text);">Authoring — current</span><span class="summary-value" id="d-cur-auth-total">—</span></div>
-              <div class="summary-row"><span class="summary-label">Time to write 1 script (3h + 7.5% failure × 1.5h fix)</span><span class="summary-value" id="d-write-hrs">—</span></div>
-              <div class="summary-row"><span class="summary-label">Writing cost per automated test per run (hrs × autoHrly ÷ annualRuns)</span><span class="summary-value" id="d-write-per-test">—</span></div>
-              <div class="summary-row"><span class="summary-label">Total authoring / run (writingCost × autoTests)</span><span class="summary-value" id="d-cur-auth-run">—</span></div>
-              <div class="summary-row" style="background:var(--teal-dim);border-left:3px solid var(--teal);"><span class="summary-label" style="font-weight:700;color:var(--teal);">Authoring — fore ai (60% faster generation)</span><span class="summary-value" id="d-fore-auth-total">—</span></div>
-              <div class="summary-row"><span class="summary-label">fore ai authoring cost per test per run (writingCost × 40%)</span><span class="summary-value" id="d-fore-auth-per-test">—</span></div>
-              <div class="summary-row"><span class="summary-label">Total fore ai authoring / run (× totalTests)</span><span class="summary-value" id="d-fore-auth-run">—</span></div>
+              <div class="summary-row" style="background:var(--amber-dim);border-left:3px solid var(--amber);"><span
+                  class="summary-label" style="font-weight:700;color:var(--text);">Authoring — current</span><span
+                  class="summary-value" id="d-cur-auth-total">—</span></div>
+              <div class="summary-row"><span class="summary-label">Time to write 1 script (3h + 7.5% failure × 1.5h
+                  fix)</span><span class="summary-value" id="d-write-hrs">—</span></div>
+              <div class="summary-row"><span class="summary-label">Writing cost per automated test per run (hrs ×
+                  autoHrly ÷ annualRuns)</span><span class="summary-value" id="d-write-per-test">—</span></div>
+              <div class="summary-row"><span class="summary-label">Total authoring / run (writingCost ×
+                  autoTests)</span><span class="summary-value" id="d-cur-auth-run">—</span></div>
+              <div class="summary-row" style="background:var(--teal-dim);border-left:3px solid var(--teal);"><span
+                  class="summary-label" style="font-weight:700;color:var(--teal);">Authoring — fore ai (60% faster
+                  generation)</span><span class="summary-value" id="d-fore-auth-total">—</span></div>
+              <div class="summary-row"><span class="summary-label">fore ai authoring cost per test per run (writingCost
+                  × 40%)</span><span class="summary-value" id="d-fore-auth-per-test">—</span></div>
+              <div class="summary-row"><span class="summary-label">Total fore ai authoring / run (×
+                  totalTests)</span><span class="summary-value" id="d-fore-auth-run">—</span></div>
             </div>
 
             <div class="summary-card" style="margin-bottom:10px;">
-              <div class="summary-row" style="background:var(--amber-dim);border-left:3px solid var(--amber);"><span class="summary-label" style="font-weight:700;color:var(--text);">Maintenance — current</span><span class="summary-value" id="d-cur-maint-total">—</span></div>
-              <div class="summary-row"><span class="summary-label">Manual execution labour per test per run (minsPerTest ÷ 60 × manHrly)</span><span class="summary-value" id="d-man-exec-per-test">—</span></div>
-              <div class="summary-row"><span class="summary-label">Manual labour total / run (× manTests)</span><span class="summary-value" id="d-man-labour-run">—</span></div>
-              <div class="summary-row"><span class="summary-label">Auto upkeep per test per run (50% × 3h × 2 cycles × autoHrly ÷ annualRuns)</span><span class="summary-value" id="d-auto-upkeep-per-test">—</span></div>
-              <div class="summary-row"><span class="summary-label">Auto maintenance total / run (upkeep × autoTests)</span><span class="summary-value" id="d-auto-maint-run">—</span></div>
-              <div class="summary-row" style="background:var(--teal-dim);border-left:3px solid var(--teal);"><span class="summary-label" style="font-weight:700;color:var(--teal);">Maintenance — fore ai</span><span class="summary-value" id="d-fore-maint-total">—</span></div>
-              <div class="summary-row"><span class="summary-label" id="d-fore-heal-label">Self-healing ($0.20/10 runs) · free for first 50% of runs/wk</span><span class="summary-value" id="d-fore-heal-rate">—</span></div>
-              <div class="summary-row"><span class="summary-label">Total fore ai maintenance / run</span><span class="summary-value" id="d-fore-maint-run">—</span></div>
+              <div class="summary-row" style="background:var(--amber-dim);border-left:3px solid var(--amber);"><span
+                  class="summary-label" style="font-weight:700;color:var(--text);">Maintenance — current (automated
+                  tests only)</span><span class="summary-value" id="d-cur-maint-total">—</span></div>
+              <div class="summary-row"><span class="summary-label">Auto upkeep per test per run (50% × 3h × 2 cycles ×
+                  autoHrly ÷ annualRuns)</span><span class="summary-value" id="d-auto-upkeep-per-test">—</span></div>
+              <div class="summary-row"><span class="summary-label">Auto maintenance total / run (upkeep ×
+                  autoTests)</span><span class="summary-value" id="d-auto-maint-run">—</span></div>
+              <div class="summary-row" style="background:var(--teal-dim);border-left:3px solid var(--teal);"><span
+                  class="summary-label" style="font-weight:700;color:var(--teal);">Maintenance — fore ai</span><span
+                  class="summary-value" id="d-fore-maint-total">—</span></div>
+              <div class="summary-row"><span class="summary-label" id="d-fore-heal-label">Self-healing ($0.20/10 runs) ·
+                  free for first 50% of runs/wk</span><span class="summary-value" id="d-fore-heal-rate">—</span></div>
+              <div class="summary-row"><span class="summary-label">Total fore ai maintenance / run</span><span
+                  class="summary-value" id="d-fore-maint-run">—</span></div>
             </div>
 
             <div class="summary-card" style="margin-bottom:16px;">
-              <div class="summary-row" style="background:var(--amber-dim);border-left:3px solid var(--amber);"><span class="summary-label" style="font-weight:700;color:var(--text);">Execution — current</span><span class="summary-value" id="d-cur-exec-total">—</span></div>
-              <div class="summary-row"><span class="summary-label">Sequential infra cost per auto test per run ($0.05)</span><span class="summary-value">$0.05 / test / run</span></div>
-              <div class="summary-row"><span class="summary-label">Parallel / server cost per test per run ($130/yr ÷ annualRuns)</span><span class="summary-value" id="d-parallel-per-run">—</span></div>
-              <div class="summary-row"><span class="summary-label">Total infra per auto test per run</span><span class="summary-value" id="d-infra-per-test">—</span></div>
-              <div class="summary-row"><span class="summary-label">Total execution / run (infraPerTest × autoTests)</span><span class="summary-value" id="d-cur-exec-run">—</span></div>
-              <div class="summary-row" style="background:var(--teal-dim);border-left:3px solid var(--teal);"><span class="summary-label" style="font-weight:700;color:var(--teal);">Execution — fore ai ($0.05 / test / run, replaces all infra)</span><span class="summary-value" id="d-fore-exec-total">—</span></div>
-              <div class="summary-row"><span class="summary-label">Total fore ai execution / run ($0.05 × totalTests)</span><span class="summary-value" id="d-fore-exec-run">—</span></div>
+              <div class="summary-row" style="background:var(--amber-dim);border-left:3px solid var(--amber);"><span
+                  class="summary-label" style="font-weight:700;color:var(--text);">Execution — current</span><span
+                  class="summary-value" id="d-cur-exec-total">—</span></div>
+              <div class="summary-row"><span class="summary-label">Manual execution labour per test per run (minsPerTest
+                  ÷ 60 × manHrly)</span><span class="summary-value" id="d-man-exec-per-test">—</span></div>
+              <div class="summary-row"><span class="summary-label">Manual labour total / run (× manTests)</span><span
+                  class="summary-value" id="d-man-labour-run">—</span></div>
+              <div class="summary-row"><span class="summary-label">Sequential infra cost per auto test per run
+                  ($0.05)</span><span class="summary-value">$0.05 / test / run</span></div>
+              <div class="summary-row"><span class="summary-label">Parallel / server cost per test per run ($130/yr ÷
+                  annualRuns)</span><span class="summary-value" id="d-parallel-per-run">—</span></div>
+              <div class="summary-row"><span class="summary-label">Total infra per auto test per run</span><span
+                  class="summary-value" id="d-infra-per-test">—</span></div>
+              <div class="summary-row"><span class="summary-label">Total execution / run (infraPerTest ×
+                  autoTests)</span><span class="summary-value" id="d-cur-exec-run">—</span></div>
+              <div class="summary-row" style="background:var(--teal-dim);border-left:3px solid var(--teal);"><span
+                  class="summary-label" style="font-weight:700;color:var(--teal);">Execution — fore ai ($0.05 / test /
+                  run, replaces all infra)</span><span class="summary-value" id="d-fore-exec-total">—</span></div>
+              <div class="summary-row"><span class="summary-label">Total fore ai execution / run ($0.05 ×
+                  totalTests)</span><span class="summary-value" id="d-fore-exec-run">—</span></div>
             </div>
 
           </div><!-- /toggle-body -->
@@ -1537,13 +1646,13 @@
     // nFTE split: ~40% manual, ~60% auto (rounded)
     // runsPerWeek = runsPerDay × 5
     const INDUSTRY_PRESETS = {
-      banking:   { label: 'Banking & Finance',   tests: 500,  runsPerWeek: 25, manualFTEs: 12, autoFTEs: 18 },
-      insurance: { label: 'Insurance',            tests: 400,  runsPerWeek: 25, manualFTEs: 12, autoFTEs: 18 },
-      travel:    { label: 'Travel & Hospitality', tests: 200,  runsPerWeek: 50, manualFTEs:  6, autoFTEs:  9 },
-      ecommerce: { label: 'E-Commerce',           tests: 500,  runsPerWeek: 50, manualFTEs:  6, autoFTEs:  9 },
-      media:     { label: 'Media & Streaming',    tests: 200,  runsPerWeek: 25, manualFTEs:  4, autoFTEs:  6 },
-      saas:      { label: 'B2B SaaS',             tests: 300,  runsPerWeek: 50, manualFTEs:  5, autoFTEs:  7 },
-      other:     { label: 'Other',                tests: 200,  runsPerWeek: 25, manualFTEs:  4, autoFTEs:  6 },
+      banking: { label: 'Banking & Finance', tests: 500, runsPerWeek: 25, manualFTEs: 12, autoFTEs: 18 },
+      insurance: { label: 'Insurance', tests: 400, runsPerWeek: 25, manualFTEs: 12, autoFTEs: 18 },
+      travel: { label: 'Travel & Hospitality', tests: 200, runsPerWeek: 50, manualFTEs: 6, autoFTEs: 9 },
+      ecommerce: { label: 'E-Commerce', tests: 500, runsPerWeek: 50, manualFTEs: 6, autoFTEs: 9 },
+      media: { label: 'Media & Streaming', tests: 200, runsPerWeek: 25, manualFTEs: 4, autoFTEs: 6 },
+      saas: { label: 'B2B SaaS', tests: 300, runsPerWeek: 50, manualFTEs: 5, autoFTEs: 7 },
+      other: { label: 'Other', tests: 200, runsPerWeek: 25, manualFTEs: 4, autoFTEs: 6 },
     };
 
     function selectIndustry(ind) {
@@ -1626,54 +1735,54 @@
     function computeBlended(ov) {
       ov = ov || {};
       const totalTests = ov.tests !== undefined ? ov.tests : gv('numTests');
-      const rpw        = ov.rpw   !== undefined ? ov.rpw   : gv('runsPerWeek');
-      const manFTEs    = ov.manFTEs !== undefined ? ov.manFTEs : gv('numManualFTEs');
-      const autoFTEs   = ov.autoFTEs !== undefined ? ov.autoFTEs : gv('numAutoFTEs');
-      const minsPerTest = ov.mpt  !== undefined ? ov.mpt  : gv('minsPerTest');
+      const rpw = ov.rpw !== undefined ? ov.rpw : gv('runsPerWeek');
+      const manFTEs = ov.manFTEs !== undefined ? ov.manFTEs : gv('numManualFTEs');
+      const autoFTEs = ov.autoFTEs !== undefined ? ov.autoFTEs : gv('numAutoFTEs');
+      const minsPerTest = ov.mpt !== undefined ? ov.mpt : gv('minsPerTest');
 
-      const manSal  = _region ? (SALARIES_MANUAL[_region] || 60000) : 60000;
-      const autoSal = _region ? (SALARIES_AUTO[_region]   || 80000) : 80000;
-      const manHrly  = manSal  / (M.workingDays * M.workingHours);
+      const manSal = _region ? (SALARIES_MANUAL[_region] || 60000) : 60000;
+      const autoSal = _region ? (SALARIES_AUTO[_region] || 80000) : 80000;
+      const manHrly = manSal / (M.workingDays * M.workingHours);
       const autoHrly = autoSal / (M.workingDays * M.workingHours);
 
       const runsPerMonth = rpw * 4.33;
-      const annualRuns   = runsPerMonth * 12;
+      const annualRuns = runsPerMonth * 12;
 
       // Test split
       const totalFTEs = manFTEs + autoFTEs;
-      const manPct    = totalFTEs > 0 ? manFTEs / totalFTEs : 0.5;
-      const manTests  = Math.round(totalTests * manPct);
+      const manPct = totalFTEs > 0 ? manFTEs / totalFTEs : 0.5;
+      const manTests = Math.round(totalTests * manPct);
       const autoTests = totalTests - manTests;
 
       // ── Current: per-run totals ───────────────────────────────
-      const writeHrs       = M.timeToGenerate + M.failureRate * M.tFix;   // 3.1125 hrs per script
+      const writeHrs = M.timeToGenerate + M.failureRate * M.tFix;   // 3.1125 hrs per script
       const writingPerTest = writeHrs * autoHrly / annualRuns;
-      const curAuthoring   = autoTests * writingPerTest;
+      const curAuthoring = autoTests * writingPerTest;
 
-      const upkeepPerAutoTest  = M.maintenanceRate * M.tMaint * M.maintFreq * autoHrly / annualRuns;
-      const autoMaintPerTest   = upkeepPerAutoTest;
-      const manExecPerTest     = (minsPerTest / 60) * manHrly;
-      const curMaintenance     = (manTests * manExecPerTest) + (autoTests * autoMaintPerTest);
+      const upkeepPerAutoTest = M.maintenanceRate * M.tMaint * M.maintFreq * autoHrly / annualRuns;
+      const autoMaintPerTest = upkeepPerAutoTest;
+      const manExecPerTest = (minsPerTest / 60) * manHrly;
+      const curMaintenance = autoTests * autoMaintPerTest;   // manual has no maintenance
 
-      const parallelPerRun   = M.parallelCost / annualRuns;
+      const parallelPerRun = M.parallelCost / annualRuns;
       const infraPerAutoTest = M.seqRunCost + parallelPerRun;
-      const curExecution     = autoTests * infraPerAutoTest;
+      const curExecution = (autoTests * infraPerAutoTest) + (manTests * manExecPerTest); // manual exec labour included here
 
       const currentTotalPerRun = curAuthoring + curMaintenance + curExecution;
 
       // ── Fore AI: per-run totals ───────────────────────────────
       const foreAuthPerTest = writingPerTest * (1 - M.alpha);
-      const foreAuthoring   = totalTests * foreAuthPerTest;
+      const foreAuthoring = totalTests * foreAuthPerTest;
       // Self-healing: 50% of tests require healing once per week at $0.20/test.
       // Weekly cost = totalTests × 50% × $0.20
       // Amortised per run = weeklyHealCost ÷ rpw
-      const weeklyHealCost  = totalTests * 0.5 * M.selfHealingPer10Runs;
+      const weeklyHealCost = totalTests * 0.5 * M.selfHealingPer10Runs;
       const foreMaintenance = weeklyHealCost / rpw;
-      const foreExecution   = totalTests * M.platformPerRun;
+      const foreExecution = totalTests * M.platformPerRun;
       const foreTotalPerRun = foreAuthoring + foreMaintenance + foreExecution;
 
       const savingPerRun = currentTotalPerRun - foreTotalPerRun;
-      const savingPct    = currentTotalPerRun > 0 ? (savingPerRun / currentTotalPerRun) * 100 : 0;
+      const savingPct = currentTotalPerRun > 0 ? (savingPerRun / currentTotalPerRun) * 100 : 0;
 
       // Industry divisor: non-Banking/Insurance results halved
       const fullIndustries = ['banking', 'insurance'];
@@ -1687,18 +1796,18 @@
         manExecPerTest, parallelPerRun, infraPerAutoTest, foreAuthPerTest,
         weeklyHealCost,
         // output values (divided if non-full industry)
-        curAuthoring:        curAuthoring        / divisor,
-        curMaintenance:      curMaintenance      / divisor,
-        curExecution:        curExecution        / divisor,
-        currentTotalPerRun:  currentTotalPerRun  / divisor,
-        foreAuthoring:       foreAuthoring       / divisor,
-        foreMaintenance:     foreMaintenance     / divisor,
-        foreExecution:       foreExecution       / divisor,
-        foreTotalPerRun:     foreTotalPerRun     / divisor,
-        savingPerRun:        savingPerRun        / divisor,
+        curAuthoring: curAuthoring / divisor,
+        curMaintenance: curMaintenance / divisor,
+        curExecution: curExecution / divisor,
+        currentTotalPerRun: currentTotalPerRun / divisor,
+        foreAuthoring: foreAuthoring / divisor,
+        foreMaintenance: foreMaintenance / divisor,
+        foreExecution: foreExecution / divisor,
+        foreTotalPerRun: foreTotalPerRun / divisor,
+        savingPerRun: savingPerRun / divisor,
         savingPct,
         divisor,
-        manPortion: (manTests * manExecPerTest)                                        / divisor,
+        manPortion: (manTests * manExecPerTest) / divisor,   // manual exec labour (now in execution)
         autoPortion: (autoTests * (writingPerTest + autoMaintPerTest + infraPerAutoTest)) / divisor,
       };
     }
@@ -1729,57 +1838,59 @@
 
       // hero breakdown lines
       st('b-bk-manual', fmtFull(r.manPortion) + '/run');
-      st('b-bk-auto',   fmtFull(r.autoPortion) + '/run');
-      st('b-bk-f-auth',  fmtFull(r.foreAuthoring) + '/run');
+      st('b-bk-auto', fmtFull(r.autoPortion) + '/run');
+      st('b-bk-f-auth', fmtFull(r.foreAuthoring) + '/run');
       st('b-bk-f-maint', fmtFull(r.foreMaintenance) + '/run');
-      st('b-bk-f-exec',  fmtFull(r.foreExecution) + '/run');
+      st('b-bk-f-exec', fmtFull(r.foreExecution) + '/run');
 
       // 3-part breakdown table — cost per test per run
       const T = r.totalTests;
-      st('b-t-authoring-pt',      fmt2(r.curAuthoring      / T));
-      st('b-t-fore-authoring-pt', fmt2(r.foreAuthoring     / T));
-      st('b-t-maint-pt',          fmt2(r.curMaintenance    / T));
-      st('b-t-fore-maint-pt',     fmt2(r.foreMaintenance   / T));
-      st('b-t-exec-pt',           fmt2(r.curExecution      / T));
-      st('b-t-fore-exec-pt',      fmt2(r.foreExecution     / T));
-      st('b-t-total-current-pt',  fmt2(r.currentTotalPerRun / T));
-      st('b-t-total-fore-pt',     fmt2(r.foreTotalPerRun   / T));
+      st('b-t-authoring-pt', fmt2(r.curAuthoring / T));
+      st('b-t-fore-authoring-pt', fmt2(r.foreAuthoring / T));
+      st('b-t-maint-pt', fmt2(r.curMaintenance / T));
+      st('b-t-fore-maint-pt', fmt2(r.foreMaintenance / T));
+      st('b-t-exec-pt', fmt2(r.curExecution / T));
+      st('b-t-fore-exec-pt', fmt2(r.foreExecution / T));
+      st('b-t-total-current-pt', fmt2(r.currentTotalPerRun / T));
+      st('b-t-total-fore-pt', fmt2(r.foreTotalPerRun / T));
 
       // ── Detailed calculation rows ─────────────────────────────
       // Team
-      st('d-man-hrly',     '$' + r.manHrly.toFixed(2) + '/hr');
-      st('d-auto-hrly',    '$' + r.autoHrly.toFixed(2) + '/hr');
-      st('d-man-tests',    r.manTests.toLocaleString() + ' tests (' + Math.round(r.manTests / r.totalTests * 100) + '%)');
-      st('d-auto-tests',   r.autoTests.toLocaleString() + ' tests (' + Math.round(r.autoTests / r.totalTests * 100) + '%)');
-      st('d-annual-runs',  Math.round(r.annualRuns).toLocaleString() + ' runs/yr');
+      st('d-man-hrly', '$' + r.manHrly.toFixed(2) + '/hr');
+      st('d-auto-hrly', '$' + r.autoHrly.toFixed(2) + '/hr');
+      st('d-man-tests', r.manTests.toLocaleString() + ' tests (' + Math.round(r.manTests / r.totalTests * 100) + '%)');
+      st('d-auto-tests', r.autoTests.toLocaleString() + ' tests (' + Math.round(r.autoTests / r.totalTests * 100) + '%)');
+      st('d-annual-runs', Math.round(r.annualRuns).toLocaleString() + ' runs/yr');
 
       // Authoring
-      st('d-write-hrs',         r.writeHrs.toFixed(3) + ' hrs/script');
-      st('d-write-per-test',    fmt2(r.writingPerTest) + ' / test / run');
-      st('d-cur-auth-run',      fmtFull(r.curAuthoring) + ' / run  (' + fmt2(r.writingPerTest) + ' × ' + r.autoTests.toLocaleString() + ' auto tests)');
-      st('d-cur-auth-total',    fmtFull(r.curAuthoring) + '/run');
+      st('d-write-hrs', r.writeHrs.toFixed(3) + ' hrs/script');
+      st('d-write-per-test', fmt2(r.writingPerTest) + ' / test / run');
+      st('d-cur-auth-run', fmtFull(r.curAuthoring) + ' / run  (' + fmt2(r.writingPerTest) + ' × ' + r.autoTests.toLocaleString() + ' auto tests)');
+      st('d-cur-auth-total', fmtFull(r.curAuthoring) + '/run');
       st('d-fore-auth-per-test', fmt2(r.foreAuthPerTest) + ' / test / run  (' + fmt2(r.writingPerTest) + ' × 40%)');
-      st('d-fore-auth-run',     fmtFull(r.foreAuthoring) + ' / run  (' + fmt2(r.foreAuthPerTest) + ' × ' + r.totalTests.toLocaleString() + ' total tests)');
-      st('d-fore-auth-total',   fmtFull(r.foreAuthoring) + '/run');
+      st('d-fore-auth-run', fmtFull(r.foreAuthoring) + ' / run  (' + fmt2(r.foreAuthPerTest) + ' × ' + r.totalTests.toLocaleString() + ' total tests)');
+      st('d-fore-auth-total', fmtFull(r.foreAuthoring) + '/run');
 
       // Maintenance
-      st('d-man-exec-per-test',    fmt2(r.manExecPerTest) + ' / test / run  (' + r.minsPerTest + ' min ÷ 60 × $' + r.manHrly.toFixed(2) + '/hr)');
-      st('d-man-labour-run',       fmtFull(r.manPortion) + ' / run  (' + fmt2(r.manExecPerTest) + ' × ' + r.manTests.toLocaleString() + ' manual tests)');
+      st('d-man-exec-per-test', fmt2(r.manExecPerTest) + ' / test / run  (' + r.minsPerTest + ' min ÷ 60 × $' + r.manHrly.toFixed(2) + '/hr)');
+      st('d-man-labour-run', fmtFull(r.manPortion) + ' / run  (' + fmt2(r.manExecPerTest) + ' × ' + r.manTests.toLocaleString() + ' manual tests)');
       st('d-auto-upkeep-per-test', fmt2(r.upkeepPerAutoTest) + ' / test / run  (50% × 3h × 2 × $' + r.autoHrly.toFixed(2) + ' ÷ ' + Math.round(r.annualRuns) + ' annual runs)');
-      st('d-auto-maint-run',       fmtFull(r.curMaintenance - r.manPortion) + ' / run  (upkeep × ' + r.autoTests + ' auto tests)');
-      st('d-cur-maint-total',      fmtFull(r.curMaintenance) + '/run');
-      st('d-fore-maint-total',     fmt2(r.foreMaintenance) + '/run');
-      st('d-fore-maint-run',   fmt2(r.foreMaintenance) + ' / run  (' + fmt2(r.weeklyHealCost) + ' weekly ÷ ' + r.rpw + ' runs/wk)');
-      st('d-fore-heal-label',  '50% of tests need healing/wk · ' + r.totalTests.toLocaleString() + ' × 50% × $0.20 = ' + fmt2(r.weeklyHealCost) + '/wk');
-      st('d-fore-heal-rate',   fmt2(r.foreMaintenance / r.totalTests) + ' effective / test / run');
+      st('d-auto-maint-run', fmtFull(r.curMaintenance) + ' / run  (upkeep × ' + r.autoTests + ' auto tests)');
+      st('d-cur-maint-total', fmtFull(r.curMaintenance) + '/run');
+      st('d-fore-maint-total', fmt2(r.foreMaintenance) + '/run');
+      st('d-fore-maint-run', fmt2(r.foreMaintenance) + ' / run  (' + fmt2(r.weeklyHealCost) + ' weekly ÷ ' + r.rpw + ' runs/wk)');
+      st('d-fore-heal-label', '50% of tests need healing/wk · ' + r.totalTests.toLocaleString() + ' × 50% × $0.20 = ' + fmt2(r.weeklyHealCost) + '/wk');
+      st('d-fore-heal-rate', fmt2(r.foreMaintenance / r.totalTests) + ' effective / test / run');
 
       // Execution
-      st('d-parallel-per-run',  fmt2(r.parallelPerRun) + ' / test / run  ($130/yr ÷ ' + Math.round(r.annualRuns) + ' runs)');
-      st('d-infra-per-test',    fmt2(r.infraPerAutoTest) + ' / auto test / run  ($0.05 seq + ' + fmt2(r.parallelPerRun) + ' parallel)');
-      st('d-cur-exec-run',      fmtFull(r.curExecution) + ' / run  (' + fmt2(r.infraPerAutoTest) + ' × ' + r.autoTests.toLocaleString() + ' auto tests)');
-      st('d-cur-exec-total',    fmtFull(r.curExecution) + '/run');
-      st('d-fore-exec-run',     fmtFull(r.foreExecution) + ' / run  ($0.05 × ' + r.totalTests.toLocaleString() + ' total tests)');
-      st('d-fore-exec-total',   fmtFull(r.foreExecution) + '/run');
+      st('d-parallel-per-run', fmt2(r.parallelPerRun) + ' / test / run  ($130/yr ÷ ' + Math.round(r.annualRuns) + ' runs)');
+      st('d-infra-per-test', fmt2(r.infraPerAutoTest) + ' / auto test / run  ($0.05 seq + ' + fmt2(r.parallelPerRun) + ' parallel)');
+      st('d-man-exec-per-test', fmt2(r.manExecPerTest) + ' / test / run  (' + r.minsPerTest + ' min ÷ 60 × $' + r.manHrly.toFixed(2) + '/hr)');
+      st('d-man-labour-run', fmtFull(r.manPortion) + ' / run  (' + fmt2(r.manExecPerTest) + ' × ' + r.manTests.toLocaleString() + ' manual tests)');
+      st('d-cur-exec-run', fmtFull(r.curExecution) + ' / run  (auto infra + manual labour)');
+      st('d-cur-exec-total', fmtFull(r.curExecution) + '/run');
+      st('d-fore-exec-run', fmtFull(r.foreExecution) + ' / run  ($0.05 × ' + r.totalTests.toLocaleString() + ' total tests)');
+      st('d-fore-exec-total', fmtFull(r.foreExecution) + '/run');
 
       // fore ai annual package
       const foreAnnual = r.foreTotalPerRun * r.runsPerMonth * 12;
@@ -1797,34 +1908,34 @@
       if (!_bData) return;
       const r = _bData;
       if (view === 'test') {
-        const curPerTest  = r.currentTotalPerRun / r.totalTests;
-        const forePerTest = r.foreTotalPerRun   / r.totalTests;
+        const curPerTest = r.currentTotalPerRun / r.totalTests;
+        const forePerTest = r.foreTotalPerRun / r.totalTests;
         const savePerTest = curPerTest - forePerTest;
         st('b-hero-current', fmt2(curPerTest));
-        st('b-hero-fore',    fmt2(forePerTest));
-        st('b-hero-unit',    'blended cost per test');
-        st('b-fore-unit',    'blended cost per test');
-        st('b-save-amount',  fmt2(savePerTest) + ' / test');
-        st('b-save-pct',     r.savingPct.toFixed(0) + '% cheaper');
+        st('b-hero-fore', fmt2(forePerTest));
+        st('b-hero-unit', 'blended cost per test');
+        st('b-fore-unit', 'blended cost per test');
+        st('b-save-amount', fmt2(savePerTest) + ' / test');
+        st('b-save-pct', r.savingPct.toFixed(0) + '% cheaper');
       } else {
         st('b-hero-current', fmtFull(r.currentTotalPerRun));
-        st('b-hero-fore',    fmtFull(r.foreTotalPerRun));
-        st('b-hero-unit',    'cost per run');
-        st('b-fore-unit',    'cost per run');
-        st('b-save-amount',  fmtFull(r.savingPerRun) + ' / run');
-        st('b-save-pct',     r.savingPct.toFixed(0) + '% cheaper');
+        st('b-hero-fore', fmtFull(r.foreTotalPerRun));
+        st('b-hero-unit', 'cost per run');
+        st('b-fore-unit', 'cost per run');
+        st('b-save-amount', fmtFull(r.savingPerRun) + ' / run');
+        st('b-save-pct', r.savingPct.toFixed(0) + '% cheaper');
       }
     }
 
     function onBlendedSlider() {
-      const tests   = +document.getElementById('b-sl-tests').value;
-      const rpw     = +document.getElementById('b-sl-rpw').value;
+      const tests = +document.getElementById('b-sl-tests').value;
+      const rpw = +document.getElementById('b-sl-rpw').value;
       const manFTEs = +document.getElementById('b-sl-mfte').value;
-      const autoFTEs= +document.getElementById('b-sl-afte').value;
+      const autoFTEs = +document.getElementById('b-sl-afte').value;
       st('b-sv-tests', tests.toLocaleString() + ' tests');
-      st('b-sv-rpw',   rpw + ' runs/wk');
-      st('b-sv-mfte',  manFTEs + ' manual FTEs');
-      st('b-sv-afte',  autoFTEs + ' auto FTEs');
+      st('b-sv-rpw', rpw + ' runs/wk');
+      st('b-sv-mfte', manFTEs + ' manual FTEs');
+      st('b-sv-afte', autoFTEs + ' auto FTEs');
       if (_timer) clearTimeout(_timer);
       _timer = setTimeout(() => renderBlended(computeBlended({ tests, rpw, manFTEs, autoFTEs })), 60);
     }
@@ -1834,9 +1945,9 @@
       renderBlended(r);
       // Initialise sliders to match the computed inputs
       document.getElementById('b-sl-tests').value = r.totalTests; st('b-sv-tests', r.totalTests.toLocaleString() + ' tests');
-      document.getElementById('b-sl-rpw').value   = r.rpw;        st('b-sv-rpw',   r.rpw + ' runs/wk');
-      document.getElementById('b-sl-mfte').value  = r.manFTEs;    st('b-sv-mfte',  r.manFTEs + ' manual FTEs');
-      document.getElementById('b-sl-afte').value  = r.autoFTEs;   st('b-sv-afte',  r.autoFTEs + ' auto FTEs');
+      document.getElementById('b-sl-rpw').value = r.rpw; st('b-sv-rpw', r.rpw + ' runs/wk');
+      document.getElementById('b-sl-mfte').value = r.manFTEs; st('b-sv-mfte', r.manFTEs + ' manual FTEs');
+      document.getElementById('b-sl-afte').value = r.autoFTEs; st('b-sv-afte', r.autoFTEs + ' auto FTEs');
       const reg = _region ? ' · ' + _region : '';
       const ind = _industry ? ' · ' + _industry : '';
       st('resultsSub', r.totalTests + ' tests' + ind + reg + ' · ' + r.manTests + ' manual / ' + r.autoTests + ' automated');
@@ -1846,9 +1957,9 @@
     }
 
     function toggleSection(id) {
-      const body  = document.getElementById(id + '-body');
+      const body = document.getElementById(id + '-body');
       const arrow = document.getElementById(id + '-arrow');
-      const open  = body.classList.toggle('open');
+      const open = body.classList.toggle('open');
       arrow.classList.toggle('open', open);
     }
 

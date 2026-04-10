@@ -500,7 +500,16 @@
             </div>
           </div>
         </div>
-        <input type="hidden" id="minsPerTest" value="30">
+        <div class="form-grid" style="margin-top:16px;">
+          <div class="field">
+            <label>Manual Test Execution Time <span>(per test)</span></label>
+            <div class="input-wrap">
+              <input type="number" id="minsPerTest" min="1" max="120" step="1" value="30" class="has-suffix">
+              <span class="input-suffix">mins</span>
+            </div>
+            <span class="hint">Time a manual tester spends clicking through one test case</span>
+          </div>
+        </div>
         <input type="hidden" id="numFTEs" value="10">
         <input type="hidden" id="salaryInput" value="80000">
       </div>
@@ -553,9 +562,9 @@
             <span id="b-hero-current" style="font-family:var(--display);font-size:28px;font-weight:400;color:var(--text);letter-spacing:-1px;line-height:1;">—</span>
           </div>
           <div style="height:40px;background:var(--surface3);border-radius:8px;overflow:hidden;display:flex;">
-            <div id="top-seg-auth-cur"  style="height:100%;width:40%;background:#c8d4d2;transition:width .7s ease;"></div>
-            <div id="top-seg-maint-cur" style="height:100%;width:35%;background:#c8d4d2;transition:width .7s ease;"></div>
-            <div id="top-seg-exec-cur"  style="height:100%;width:25%;background:#c8d4d2;transition:width .7s ease;"></div>
+            <div id="top-seg-auth-cur"  style="height:100%;width:40%;background:#6b8f8b;transition:width .7s ease;"></div>
+            <div id="top-seg-maint-cur" style="height:100%;width:35%;background:#6b8f8b;transition:width .7s ease;"></div>
+            <div id="top-seg-exec-cur"  style="height:100%;width:25%;background:#6b8f8b;transition:width .7s ease;"></div>
           </div>
         </div>
 
@@ -598,7 +607,7 @@
           <div class="metric-value">
             <span id="b-time-saved">—</span><span class="metric-unit">%</span>
           </div>
-          <div class="metric-sub">less authoring &amp; maintenance effort</div>
+          <div class="metric-sub">reduction in total QA time</div>
         </div>
       </div>
 
@@ -955,7 +964,7 @@
         manExecPerTest, parallelPerRun, infraPerAutoTest, foreAuthPerTest,
         weeklyHealCost,
         // hours (individual components for time-saved % calculation)
-        curAuthorHrsAnnual, curMaintHrsAnnual, foreAuthorHrsAnnual, foreMaintHrsAnnual,
+        curAuthorHrsAnnual, curMaintHrsAnnual, curManExecHrsAnnual, foreAuthorHrsAnnual, foreMaintHrsAnnual, foreManExecHrsAnnual,
         curTotalHrsAnnual, foreTotalHrsAnnual, hrsSavedAnnual, hrsSavedPct,
         // output values (divided if non-full industry)
         curAuthoring: curAuthoring / divisor,
@@ -1107,12 +1116,12 @@
         }
       }
 
-      // Time saved % — authoring + maintenance effort only (excludes manual exec, which is unchanged)
-      // Current: autoTests × writeHrs (authoring) + autoTests × 50% × tMaint × maintFreq (maintenance)
-      // Fore AI: totalTests × writeHrs × 40% (authoring) + 0 (self-healing = no human effort)
-      const curEffortHrs  = r.curAuthorHrsAnnual + r.curMaintHrsAnnual;
+      // Time saved % — Current total vs Fore AI total
+      // Current: manual exec + authoring + maintenance
+      // Fore AI: authoring (60% faster) + maintenance (0, self-healing) — manual exec eliminated
+      const curEffortHrs  = r.curAuthorHrsAnnual + r.curMaintHrsAnnual + r.curManExecHrsAnnual;
       const foreEffortHrs = r.foreAuthorHrsAnnual + r.foreMaintHrsAnnual;
-      const timeSavedPct  = curEffortHrs > 0 ? ((curEffortHrs - foreEffortHrs) / curEffortHrs * 100) : 0;
+      const timeSavedPct  = curEffortHrs > 0 ? Math.min(90, ((curEffortHrs - foreEffortHrs) / curEffortHrs * 100)) : 0;
       const tsEl = document.getElementById('b-time-saved');
       if (tsEl) tsEl.textContent = Math.max(0, timeSavedPct).toFixed(0);
 

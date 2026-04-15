@@ -384,6 +384,57 @@
 
     /* Legacy compat — hidden elements JS still writes to */
     .js-compat { display: none !important; }
+
+    /* ── RESULT SLIDERS ── */
+    .sliders-panel {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 24px 20px;
+      margin-bottom: 20px;
+    }
+    .sliders-panel-title {
+      font-size: 10px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .sliders-panel-title svg { opacity: .5; }
+    .slider-row {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 18px 24px;
+    }
+    @media(max-width:540px) { .slider-row { grid-template-columns: 1fr; } }
+    .slider-field { display: flex; flex-direction: column; gap: 6px; }
+    .slider-label-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+    }
+    .slider-label {
+      font-size: 11px; font-weight: 700; color: var(--text);
+      letter-spacing: .01em;
+    }
+    .slider-value {
+      font-size: 13px; font-weight: 800; color: var(--teal);
+      letter-spacing: -.2px; min-width: 60px; text-align: right;
+    }
+    input[type=range] {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 4px;
+      background: var(--surface3); border-radius: 99px;
+      outline: none; cursor: pointer;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--teal); border: 2px solid #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,.18);
+      cursor: pointer; transition: transform .12s;
+    }
+    input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+    input[type=range]::-moz-range-thumb {
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--teal); border: 2px solid #fff;
+      box-shadow: 0 1px 4px rgba(0,0,0,.18); cursor: pointer;
+    }
   </style>
 </head>
 
@@ -611,6 +662,46 @@
         </div>
       </div>
 
+      <!-- Adjust Assumptions toggle -->
+      <div class="toggle-wrap animate">
+        <div class="toggle-header" onclick="toggleSection('b-assumptions')">
+          <span class="toggle-title">Adjust Assumptions</span>
+          <span class="toggle-arrow" id="b-assumptions-arrow">▼</span>
+        </div>
+        <div class="toggle-body" id="b-assumptions-body" style="padding:20px 24px 22px;">
+          <div class="slider-row">
+            <div class="slider-field">
+              <div class="slider-label-row">
+                <span class="slider-label">Manual Engineers</span>
+                <span class="slider-value" id="b-sv-mfte">—</span>
+              </div>
+              <input type="range" id="b-sl-mfte" min="0" max="50" step="5" value="6" oninput="onBlendedSlider()">
+            </div>
+            <div class="slider-field">
+              <div class="slider-label-row">
+                <span class="slider-label">Automation Engineers</span>
+                <span class="slider-value" id="b-sv-afte">—</span>
+              </div>
+              <input type="range" id="b-sl-afte" min="0" max="50" step="5" value="4" oninput="onBlendedSlider()">
+            </div>
+            <div class="slider-field">
+              <div class="slider-label-row">
+                <span class="slider-label">No. of Tests</span>
+                <span class="slider-value" id="b-sv-tests">—</span>
+              </div>
+              <input type="range" id="b-sl-tests" min="10" max="2000" step="50" value="300" oninput="onBlendedSlider()">
+            </div>
+            <div class="slider-field">
+              <div class="slider-label-row">
+                <span class="slider-label">Avg. Executions / Week</span>
+                <span class="slider-value" id="b-sv-rpw">—</span>
+              </div>
+              <input type="range" id="b-sl-rpw" min="1" max="100" step="5" value="20" oninput="onBlendedSlider()">
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Cost breakdown collapsible -->
       <div class="toggle-wrap animate">
         <div class="toggle-header" onclick="toggleSection('b-breakdown')">
@@ -814,8 +905,9 @@
       document.getElementById('numManualFTEs').value = p.manualFTEs;
       document.getElementById('numAutoFTEs').value = p.autoFTEs;
       const infoEl = document.getElementById('preset-info');
-      infoEl.style.display = 'inline-flex';
-      document.getElementById('preset-info-text').textContent = p.label;
+      if (infoEl) infoEl.style.display = 'inline-flex';
+      const infoTextEl = document.getElementById('preset-info-text');
+      if (infoTextEl) infoTextEl.textContent = p.label;
       onTeamInput();
     }
 
@@ -1242,24 +1334,66 @@
     }
 
     function onBlendedSlider() {
-      const tests = +document.getElementById('b-sl-tests').value;
-      const rpw = +document.getElementById('b-sl-rpw').value;
+      const tests   = +document.getElementById('b-sl-tests').value;
+      const rpw     = +document.getElementById('b-sl-rpw').value;
       const manFTEs = +document.getElementById('b-sl-mfte').value;
-      const autoFTEs = +document.getElementById('b-sl-afte').value;
-      st('b-sv-tests', tests.toLocaleString() + ' tests');
-      st('b-sv-rpw', rpw + ' runs/wk');
-      st('b-sv-mfte', manFTEs + ' manual FTEs');
-      st('b-sv-afte', autoFTEs + ' auto FTEs');
+      const autoFTEs= +document.getElementById('b-sl-afte').value;
+      st('b-sv-tests',  tests.toLocaleString());
+      st('b-sv-rpw',    rpw + ' / wk');
+      st('b-sv-mfte',   manFTEs);
+      st('b-sv-afte',   autoFTEs);
       if (_timer) clearTimeout(_timer);
-      _timer = setTimeout(() => renderBlended(computeBlended({ tests, rpw, manFTEs, autoFTEs })), 60);
+      _timer = setTimeout(() => {
+        const r = computeBlended({ tests, rpw, manFTEs, autoFTEs });
+        renderBlended(r);
+        const indLabel = _industry ? (_industry.charAt(0).toUpperCase() + _industry.slice(1)) : null;
+        const regLabel = _region || null;
+        const descParts = [];
+        if (indLabel) descParts.push(indLabel);
+        if (regLabel) descParts.push(regLabel);
+        descParts.push(r.totalTests + ' tests');
+        descParts.push(r.rpw + ' run cycles/wk');
+        descParts.push(r.manFTEs + ' manual testers');
+        descParts.push(r.autoFTEs + ' automation engineers');
+        st('resultsSub', descParts.join(' · '));
+      }, 60);
     }
 
     function runCalc() {
+      // Read input values
+      const tests   = gv('numTests');
+      const rpw     = gv('runsPerWeek');
+      const manFTEs = gv('numManualFTEs');
+      const autoFTEs= gv('numAutoFTEs');
+
+      // Apply guardrails: lower = max(floor, val - 100% of val), upper = val + 100% of val
+      // Both bounds snapped to step. Starting value snapped to nearest step.
+      function applyGuardrails(id, val, step, floor) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const lo = Math.max(floor, Math.floor((val - val) / step) * step);  // -100% capped at floor
+        const hi = Math.ceil((val + val) / step) * step;                    // +100%
+        el.min   = lo;
+        el.max   = Math.max(hi, lo + step);
+        el.step  = step;
+        el.value = Math.round(val / step) * step;                           // snap to nearest step
+      }
+
+      applyGuardrails('b-sl-mfte',  manFTEs,  5,  0);
+      applyGuardrails('b-sl-afte',  autoFTEs, 5,  0);
+      applyGuardrails('b-sl-tests', tests,   50, 50);
+      applyGuardrails('b-sl-rpw',   rpw,      5,  5);
+
+      // Populate labels immediately so they never show —
+      st('b-sv-mfte',  Math.round(manFTEs  / 5)  * 5);
+      st('b-sv-afte',  Math.round(autoFTEs / 5)  * 5);
+      st('b-sv-tests', Math.round(tests    / 50) * 50);
+      st('b-sv-rpw',   Math.round(rpw      / 5)  * 5 + ' / wk');
+
       const r = computeBlended();
       renderBlended(r);
-      const reg = _region ? ' · ' + _region : '';
-      const ind = _industry ? ' · ' + _industry : '';
-      // Build description: Industry. Region. xxx tests. yy runs/wk. xx manual testers. yy automation engineers
+
+      // Update subtitle
       const indLabel = _industry ? (_industry.charAt(0).toUpperCase() + _industry.slice(1)) : null;
       const regLabel = _region || null;
       const descParts = [];
@@ -1270,6 +1404,7 @@
       descParts.push(r.manFTEs + ' manual testers');
       descParts.push(r.autoFTEs + ' automation engineers');
       st('resultsSub', descParts.join(' · '));
+
       document.getElementById('inputSection').style.display = 'none';
       document.getElementById('resultsSection').style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });

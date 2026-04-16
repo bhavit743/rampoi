@@ -786,19 +786,19 @@
               <tbody>
                 <tr>
                   <td style="padding:9px 8px;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);">Authoring</td>
-                  <td id="b-t-man-authoring-pt" class="col-manual" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);">—</td>
+                  <td id="b-t-man-exec-pt" class="col-manual" rowspan="3"
+                      style="padding:9px 8px;text-align:right;font-weight:700;color:var(--text);
+                             border-bottom:1.5px solid var(--teal-mid);vertical-align:middle;">—</td>
                   <td id="b-t-auto-authoring-pt" class="col-auto" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);">—</td>
                   <td id="b-t-fore-authoring-pt" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--teal);border-bottom:1px solid var(--border);">—</td>
                 </tr>
                 <tr>
                   <td style="padding:9px 8px;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);">Maintenance</td>
-                  <td id="b-t-man-maint-pt" class="col-manual" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);">—</td>
                   <td id="b-t-auto-maint-pt" class="col-auto" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);">—</td>
                   <td id="b-t-fore-maint-pt" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--teal);border-bottom:1px solid var(--border);">—</td>
                 </tr>
                 <tr>
                   <td style="padding:9px 8px;font-weight:600;color:var(--text);border-bottom:1.5px solid var(--teal-mid);">Execution</td>
-                  <td id="b-t-man-exec-pt" class="col-manual" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--text);border-bottom:1.5px solid var(--teal-mid);">—</td>
                   <td id="b-t-auto-exec-pt" class="col-auto" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--text);border-bottom:1.5px solid var(--teal-mid);">—</td>
                   <td id="b-t-fore-exec-pt" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--teal);border-bottom:1.5px solid var(--teal-mid);">—</td>
                 </tr>
@@ -1216,18 +1216,17 @@
       const autoTotalPt = autoAuthoringPt + autoMaintPt + autoExecPt;
 
       // Fore AI column: per total test
-      st('b-t-man-authoring-pt', r.manTests > 0 ? fmt2(manAuthoringPt) : '—');
-      st('b-t-auto-authoring-pt', r.autoTests > 0 ? fmt2(autoAuthoringPt) : '—');
-      st('b-t-fore-authoring-pt', fmt2(r.foreAuthoring / T));
-      st('b-t-man-maint-pt', r.manTests > 0 ? fmt2(manMaintPt) : '—');
-      st('b-t-auto-maint-pt', r.autoTests > 0 ? fmt2(autoMaintPt) : '—');
-      st('b-t-fore-maint-pt', fmt2(r.foreMaintenance / T));
-      st('b-t-man-exec-pt', r.manTests > 0 ? fmt2(manExecPt) : '—');
-      st('b-t-auto-exec-pt', r.autoTests > 0 ? fmt2(autoExecPt) : '—');
-      st('b-t-fore-exec-pt', fmt2(r.foreExecution / T));
+      // Manual: single merged cell spanning all 3 rows — shows combined cost
+      st('b-t-man-exec-pt', r.manTests > 0 ? fmt2(manTotalPt) : '—');
       st('b-t-man-total-pt', r.manTests > 0 ? fmt2(manTotalPt) : '—');
-      st('b-t-auto-total-pt', r.autoTests > 0 ? fmt2(autoTotalPt) : '—');
-      st('b-t-total-fore-pt', fmt2(r.foreTotalPerRun / T));
+      st('b-t-auto-authoring-pt', r.autoTests > 0 ? fmt2(autoAuthoringPt) : '—');
+      st('b-t-auto-maint-pt',     r.autoTests > 0 ? fmt2(autoMaintPt) : '—');
+      st('b-t-auto-exec-pt',      r.autoTests > 0 ? fmt2(autoExecPt) : '—');
+      st('b-t-auto-total-pt',     r.autoTests > 0 ? fmt2(autoTotalPt) : '—');
+      st('b-t-fore-authoring-pt', fmt2(r.foreAuthoring / T));
+      st('b-t-fore-maint-pt',     fmt2(r.foreMaintenance / T));
+      st('b-t-fore-exec-pt',      fmt2(r.foreExecution / T));
+      st('b-t-total-fore-pt',     fmt2(r.foreTotalPerRun / T));
 
       // Column visibility: hide Manual col if 0 manual FTEs, hide Auto col if 0 auto FTEs
       const showManual = r.manFTEs > 0;
@@ -1286,10 +1285,11 @@
       const foreMonthly = Math.round(foreAnnualFloored / 12 / 1000) * 1000;
       const foreAnnual = foreMonthly * 12;
 
-      // Service package: 25% higher, rounded to nearest 1000
-      const serviceAnnualRaw = foreAnnualFloored * 1.25;
-      const serviceMonthly = Math.round(serviceAnnualRaw / 12 / 1000) * 1000;
+      // Service package: 25% on top of the displayed monthly, rounded to nearest 500, always > base
+      const serviceMonthlyRaw = foreMonthly * 1.25;
+      const serviceMonthly = Math.max(foreMonthly + 500, Math.round(serviceMonthlyRaw / 500) * 500);
       const serviceAnnual = serviceMonthly * 12;
+      const serviceAnnualRaw = foreAnnualFloored * 1.25;
 
       // If either exceeds custom threshold, both become custom
       const isCustom = foreAnnualRaw > 150000 || serviceAnnualRaw > 150000;

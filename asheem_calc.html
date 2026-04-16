@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #1a1a1a;
+      background: #f3f4f6;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      border: 0.5px solid rgba(0,0,0,0.1);
+      padding: 2rem;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    h1 { font-size: 18px; font-weight: 500; color: #1a1a1a; margin-bottom: 1.25rem; }
+    h2 { font-size: 15px; font-weight: 500; color: #1a1a1a; margin-bottom: 0.25rem; }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 1.75rem;
+      border-bottom: 0.5px solid rgba(0,0,0,0.1);
+      padding-bottom: 0;
+    }
+
+    .tab {
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      color: #6b7280;
+      background: none;
+      border: none;
+      padding: 8px 14px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.15s;
+    }
+
+    .tab:hover { color: #1a1a1a; }
+    .tab.active { color: #185FA5; border-bottom-color: #185FA5; }
+
+    .pane { display: none; }
+    .pane.active { display: block; }
+
+    .section { margin-bottom: 1.5rem; }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+
+    .calc-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+
+    .calc-label { font-size: 14px; color: #6b7280; width: 200px; flex-shrink: 0; }
+
+    input[type="number"] {
+      width: 110px;
+      height: 36px;
+      padding: 0 10px;
+      font-family: inherit;
+      font-size: 14px;
+      color: #1a1a1a;
+      background: #ffffff;
+      border: 0.5px solid rgba(0,0,0,0.2);
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input[type="number"]:hover { border-color: rgba(0,0,0,0.35); }
+    input[type="number"]:focus { border-color: #185FA5; box-shadow: 0 0 0 3px rgba(24,95,165,0.12); }
+
+    .calc-hint { font-size: 12px; color: #9ca3af; min-width: 60px; }
+
+    .toggle-row { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+    .toggle-label { font-size: 14px; color: #6b7280; }
+    .toggle-label em { font-style: normal; font-size: 12px; color: #9ca3af; }
+
+    .toggle { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: rgba(0,0,0,0.15);
+      border-radius: 99px;
+      transition: background 0.2s;
+      border: 0.5px solid rgba(0,0,0,0.2);
+    }
+
+    .slider:before {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      left: 2px;
+      top: 2px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+
+    input:checked + .slider { background: #185FA5; }
+    input:checked + .slider:before { transform: translateX(16px); }
+
+    .sub-note { font-size: 12px; color: #9ca3af; margin-left: 48px; margin-bottom: 6px; line-height: 1.5; }
+
+    .vol-table { margin-top: 10px; width: 100%; border-collapse: collapse; font-size: 12px; }
+
+    .vol-table th {
+      text-align: left;
+      color: #9ca3af;
+      font-weight: 400;
+      padding: 3px 8px 5px 6px;
+      border-bottom: 0.5px solid rgba(0,0,0,0.08);
+    }
+
+    .vol-table td { padding: 5px 8px 5px 6px; color: #6b7280; border-bottom: 0.5px solid rgba(0,0,0,0.06); }
+    .vol-table tr:last-child td { border-bottom: none; }
+    .vol-table tr.active td { color: #3C3489; background: #EEEDFE; }
+
+    .vol-note { font-size: 11px; color: #9ca3af; margin-top: 8px; line-height: 1.5; }
+
+    .divider { border: none; border-top: 0.5px solid rgba(0,0,0,0.1); margin: 1.5rem 0; }
+
+    .total-block { display: flex; align-items: baseline; gap: 10px; margin-bottom: 1.25rem; }
+    .total-num { font-size: 42px; font-weight: 500; color: #1a1a1a; }
+    .total-sub { font-size: 14px; color: #6b7280; }
+
+    .breakdown { display: flex; flex-direction: column; }
+
+    .b-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      padding: 7px 0;
+      border-bottom: 0.5px solid rgba(0,0,0,0.08);
+    }
+
+    .b-row:last-child { border-bottom: none; }
+    .b-row .lbl { color: #6b7280; }
+    .b-row .val { font-weight: 500; color: #1a1a1a; }
+    .b-row.discount .lbl { color: #166534; }
+    .b-row.discount .val { color: #166534; }
+    .b-row.indent .lbl { color: #9ca3af; padding-left: 14px; font-size: 12px; }
+    .b-row.indent .val { color: #9ca3af; font-size: 12px; font-weight: 400; }
+
+    .b-row.total-row {
+      padding-top: 10px;
+      margin-top: 4px;
+      border-top: 0.5px solid rgba(0,0,0,0.2);
+      border-bottom: none;
+    }
+
+    .b-row.total-row .lbl { font-weight: 500; color: #1a1a1a; font-size: 14px; }
+    .b-row.total-row .val { font-size: 16px; color: #1a1a1a; }
+
+    .rate-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem; }
+
+    .rate-pill {
+      font-size: 12px;
+      color: #6b7280;
+      background: #f9fafb;
+      border: 0.5px solid rgba(0,0,0,0.1);
+      padding: 4px 10px;
+      border-radius: 99px;
+    }
+
+    .rate-pill strong { color: #1a1a1a; font-weight: 500; }
+
+    /* ROI styles */
+    .benchmark-note {
+      font-size: 12px;
+      color: #9ca3af;
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .benchmark-note a { color: #185FA5; text-decoration: none; }
+
+    .roi-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 10px;
+      margin: 1.5rem 0;
+    }
+
+    .roi-metric {
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+    }
+
+    .roi-metric.highlight {
+      background: #EAF3DE;
+    }
+
+    .roi-metric.highlight .roi-metric-label { color: #3B6D11; }
+    .roi-metric.highlight .roi-metric-val { color: #27500A; }
+
+    .roi-metric.negative { background: #FCEBEB; }
+    .roi-metric.negative .roi-metric-label { color: #A32D2D; }
+    .roi-metric.negative .roi-metric-val { color: #791F1F; }
+
+    .roi-metric-label { font-size: 12px; color: #6b7280; margin-bottom: 3px; }
+    .roi-metric-val { font-size: 22px; font-weight: 500; color: #1a1a1a; }
+    .roi-metric-sub { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+
+    .roi-breakdown { display: flex; flex-direction: column; margin-top: 1rem; }
+
+    .roi-section-title {
+      font-size: 11px;
+      font-weight: 500;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 1rem 0 6px;
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .slider-label { font-size: 14px; color: #6b7280; width: 200px; flex-shrink: 0; }
+
+    input[type="range"] {
+      flex: 1;
+      height: 4px;
+      accent-color: #185FA5;
+      cursor: pointer;
+    }
+
+    .slider-val { font-size: 13px; font-weight: 500; color: #1a1a1a; min-width: 60px; text-align: right; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <h1>Pricing calculator</h1>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('pricing')">Pricing</button>
+    <button class="tab" onclick="switchTab('roi')">ROI calculator</button>
+  </div>
+
+  <!-- PRICING TAB -->
+  <div id="pane-pricing" class="pane active">
+    <div class="rate-pills">
+      <span class="rate-pill"><strong>$3.00</strong> / generation</span>
+      <span class="rate-pill"><strong>$0.20</strong> / execution</span>
+      <span class="rate-pill"><strong>$1,000</strong> / 200 human reviews/mo</span>
+      <span class="rate-pill"><strong>Maintenance included</strong></span>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Usage</div>
+      <div class="calc-row">
+        <span class="calc-label">Generations / mo</span>
+        <input type="number" id="gens" value="200" min="0" step="10" />
+        <span class="calc-hint" id="gens-hint"></span>
+      </div>
+      <div class="calc-row">
+        <span class="calc-label">Executions / mo</span>
+        <input type="number" id="runs" value="12000" min="0" step="100" />
+        <span class="calc-hint" id="runs-hint"></span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Add-ons</div>
+      <div class="toggle-row">
+        <label class="toggle"><input type="checkbox" id="human" /><span class="slider"></span></label>
+        <span class="toggle-label">Human reviews</span>
+      </div>
+      <div class="sub-note" id="human-note" style="display:none"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Discounts</div>
+      <div class="toggle-row">
+        <label class="toggle"><input type="checkbox" id="annual" /><span class="slider"></span></label>
+        <span class="toggle-label">Annual contract <em>— 20% off</em></span>
+      </div>
+      <table class="vol-table">
+        <thead>
+          <tr>
+            <th>Executions range</th>
+            <th>Rate per run</th>
+            <th>Discount</th>
+          </tr>
+        </thead>
+        <tbody id="vol-tbody"></tbody>
+      </table>
+      <div class="vol-note" id="vol-note"></div>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="total-block">
+      <span class="total-num" id="total">—</span>
+      <span class="total-sub" id="total-sub">per month</span>
+    </div>
+
+    <div class="breakdown" id="breakdown"></div>
+  </div>
+
+  <!-- ROI TAB -->
+  <div id="pane-roi" class="pane">
+    <div class="benchmark-note">
+      Benchmarks: SWE/QA engineers cost ~$70/hr fully loaded (~$103k salary + benefits). Manual test writing takes ~45 min per test case = <strong>~$52/test</strong>. BrowserStack Automate runs cost ~$0.01/execution at typical parallel session pricing. All assumptions are adjustable below.
+    </div>
+
+    <div class="section">
+      <div class="section-label">Your usage</div>
+      <div class="calc-row">
+        <span class="calc-label">Generations / mo</span>
+        <input type="number" id="roi-gens" value="200" min="0" step="10" />
+      </div>
+      <div class="calc-row">
+        <span class="calc-label">Executions / mo</span>
+        <input type="number" id="roi-runs" value="12000" min="0" step="100" />
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Benchmark assumptions</div>
+      <div class="slider-row">
+        <span class="slider-label">SWE hourly cost</span>
+        <input type="range" id="swe-rate" min="40" max="150" value="70" step="5" />
+        <span class="slider-val" id="swe-rate-out">$70/hr</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label">Mins to write a test</span>
+        <input type="range" id="write-time" min="15" max="120" value="45" step="5" />
+        <span class="slider-val" id="write-time-out">45 min</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label">Competitor run cost</span>
+        <input type="range" id="comp-run" min="1" max="50" value="10" step="1" />
+        <span class="slider-val" id="comp-run-out">$0.010/run</span>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="roi-metrics" id="roi-metrics"></div>
+
+    <div class="roi-section-title">Cost breakdown — what you'd pay elsewhere</div>
+    <div class="breakdown" id="roi-breakdown"></div>
+
+    <div class="roi-section-title">What you pay with us</div>
+    <div class="breakdown" id="roi-ours"></div>
+  </div>
+</div>
+
+<script>
+  const GEN_RATE        = 3;
+  const BASE_RUN_RATE   = 0.20;
+  const HUMAN_SLOT_COST = 1000;
+  const HUMAN_SLOT_SIZE = 200;
+  const ANNUAL_DISC     = 0.20;
+
+  const BRACKETS = [
+    { from: 0,      to: 50000,    discount: 0,    label: 'First 50k' },
+    { from: 50000,  to: 200000,   discount: 0.15, label: '50k – 200k' },
+    { from: 200000, to: Infinity, discount: 0.50, label: 'Above 200k' },
+  ];
+
+  function fmt(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+  function fmtDec(n) { return '$' + n.toFixed(2); }
+  function fmtPct(n) { return Math.round(n) + '%'; }
+
+  function calcRunCost(runs) {
+    let cost = 0, breakdown = [];
+    for (const b of BRACKETS) {
+      if (runs <= b.from) break;
+      const cap = b.to === Infinity ? runs : Math.min(runs, b.to);
+      const inBracket = cap - b.from;
+      const rate = BASE_RUN_RATE * (1 - b.discount);
+      const bracketCost = inBracket * rate;
+      cost += bracketCost;
+      breakdown.push({ label: b.label, count: inBracket, rate, cost: bracketCost, discount: b.discount });
+    }
+    return { total: cost, breakdown };
+  }
+
+  function activeBracketIdx(runs) {
+    let idx = 0;
+    for (let i = 0; i < BRACKETS.length; i++) { if (runs > BRACKETS[i].from) idx = i; }
+    return idx;
+  }
+
+  function calcPricing() {
+    const gens   = Math.max(0, parseFloat(document.getElementById('gens').value) || 0);
+    const runs   = Math.max(0, parseFloat(document.getElementById('runs').value) || 0);
+    const human  = document.getElementById('human').checked;
+    const annual = document.getElementById('annual').checked;
+
+    const genCost    = gens * GEN_RATE;
+    const runResult  = calcRunCost(runs);
+    const runCost    = runResult.total;
+    const humanSlots = human ? Math.ceil(Math.max(gens, 1) / HUMAN_SLOT_SIZE) : 0;
+    const humanCost  = humanSlots * HUMAN_SLOT_COST;
+    const subtotal   = genCost + runCost + humanCost;
+    const annualDisc = annual ? subtotal * ANNUAL_DISC : 0;
+    const total      = subtotal - annualDisc;
+
+    document.getElementById('gens-hint').textContent = fmt(genCost);
+    document.getElementById('runs-hint').textContent = fmt(runCost);
+
+    const noteEl = document.getElementById('human-note');
+    if (human) {
+      noteEl.style.display = 'block';
+      noteEl.textContent = humanSlots === 1
+        ? '1 reviewer slot covers up to 200 tests — $1,000/mo'
+        : `${gens.toLocaleString()} tests needs ${humanSlots} slots (${humanSlots} × $1,000) — ${fmt(humanCost)}/mo`;
+    } else {
+      noteEl.style.display = 'none';
+    }
+
+    const activeIdx = activeBracketIdx(runs);
+    document.getElementById('vol-tbody').innerHTML = BRACKETS.map((b, i) => {
+      const rate = BASE_RUN_RATE * (1 - b.discount);
+      const discLabel = b.discount === 0 ? '—' : `${Math.round(b.discount * 100)}% off`;
+      const toLabel = b.to === Infinity ? '∞' : b.to.toLocaleString();
+      return `<tr class="${i === activeIdx ? 'active' : ''}">
+        <td>${b.from.toLocaleString()} – ${toLabel}</td>
+        <td>${fmtDec(rate)}</td>
+        <td>${discLabel}</td>
+      </tr>`;
+    }).join('');
+
+    const nextBracket = BRACKETS.find(b => runs <= b.from);
+    document.getElementById('vol-note').textContent = nextBracket
+      ? `${(nextBracket.from - runs).toLocaleString()} more runs/mo to unlock ${Math.round(nextBracket.discount * 100)}% off on executions above ${nextBracket.from.toLocaleString()}.`
+      : 'Maximum volume discount applied — 50% off all executions above 200k.';
+
+    let rows = [];
+    rows.push({ cls: '', lbl: `Generations (${gens.toLocaleString()} × $${GEN_RATE}.00)`, val: fmt(genCost) });
+    if (runResult.breakdown.length === 1) {
+      rows.push({ cls: '', lbl: `Executions (${runs.toLocaleString()} × ${fmtDec(runResult.breakdown[0].rate)})`, val: fmt(runCost) });
+    } else {
+      rows.push({ cls: '', lbl: `Executions (${runs.toLocaleString()} runs, tiered)`, val: fmt(runCost) });
+      for (const b of runResult.breakdown) {
+        const discNote = b.discount > 0 ? ` — ${Math.round(b.discount * 100)}% off` : '';
+        rows.push({ cls: 'indent', lbl: `${b.label}: ${b.count.toLocaleString()} × ${fmtDec(b.rate)}${discNote}`, val: fmt(b.cost) });
+      }
+    }
+    if (human) rows.push({ cls: '', lbl: `Human reviews (${humanSlots} slot${humanSlots > 1 ? 's' : ''} × $1,000)`, val: fmt(humanCost) });
+    rows.push({ cls: '', lbl: 'Maintenance (healing)', val: 'Included' });
+    if (annual) {
+      rows.push({ cls: '', lbl: 'Subtotal', val: fmt(subtotal) });
+      rows.push({ cls: 'discount', lbl: 'Annual contract — 20% off', val: '−' + fmt(annualDisc) });
+    }
+    rows.push({ cls: 'total-row', lbl: annual ? `Total / month (${fmt(total * 12)}/yr)` : 'Total / month', val: fmt(total) });
+
+    document.getElementById('breakdown').innerHTML = rows.map(r =>
+      `<div class="b-row ${r.cls}"><span class="lbl">${r.lbl}</span><span class="val">${r.val}</span></div>`
+    ).join('');
+
+    document.getElementById('total').textContent = fmt(total);
+    document.getElementById('total-sub').textContent = annual ? 'per month (annual contract)' : 'per month';
+  }
+
+  function calcROI() {
+    const gens      = Math.max(0, parseFloat(document.getElementById('roi-gens').value) || 0);
+    const runs      = Math.max(0, parseFloat(document.getElementById('roi-runs').value) || 0);
+    const sweRate   = parseFloat(document.getElementById('swe-rate').value);
+    const writeTime = parseFloat(document.getElementById('write-time').value);
+    const compRun   = parseFloat(document.getElementById('comp-run').value) / 1000;
+
+    document.getElementById('swe-rate-out').textContent  = `$${sweRate}/hr`;
+    document.getElementById('write-time-out').textContent = `${writeTime} min`;
+    document.getElementById('comp-run-out').textContent   = `$${(compRun).toFixed(3)}/run`;
+
+    const costPerTestManual = sweRate * (writeTime / 60);
+    const theirGenCost  = gens * costPerTestManual;
+    const theirRunCost  = runs * compRun;
+    const theirTotal    = theirGenCost + theirRunCost;
+
+    const ourGenCost   = gens * GEN_RATE;
+    const ourRunResult = calcRunCost(runs);
+    const ourRunCost   = ourRunResult.total;
+    const ourTotal     = ourGenCost + ourRunCost;
+
+    const saving    = theirTotal - ourTotal;
+    const savingPct = theirTotal > 0 ? (saving / theirTotal) * 100 : 0;
+    const roi       = ourTotal > 0 ? (saving / ourTotal) * 100 : 0;
+
+    const metricsEl = document.getElementById('roi-metrics');
+    metricsEl.innerHTML = `
+      <div class="roi-metric">
+        <div class="roi-metric-label">Without us (monthly)</div>
+        <div class="roi-metric-val">${fmt(theirTotal)}</div>
+        <div class="roi-metric-sub">SWE time + infrastructure</div>
+      </div>
+      <div class="roi-metric">
+        <div class="roi-metric-label">With us (monthly)</div>
+        <div class="roi-metric-val">${fmt(ourTotal)}</div>
+        <div class="roi-metric-sub">fully loaded</div>
+      </div>
+      <div class="roi-metric ${saving > 0 ? 'highlight' : 'negative'}">
+        <div class="roi-metric-label">Monthly saving</div>
+        <div class="roi-metric-val">${saving >= 0 ? '' : '−'}${fmt(Math.abs(saving))}</div>
+        <div class="roi-metric-sub">${fmtPct(Math.abs(savingPct))} ${saving >= 0 ? 'cheaper' : 'more expensive'}</div>
+      </div>
+      <div class="roi-metric ${saving > 0 ? 'highlight' : 'negative'}">
+        <div class="roi-metric-label">Annual saving</div>
+        <div class="roi-metric-val">${saving >= 0 ? '' : '−'}${fmt(Math.abs(saving * 12))}</div>
+        <div class="roi-metric-sub">${fmt(Math.abs(saving * 12))} / yr</div>
+      </div>
+    `;
+
+    const theirRows = [
+      { cls: '', lbl: `Test writing (${gens.toLocaleString()} tests × ${writeTime} min @ $${sweRate}/hr)`, val: fmt(theirGenCost) },
+      { cls: '', lbl: `Infrastructure runs (${runs.toLocaleString()} × $${compRun.toFixed(3)} — BrowserStack est.)`, val: fmt(theirRunCost) },
+      { cls: 'total-row', lbl: 'Total without us', val: fmt(theirTotal) },
+    ];
+
+    document.getElementById('roi-breakdown').innerHTML = theirRows.map(r =>
+      `<div class="b-row ${r.cls}"><span class="lbl">${r.lbl}</span><span class="val">${r.val}</span></div>`
+    ).join('');
+
+    let ourRows = [];
+    ourRows.push({ cls: '', lbl: `Generations (${gens.toLocaleString()} × $${GEN_RATE}.00)`, val: fmt(ourGenCost) });
+    if (ourRunResult.breakdown.length === 1) {
+      ourRows.push({ cls: '', lbl: `Executions (${runs.toLocaleString()} × ${fmtDec(ourRunResult.breakdown[0].rate)})`, val: fmt(ourRunCost) });
+    } else {
+      ourRows.push({ cls: '', lbl: `Executions (${runs.toLocaleString()} runs, tiered)`, val: fmt(ourRunCost) });
+      for (const b of ourRunResult.breakdown) {
+        const discNote = b.discount > 0 ? ` — ${Math.round(b.discount * 100)}% off` : '';
+        ourRows.push({ cls: 'indent', lbl: `${b.label}: ${b.count.toLocaleString()} × ${fmtDec(b.rate)}${discNote}`, val: fmt(b.cost) });
+      }
+    }
+    ourRows.push({ cls: '', lbl: 'Maintenance (healing)', val: 'Included' });
+    ourRows.push({ cls: 'total-row', lbl: 'Total with us', val: fmt(ourTotal) });
+
+    document.getElementById('roi-ours').innerHTML = ourRows.map(r =>
+      `<div class="b-row ${r.cls}"><span class="lbl">${r.lbl}</span><span class="val">${r.val}</span></div>`
+    ).join('');
+  }
+
+  function switchTab(name) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+    document.querySelector(`[onclick="switchTab('${name}')"]`).classList.add('active');
+    document.getElementById(`pane-${name}`).classList.add('active');
+    if (name === 'roi') calcROI();
+  }
+
+  ['gens','runs'].forEach(id => document.getElementById(id).addEventListener('input', calcPricing));
+  ['human','annual'].forEach(id => document.getElementById(id).addEventListener('change', calcPricing));
+
+  ['roi-gens','roi-runs','swe-rate','write-time','comp-run'].forEach(id =>
+    document.getElementById(id).addEventListener('input', calcROI)
+  );
+
+  calcPricing();
+  calcROI();
+</script>
+</body>
+</html>

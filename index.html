@@ -355,7 +355,7 @@
     .breakdown-table td:first-child { text-align: left; }
     .breakdown-table td.row-label { color: var(--text); font-weight: 600; }
     .breakdown-table tr.table-total td {
-      background: var(--teal-dim); font-weight: 700; color: var(--teal);
+      font-weight: 700; color: var(--teal);
       border-top: 1.5px solid var(--teal-mid); border-bottom: none;
     }
     .breakdown-table tr:last-child td { border-bottom: none; }
@@ -536,17 +536,17 @@
           <div class="form-section-title" style="margin-bottom:4px;">Test Suite</div>
           <div class="form-grid">
             <div class="field">
-              <label>Total Test Cases</label>
-              <div class="input-wrap">
-                <input type="number" id="numTests" min="10" max="10000" step="10" value="300" class="has-suffix" oninput="onTeamInput()">
-                <span class="input-suffix">tests</span>
-              </div>
-            </div>
-            <div class="field">
               <label>Average executions per week</label>
               <div class="input-wrap">
                 <input type="number" id="runsPerWeek" min="0.5" max="100" step="0.5" value="20" class="has-suffix">
                 <span class="input-suffix">/test</span>
+              </div>
+            </div>
+            <div class="field">
+              <label>Total Test Cases</label>
+              <div class="input-wrap">
+                <input type="number" id="numTests" min="10" max="10000" step="10" value="300" class="has-suffix" oninput="onTeamInput()">
+                <span class="input-suffix">tests</span>
               </div>
             </div>
           </div>
@@ -591,15 +591,107 @@
         </div>
 
         <!-- With Service Package (25% higher) -->
-        <div style="background:var(--teal);border-radius:18px;padding:26px 28px;position:relative;overflow:hidden;">
-          <div style="position:absolute;top:-40px;right:-40px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.04);"></div>
-          <div style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:8px;">Full Service Monthly Package</div>
-          <div id="b-service-cost" style="font-family:var(--display);font-size:clamp(28px,4vw,40px);font-weight:400;line-height:1;letter-spacing:-1.5px;color:#fff;">—</div>
-          <div id="b-service-sub" style="font-size:12px;color:rgba(255,255,255,.6);margin-top:6px;font-weight:500;">per month</div>
-          <div id="b-service-cost-yr" style="font-size:11px;color:rgba(255,255,255,.5);margin-top:4px;font-weight:600;">— / year</div>
+        <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:18px;padding:26px 28px;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:-40px;right:-40px;width:130px;height:130px;border-radius:50%;background:rgba(0,0,0,.03);"></div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Full Service Monthly Package</div>
+          <div id="b-service-cost" style="font-family:var(--display);font-size:clamp(28px,4vw,40px);font-weight:400;line-height:1;letter-spacing:-1.5px;color:var(--text);">—</div>
+          <div id="b-service-sub" style="font-size:12px;color:var(--muted);margin-top:6px;font-weight:500;">per month</div>
+          <div id="b-service-cost-yr" style="font-size:11px;color:var(--muted);margin-top:4px;font-weight:600;">— / year</div>
         </div>
 
       </div>
+
+      <!-- Monthly Cost Breakdown — Invoice Style -->
+      <div id="monthly-breakdown-wrap" style="margin-top:4px;margin-bottom:0;">
+        <div style="border:1.5px solid var(--border);border-radius:18px;overflow:hidden;background:var(--surface);">
+
+          <!-- Invoice header -->
+          <div style="padding:20px 28px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:baseline;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Monthly Cost Breakdown · <span id="inv-executions-per-month">—</span> executions / month</div>
+            <div style="font-size:11px;color:var(--muted);font-weight:500;" id="inv-date-label"></div>
+          </div>
+
+          <!-- Line items -->
+          <table style="width:100%;border-collapse:collapse;font-size:13px;">
+            <thead>
+              <tr style="background:var(--surface2);">
+                <th style="padding:10px 28px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);">Service</th>
+                <th style="padding:10px 20px;text-align:right;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);">Base</th>
+                <th style="padding:10px 28px;text-align:right;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);">Full Service</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding:13px 28px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text);">Test Generation</td>
+                <td style="padding:13px 20px;text-align:right;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);" id="inv-gen-monthly">—</td>
+                <td style="padding:13px 28px;text-align:right;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);" id="inv-gen-monthly-svc">—</td>
+              </tr>
+              <tr>
+                <td style="padding:13px 28px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text);">Test Executions</td>
+                <td style="padding:13px 20px;text-align:right;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);" id="inv-exec-monthly">—</td>
+                <td style="padding:13px 28px;text-align:right;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);" id="inv-exec-monthly-svc">—</td>
+              </tr>
+              <tr>
+                <td style="padding:13px 28px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text);">Maintenance &amp; Self-Healing</td>
+                <td style="padding:13px 20px;text-align:right;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);" id="inv-maint-monthly">—</td>
+                <td style="padding:13px 28px;text-align:right;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);" id="inv-maint-monthly-svc">—</td>
+              </tr>
+              <tr>
+                <td style="padding:13px 28px;border-bottom:1.5px solid var(--border);font-weight:600;color:var(--text);">HOTL Services</td>
+                <td style="padding:13px 20px;text-align:right;font-weight:600;color:var(--muted);border-bottom:1.5px solid var(--border);" id="inv-hotl-base">—</td>
+                <td style="padding:13px 28px;text-align:right;font-weight:700;color:var(--text);border-bottom:1.5px solid var(--border);" id="inv-hotl-svc">—</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr style="background:var(--surface2);">
+                <td style="padding:15px 28px;font-weight:700;color:var(--text);font-size:13px;">Monthly Total</td>
+                <td style="padding:15px 20px;text-align:right;font-weight:800;color:var(--text);font-size:15px;letter-spacing:-.3px;" id="inv-base-total">—</td>
+                <td style="padding:15px 28px;text-align:right;font-weight:800;color:var(--text);font-size:15px;letter-spacing:-.3px;" id="inv-service-total">—</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- Execution Pricing Tiers -->
+      <div style="border:1.5px solid var(--border);border-radius:18px;overflow:hidden;background:var(--surface);margin-top:12px;">
+        <div style="padding:18px 28px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Execution Pricing Tiers</div>
+          <div style="font-size:11px;color:var(--muted);font-weight:500;">current: <span id="tier-current-executions" style="font-weight:700;color:var(--text);">—</span> executions/month</div>
+        </div>
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr style="background:var(--surface2);">
+              <th style="padding:9px 28px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);">Executions range</th>
+              <th style="padding:9px 20px;text-align:right;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);">Rate per run</th>
+              <th style="padding:9px 28px;text-align:right;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);">Discount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="tier-row-0">
+              <td style="padding:12px 28px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text);" id="tier-label-0">0 – 50,000</td>
+              <td style="padding:12px 20px;text-align:right;font-weight:700;border-bottom:1px solid var(--border);color:var(--text);">$0.20</td>
+              <td style="padding:12px 28px;text-align:right;border-bottom:1px solid var(--border);color:var(--muted);">—</td>
+            </tr>
+            <tr id="tier-row-1">
+              <td style="padding:12px 28px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text);">50,000 – 200,000</td>
+              <td style="padding:12px 20px;text-align:right;font-weight:700;border-bottom:1px solid var(--border);color:var(--text);">$0.17</td>
+              <td style="padding:12px 28px;text-align:right;border-bottom:1px solid var(--border);color:var(--muted);">15% off</td>
+            </tr>
+            <tr id="tier-row-2">
+              <td style="padding:12px 28px;font-weight:600;color:var(--text);">&gt;200,000</td>
+              <td style="padding:12px 20px;text-align:right;font-weight:700;color:var(--text);">$0.10</td>
+              <td style="padding:12px 28px;text-align:right;color:var(--muted);">50% off</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- Unlock nudge -->
+        <div id="tier-nudge" style="padding:13px 28px;border-top:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;gap:10px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="tier-nudge-text" style="font-size:12px;font-weight:600;color:var(--text);"></span>
+        </div>
+      </div>
+
     </div>
 
     <div class="tab-panel active" id="panel-blended">
@@ -802,8 +894,8 @@
                   <td id="b-t-auto-exec-pt" class="col-auto" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--text);border-bottom:1.5px solid var(--teal-mid);">—</td>
                   <td id="b-t-fore-exec-pt" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--teal);border-bottom:1.5px solid var(--teal-mid);">—</td>
                 </tr>
-                <tr style="background:var(--teal-dim);">
-                  <td style="padding:9px 8px;font-weight:800;color:var(--teal);">Total</td>
+                <tr style="border-top:1.5px solid var(--border);">
+                  <td style="padding:9px 8px;font-weight:800;color:var(--text);">Total</td>
                   <td id="b-t-man-total-pt" class="col-manual" style="padding:9px 8px;text-align:right;font-weight:800;color:var(--text);">—</td>
                   <td id="b-t-auto-total-pt" class="col-auto" style="padding:9px 8px;text-align:right;font-weight:800;color:var(--text);">—</td>
                   <td style="padding:9px 8px;text-align:right;font-weight:800;color:var(--teal);" id="b-t-total-fore-pt-2">—</td>
@@ -1066,8 +1158,6 @@
     // ══════════════════════════════════════════════════════════
     function computeBlended(ov) {
       ov = ov || {};
-      // Read pricing inputs live from the input fields
-      M.platformPerRun = parseFloat(document.getElementById('b-platform-fee')?.value) || 0.05;
       M.selfHealingPer10Runs = parseFloat(document.getElementById('b-heal-fee')?.value) || 0.20;
 
       const totalTests = ov.tests !== undefined ? ov.tests : gv('numTests');
@@ -1083,6 +1173,12 @@
 
       const runsPerMonth = rpw * 4.33;
       const annualRuns = runsPerMonth * 12;
+
+      // ── Tiered execution rate based on monthly executions ────
+      const monthlyExecs = totalTests * runsPerMonth;
+      M.platformPerRun = monthlyExecs <= 50000 ? 0.20
+                       : monthlyExecs <= 200000 ? 0.17
+                       : 0.10;
 
       // Test split
       const totalFTEs = manFTEs + autoFTEs;
@@ -1143,6 +1239,7 @@
       return {
         totalTests, manTests, autoTests, rpw, manFTEs, autoFTEs, minsPerTest,
         manHrly, autoHrly, runsPerMonth, annualRuns,
+        platformPerRun: M.platformPerRun,
         // raw (undivided) sub-components for detailed calc display
         writeHrs, writingPerTest, upkeepPerAutoTest, autoMaintPerTest,
         manExecPerTest, parallelPerRun, infraPerAutoTest, foreAuthPerTest,
@@ -1273,10 +1370,10 @@
       st('d-man-labour-run', fmtFull(r.manPortion) + ' / run  (' + fmt2(r.manExecPerTest) + ' × ' + r.manTests.toLocaleString() + ' manual tests)');
       st('d-cur-exec-run', fmtFull(r.curExecution) + ' / run  (auto infra + manual labour)');
       st('d-cur-exec-total', fmtFull(r.curExecution) + '/run');
-      st('d-fore-exec-run', fmtFull(r.foreExecution) + ' / run  ($' + M.platformPerRun.toFixed(2) + ' × ' + r.totalTests.toLocaleString() + ' total tests)');
+      st('d-fore-exec-run', fmtFull(r.foreExecution) + ' / run  ($' + r.platformPerRun.toFixed(2) + ' × ' + r.totalTests.toLocaleString() + ' total tests)');
       st('d-fore-exec-total', fmtFull(r.foreExecution) + '/run');
       // update dynamic rate labels in detailed calc
-      const rateLabel = '$' + M.platformPerRun.toFixed(2);
+      const rateLabel = '$' + r.platformPerRun.toFixed(2);
       ['d-fore-exec-rate-label', 'd-fore-exec-rate-label2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = rateLabel; });
 
       // fore ai annual package — $20k floor, $150k custom offer cap, rounded to nearest $5k
@@ -1466,6 +1563,93 @@
       })();
 
       bViewTab('test');
+
+      // ── Monthly invoice breakdown ────────────────────────────
+      (function() {
+        const execsPerMonth = Math.round(r.totalTests * r.runsPerMonth);
+
+        // Raw monthly figures per component
+        const genRaw   = r.foreAuthoring   * r.runsPerMonth;
+        const execRaw  = r.foreExecution   * r.runsPerMonth;
+        const maintRaw = r.foreMaintenance * r.runsPerMonth;
+
+        // Distribute foreMonthly proportionally, rounding to $100,
+        // using largest-remainder so items always sum exactly to the total.
+        function distributeRounded(total, parts) {
+          const sum = parts.reduce((a, b) => a + b, 0);
+          if (!sum) return parts.map(() => 0);
+          const exact   = parts.map(p => (p / sum) * total);
+          const floored = exact.map(v => Math.floor(v / 100) * 100);
+          const rems    = exact.map((v, i) => v - floored[i]);
+          let leftover  = Math.round((total - floored.reduce((a, b) => a + b, 0)) / 100);
+          rems.map((v, i) => ({ v, i }))
+              .sort((a, b) => b.v - a.v)
+              .forEach(({ i }) => { if (leftover > 0) { floored[i] += 100; leftover--; } });
+          return floored;
+        }
+
+        const [genR, execR, maintR] = distributeRounded(foreMonthly, [genRaw, execRaw, maintRaw]);
+        const hotlSvc = serviceMonthly - foreMonthly;
+
+        st('inv-executions-per-month', execsPerMonth.toLocaleString());
+
+        st('inv-gen-monthly',      isCustom ? 'Custom' : '$' + genR.toLocaleString());
+        st('inv-gen-monthly-svc',  isCustom ? 'Custom' : '$' + genR.toLocaleString());
+
+        st('inv-exec-monthly',     isCustom ? 'Custom' : '$' + execR.toLocaleString());
+        st('inv-exec-monthly-svc', isCustom ? 'Custom' : '$' + execR.toLocaleString());
+
+        st('inv-maint-monthly',    isCustom ? 'Custom' : '$' + maintR.toLocaleString());
+        st('inv-maint-monthly-svc',isCustom ? 'Custom' : '$' + maintR.toLocaleString());
+
+        const hotlBaseEl = document.getElementById('inv-hotl-base');
+        const hotlSvcEl  = document.getElementById('inv-hotl-svc');
+        if (hotlBaseEl) hotlBaseEl.textContent = '—';
+        if (hotlSvcEl)  hotlSvcEl.textContent  = isCustom ? 'Custom' : '$' + hotlSvc.toLocaleString();
+
+        st('inv-base-total',    isCustom ? 'Custom' : '$' + foreMonthly.toLocaleString());
+        st('inv-service-total', isCustom ? 'Custom' : '$' + serviceMonthly.toLocaleString());
+
+        const dateEl = document.getElementById('inv-date-label');
+        if (dateEl) {
+          const now = new Date();
+          dateEl.textContent = now.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+        }
+
+        // ── Execution tier widget ──────────────────────────────
+        const execs = Math.round(r.totalTests * r.runsPerMonth);
+        const activeTier = execs <= 50000 ? 0 : execs <= 200000 ? 1 : 2;
+        const tierRates = [0.20, 0.17, 0.10];
+
+        // Highlight active row, dim others
+        tierRates.forEach((_, i) => {
+          const row = document.getElementById('tier-row-' + i);
+          if (!row) return;
+          if (i === activeTier) {
+            row.style.background = 'rgba(7,80,86,.06)';
+            row.querySelectorAll('td').forEach(td => td.style.color = 'var(--teal)');
+          } else {
+            row.style.background = '';
+            row.querySelectorAll('td').forEach(td => td.style.color = i < activeTier ? 'var(--muted)' : 'var(--text)');
+          }
+        });
+
+        // Nudge message
+        const nudgeEl = document.getElementById('tier-nudge-text');
+        const curLabel = document.getElementById('tier-current-executions');
+        if (curLabel) curLabel.textContent = execs.toLocaleString();
+        if (nudgeEl) {
+          if (activeTier === 0) {
+            const need = 50000 - execs;
+            nudgeEl.textContent = need.toLocaleString() + ' more executions/month to unlock 15% off ($0.17/run)';
+          } else if (activeTier === 1) {
+            const need = 200000 - execs;
+            nudgeEl.textContent = need.toLocaleString() + ' more executions/month to unlock 50% off ($0.10/run)';
+          } else {
+            nudgeEl.textContent = 'You\'re on the best rate — $0.10 per run (50% off).';
+          }
+        }
+      })();
     }
 
     function bViewTab(view) {

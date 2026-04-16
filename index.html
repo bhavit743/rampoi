@@ -453,10 +453,10 @@
     <div style="max-width:680px;margin:0 auto;padding:48px 32px 80px;">
 
       <div style="margin-bottom:32px;">
-        <h1 style="font-family:var(--display);font-size:clamp(24px,3.5vw,34px);font-weight:400;line-height:1.1;letter-spacing:-.3px;color:var(--text);margin-bottom:0;">Estimated <em style="font-style:italic;color:var(--teal);">Annual Package</em></h1>
+        <h1 style="font-family:var(--display);font-size:clamp(24px,3.5vw,34px);font-weight:400;line-height:1.1;letter-spacing:-.3px;color:var(--text);margin-bottom:0;">Estimated <em style="font-style:italic;color:var(--teal);"> Package</em></h1>
       </div>
 
-      <!-- Industry -->
+      <!-- Step 1: Industry (always visible) -->
       <div class="form-section">
         <div class="form-section-title" style="margin-bottom:14px;">Industry</div>
         <div class="industry-row" id="industry-row">
@@ -489,14 +489,10 @@
             Other
           </div>
         </div>
-        <!-- <div id="preset-info" style="display:none;" class="preset-badge">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          <span id="preset-info-text">Preset applied</span>
-        </div> -->
       </div>
 
-      <!-- Team Location -->
-      <div class="form-section">
+      <!-- Step 2: Region (shown after industry selected) -->
+      <div class="form-section" id="region-section" style="display:none;animation:fadeUp .35s ease both;">
         <div class="form-section-title" style="margin-bottom:14px;">Team Location</div>
         <div class="region-row">
           <div class="reg-pill" id="reg-Swiss" onclick="selectRegion('Swiss')">Switzerland / W. Europe</div>
@@ -507,68 +503,63 @@
         </div>
       </div>
 
-      <!-- QA Team -->
-      <div class="form-section">
-        <div class="form-section-title" style="margin-bottom:4px;">QA Team</div>
-        <div class="form-grid">
-          <div class="field">
-            <label>Manual Testers</label>
-            <input type="number" id="numManualFTEs" min="0" max="200" step="1" value="6" oninput="onTeamInput()">
-          </div>
-          <div class="field">
-            <label>Automation Engineers</label>
-            <input type="number" id="numAutoFTEs" min="0" max="200" step="1" value="4" oninput="onTeamInput()">
-          </div>
-        </div>
-        <div id="split-bar-wrap" class="split-bar-wrap">
-          <div class="split-bar">
-            <div class="split-bar-manual" id="split-manual" style="width:60%"></div>
-            <div class="split-bar-auto" id="split-auto" style="width:40%"></div>
-          </div>
-          <div class="split-legend">
-            <span><span class="split-dot" style="background:var(--amber)"></span><span id="split-man-label">Manual</span></span>
-            <span><span class="split-dot" style="background:var(--teal)"></span><span id="split-auto-label">Automation</span></span>
-          </div>
-        </div>
-      </div>
+      <!-- Step 3: Rest of form (shown after region selected) -->
+      <div id="main-form-section" style="display:none;animation:fadeUp .35s ease both;">
 
-      <!-- Test Suite -->
-      <div class="form-section">
-        <div class="form-section-title" style="margin-bottom:4px;">Test Suite</div>
-        <div class="form-grid">
-          <div class="field">
-            <label>Total Test Cases</label>
-            <div class="input-wrap">
-              <input type="number" id="numTests" min="10" max="10000" step="10" value="300" class="has-suffix" oninput="onTeamInput()">
-              <span class="input-suffix">tests</span>
+        <!-- QA Team -->
+        <div class="form-section">
+          <div class="form-section-title" style="margin-bottom:4px;">QA Team</div>
+          <div class="form-grid">
+            <div class="field">
+              <label>Manual Testers</label>
+              <input type="number" id="numManualFTEs" min="0" max="200" step="1" value="6" oninput="onTeamInput()">
+            </div>
+            <div class="field">
+              <label>Automation Engineers</label>
+              <input type="number" id="numAutoFTEs" min="0" max="200" step="1" value="4" oninput="onTeamInput()">
             </div>
           </div>
-          <div class="field">
-            <label>Average executions per week</label>
-            <div class="input-wrap">
-              <input type="number" id="runsPerWeek" min="1" max="100" step="1" value="20" class="has-suffix">
-              <span class="input-suffix">/test</span>
+          <div id="split-bar-wrap" class="split-bar-wrap">
+            <div class="split-bar">
+              <div class="split-bar-manual" id="split-manual" style="width:60%"></div>
+              <div class="split-bar-auto" id="split-auto" style="width:40%"></div>
+            </div>
+            <div class="split-legend">
+              <span><span class="split-dot" style="background:var(--amber)"></span><span id="split-man-label">Manual</span></span>
+              <span><span class="split-dot" style="background:var(--teal)"></span><span id="split-auto-label">Automation</span></span>
             </div>
           </div>
         </div>
-        <!-- <div class="form-grid" style="margin-top:16px;">
-          <div class="field">
-            <label>Manual Test Execution Time <span>(per test)</span></label>
-            <div class="input-wrap">
-              <input type="number" id="minsPerTest" min="1" max="120" step="1" value="30" class="has-suffix">
-              <span class="input-suffix">mins</span>
-            </div>
-            <span class="hint">Time a manual tester spends clicking through one test case</span>
-          </div>
-        </div> -->
-        <input type="hidden" id="numFTEs" value="10">
-        <input type="hidden" id="salaryInput" value="80000">
-      </div>
 
-      <button class="calc-btn" onclick="runCalc()">
-        Get the Annual Package
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </button>
+        <!-- Test Suite -->
+        <div class="form-section">
+          <div class="form-section-title" style="margin-bottom:4px;">Test Suite</div>
+          <div class="form-grid">
+            <div class="field">
+              <label>Total Test Cases</label>
+              <div class="input-wrap">
+                <input type="number" id="numTests" min="10" max="10000" step="10" value="300" class="has-suffix" oninput="onTeamInput()">
+                <span class="input-suffix">tests</span>
+              </div>
+            </div>
+            <div class="field">
+              <label>Average executions per week</label>
+              <div class="input-wrap">
+                <input type="number" id="runsPerWeek" min="0.5" max="100" step="0.5" value="20" class="has-suffix">
+                <span class="input-suffix">/test</span>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" id="numFTEs" value="10">
+          <input type="hidden" id="salaryInput" value="80000">
+        </div>
+
+        <button class="calc-btn" onclick="runCalc()">
+          Get the Package
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+
+      </div><!-- /main-form-section -->
 
     </div>
   </div>
@@ -581,18 +572,33 @@
       <!-- Page title + input summary ABOVE the green box -->
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:20px;">
         <div>
-          <h2 style="font-family:var(--display);font-size:clamp(20px,3vw,26px);font-weight:400;line-height:1.1;letter-spacing:-.3px;color:var(--text);margin-bottom:6px;">Estimated <em style="font-style:italic;color:var(--teal);">Annual Package</em></h2>
+          <h2 style="font-family:var(--display);font-size:clamp(20px,3vw,26px);font-weight:400;line-height:1.1;letter-spacing:-.3px;color:var(--text);margin-bottom:6px;">Estimated <em style="font-style:italic;color:var(--teal);"> Package</em></h2>
           <p id="resultsSub" style="font-size:13px;color:var(--muted);">—</p>
         </div>
         <button class="back-btn" onclick="resetCalc()" style="flex-shrink:0;margin-top:4px;">← Recalculate</button>
       </div>
 
-      <!-- Annual package — teal hero box -->
-      <div style="background:var(--teal);border-radius:18px;padding:30px 36px;margin-bottom:28px;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.04);"></div>
-        <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:10px;">Estimated Annual Package</div>
-        <div id="b-annual-cost" style="font-family:var(--display);font-size:clamp(44px,7vw,64px);font-weight:400;line-height:1;letter-spacing:-2px;color:#fff;">—</div>
-        <div id="b-annual-sub" style="font-size:13px;color:rgba(255,255,255,.6);margin-top:8px;font-weight:500;">per year, all-in</div>
+      <!-- Package cards — current + with-service -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;">
+
+        <!-- Current Package -->
+        <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:18px;padding:26px 28px;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:-40px;right:-40px;width:130px;height:130px;border-radius:50%;background:rgba(0,0,0,.03);"></div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Base Monthly Package</div>
+          <div id="b-annual-cost" style="font-family:var(--display);font-size:clamp(28px,4vw,40px);font-weight:400;line-height:1;letter-spacing:-1.5px;color:var(--text);">—</div>
+          <div id="b-annual-sub" style="font-size:12px;color:var(--muted);margin-top:6px;font-weight:500;">per month</div>
+          <div id="b-annual-cost-yr" style="font-size:11px;color:var(--muted);margin-top:4px;font-weight:600;">— / year</div>
+        </div>
+
+        <!-- With Service Package (25% higher) -->
+        <div style="background:var(--teal);border-radius:18px;padding:26px 28px;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:-40px;right:-40px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.04);"></div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:8px;">Full Service Monthly Package</div>
+          <div id="b-service-cost" style="font-family:var(--display);font-size:clamp(28px,4vw,40px);font-weight:400;line-height:1;letter-spacing:-1.5px;color:#fff;">—</div>
+          <div id="b-service-sub" style="font-size:12px;color:rgba(255,255,255,.6);margin-top:6px;font-weight:500;">per month</div>
+          <div id="b-service-cost-yr" style="font-size:11px;color:rgba(255,255,255,.5);margin-top:4px;font-weight:600;">— / year</div>
+        </div>
+
       </div>
     </div>
 
@@ -696,7 +702,7 @@
                 <span class="slider-label">Avg. Executions / Week</span>
                 <span class="slider-value" id="b-sv-rpw">—</span>
               </div>
-              <input type="range" id="b-sl-rpw" min="1" max="100" step="5" value="20" oninput="onBlendedSlider()">
+              <input type="range" id="b-sl-rpw" min="1" max="100" step="1" value="20" oninput="onBlendedSlider()">
             </div>
           </div>
         </div>
@@ -726,26 +732,39 @@
               </span>
             </div>
 
-            <!-- Current combined bar -->
-            <div style="margin-bottom:14px;">
-              <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
-                <span style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;">Current</span>
-                <span id="b-t-total-current-pt" style="font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.3px;">—</span>
+            <!-- Manual (current) bar -->
+            <div id="bar-row-manual" style="margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
+                <span style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;">Manual (Current)</span>
+                <span id="b-t-total-manual-pt" style="font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.3px;">—</span>
               </div>
-              <div style="height:40px;background:var(--surface3);border-radius:8px;overflow:hidden;display:flex;">
+              <div style="height:32px;background:var(--surface3);border-radius:8px;overflow:hidden;display:flex;">
+                <div id="bar-seg-auth-man"  style="height:100%;width:0%;background:#9ab4b0;transition:width .7s ease;"></div>
+                <div id="bar-seg-maint-man" style="height:100%;width:0%;background:#9ab4b0;transition:width .7s ease;"></div>
+                <div id="bar-seg-exec-man"  style="height:100%;width:40%;background:#9ab4b0;transition:width .7s ease;"></div>
+              </div>
+            </div>
+
+            <!-- Automated (current) bar -->
+            <div id="bar-row-auto" style="margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
+                <span style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;">Automated (Current)</span>
+                <span id="b-t-total-auto-pt" style="font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.3px;">—</span>
+              </div>
+              <div style="height:32px;background:var(--surface3);border-radius:8px;overflow:hidden;display:flex;">
                 <div id="bar-seg-auth-cur"  style="height:100%;width:40%;background:#075056;transition:width .7s ease;"></div>
                 <div id="bar-seg-maint-cur" style="height:100%;width:35%;background:#3d8a8e;transition:width .7s ease;"></div>
                 <div id="bar-seg-exec-cur"  style="height:100%;width:25%;background:#9ab4b0;transition:width .7s ease;"></div>
               </div>
             </div>
 
-            <!-- Fore AI combined bar -->
+            <!-- Fore AI bar -->
             <div>
-              <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
-                <span style="font-size:12px;font-weight:700;color:var(--teal);letter-spacing:.04em;text-transform:uppercase;">Fore AI</span>
-                <span id="b-t-total-fore-pt" style="font-size:15px;font-weight:800;color:var(--teal);letter-spacing:-.3px;">—</span>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">
+                <span style="font-size:11px;font-weight:700;color:var(--teal);letter-spacing:.04em;text-transform:uppercase;">Fore AI</span>
+                <span id="b-t-total-fore-pt" style="font-size:14px;font-weight:800;color:var(--teal);letter-spacing:-.3px;">—</span>
               </div>
-              <div style="height:40px;background:var(--surface3);border-radius:8px;overflow:hidden;display:flex;">
+              <div style="height:32px;background:var(--surface3);border-radius:8px;overflow:hidden;display:flex;">
                 <div id="bar-seg-auth-fore"  style="height:100%;width:20%;background:#075056;transition:width .7s ease;"></div>
                 <div id="bar-seg-maint-fore" style="height:100%;width:5%;background:#3d8a8e;transition:width .7s ease;"></div>
                 <div id="bar-seg-exec-fore"  style="height:100%;width:8%;background:#9ab4b0;transition:width .7s ease;"></div>
@@ -755,33 +774,38 @@
 
           <!-- Table breakdown below bars -->
           <div style="border-top:1px solid var(--border);padding-top:16px;">
-            <table style="width:100%;border-collapse:collapse;font-size:12px;">
+            <table id="breakdown-main-table" style="width:100%;border-collapse:collapse;font-size:12px;">
               <thead>
                 <tr>
                   <th style="padding:6px 8px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);">Component</th>
-                  <th style="padding:6px 8px;text-align:right;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);">Current</th>
+                  <th id="th-manual" style="padding:6px 8px;text-align:right;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text);border-bottom:1px solid var(--border);">Manual (C)</th>
+                  <th id="th-auto" style="padding:6px 8px;text-align:right;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);">Automated (C)</th>
                   <th style="padding:6px 8px;text-align:right;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);border-bottom:1px solid var(--border);">Fore AI</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td style="padding:9px 8px;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);">Authoring</td>
-                  <td id="b-t-authoring-pt" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);">—</td>
+                  <td id="b-t-man-authoring-pt" class="col-manual" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);">—</td>
+                  <td id="b-t-auto-authoring-pt" class="col-auto" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);">—</td>
                   <td id="b-t-fore-authoring-pt" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--teal);border-bottom:1px solid var(--border);">—</td>
                 </tr>
                 <tr>
                   <td style="padding:9px 8px;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);">Maintenance</td>
-                  <td id="b-t-maint-pt" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);">—</td>
+                  <td id="b-t-man-maint-pt" class="col-manual" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);">—</td>
+                  <td id="b-t-auto-maint-pt" class="col-auto" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);">—</td>
                   <td id="b-t-fore-maint-pt" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--teal);border-bottom:1px solid var(--border);">—</td>
                 </tr>
                 <tr>
                   <td style="padding:9px 8px;font-weight:600;color:var(--text);border-bottom:1.5px solid var(--teal-mid);">Execution</td>
-                  <td id="b-t-exec-pt" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--text);border-bottom:1.5px solid var(--teal-mid);">—</td>
+                  <td id="b-t-man-exec-pt" class="col-manual" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--text);border-bottom:1.5px solid var(--teal-mid);">—</td>
+                  <td id="b-t-auto-exec-pt" class="col-auto" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--text);border-bottom:1.5px solid var(--teal-mid);">—</td>
                   <td id="b-t-fore-exec-pt" style="padding:9px 8px;text-align:right;font-weight:600;color:var(--teal);border-bottom:1.5px solid var(--teal-mid);">—</td>
                 </tr>
                 <tr style="background:var(--teal-dim);">
                   <td style="padding:9px 8px;font-weight:800;color:var(--teal);">Total</td>
-                  <td style="padding:9px 8px;text-align:right;font-weight:800;color:var(--text);" id="b-t-total-current-pt-2">—</td>
+                  <td id="b-t-man-total-pt" class="col-manual" style="padding:9px 8px;text-align:right;font-weight:800;color:var(--text);">—</td>
+                  <td id="b-t-auto-total-pt" class="col-auto" style="padding:9px 8px;text-align:right;font-weight:800;color:var(--text);">—</td>
                   <td style="padding:9px 8px;text-align:right;font-weight:800;color:var(--teal);" id="b-t-total-fore-pt-2">—</td>
                 </tr>
               </tbody>
@@ -826,6 +850,66 @@
       <span id="d-cur-exec-total" class="js-compat"></span><span id="d-fore-exec-total" class="js-compat"></span>
       <span id="d-fore-exec-run" class="js-compat"></span>
       <span id="d-fore-exec-rate-label" class="js-compat"></span><span id="d-fore-exec-rate-label2" class="js-compat"></span>
+
+      <!-- Register Offer -->
+      <div class="toggle-wrap animate" style="margin-top:8px;">
+        <div class="toggle-header" onclick="toggleSection('register-offer')">
+          <span class="toggle-title">Register Offer</span>
+          <span class="toggle-arrow" id="register-offer-arrow">▼</span>
+        </div>
+        <div class="toggle-body" id="register-offer-body" style="padding:24px 28px 28px;">
+          <p style="font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5;">Save this package estimate against a company to keep a record of the offer presented.</p>
+
+          <div style="display:flex;flex-direction:column;gap:14px;">
+
+            <div class="field">
+              <label style="font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--text);">Company Name</label>
+              <input type="text" id="offer-company" placeholder="e.g. Acme Corp"
+                style="width:100%;background:var(--surface);border:1.5px solid var(--border);color:var(--text);
+                       font-family:var(--font);font-size:14px;padding:11px 14px;border-radius:var(--r2);
+                       outline:none;transition:border-color .15s;"
+                onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
+            </div>
+
+            <div class="field">
+              <label style="font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--text);">Contact Name <span style="color:var(--muted);font-size:11px;font-weight:400;margin-left:3px;">optional</span></label>
+              <input type="text" id="offer-contact" placeholder="e.g. Jane Smith"
+                style="width:100%;background:var(--surface);border:1.5px solid var(--border);color:var(--text);
+                       font-family:var(--font);font-size:14px;padding:11px 14px;border-radius:var(--r2);
+                       outline:none;transition:border-color .15s;"
+                onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
+            </div>
+
+            <div class="field">
+              <label style="font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--text);">Notes <span style="color:var(--muted);font-size:11px;font-weight:400;margin-left:3px;">optional</span></label>
+              <textarea id="offer-notes" placeholder="Any context about this offer…" rows="3"
+                style="width:100%;background:var(--surface);border:1.5px solid var(--border);color:var(--text);
+                       font-family:var(--font);font-size:14px;padding:11px 14px;border-radius:var(--r2);
+                       outline:none;transition:border-color .15s;resize:vertical;line-height:1.5;"
+                onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+            </div>
+
+          </div>
+
+          <!-- Offer summary preview -->
+          <div id="offer-preview" style="background:var(--teal-dim);border:1px solid var(--teal-mid);border-radius:var(--r2);padding:14px 16px;margin-top:18px;font-size:12px;line-height:1.7;color:var(--text);display:none;">
+          </div>
+
+          <button onclick="saveOffer()"
+            style="margin-top:18px;width:100%;background:var(--teal);color:#fff;border:none;border-radius:12px;
+                   padding:14px 24px;font-family:var(--font);font-size:14px;font-weight:700;
+                   cursor:pointer;transition:opacity .15s;display:flex;align-items:center;justify-content:center;gap:8px;"
+            onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Save Offer
+          </button>
+
+          <div id="offer-saved-msg" style="display:none;margin-top:14px;text-align:center;font-size:13px;font-weight:600;color:var(--teal);">
+            ✓ Offer saved for <span id="offer-saved-name"></span>
+          </div>
+
+        </div>
+      </div>
 
     </div>
   </div>
@@ -909,6 +993,11 @@
       const infoTextEl = document.getElementById('preset-info-text');
       if (infoTextEl) infoTextEl.textContent = p.label;
       onTeamInput();
+      // Reveal region section
+      const regionSec = document.getElementById('region-section');
+      if (regionSec) { regionSec.style.display = 'block'; regionSec.style.animation = 'none'; void regionSec.offsetWidth; regionSec.style.animation = ''; }
+      // Reset main form if industry changes after region was already picked
+      // (keep region visible but hide main form until region re-selected)
     }
 
 
@@ -936,6 +1025,9 @@
         rpwInput.max = 100;
       }
       applyRegionSalaries();
+      // Reveal main form
+      const mainForm = document.getElementById('main-form-section');
+      if (mainForm) { mainForm.style.display = 'block'; mainForm.style.animation = 'none'; void mainForm.offsetWidth; mainForm.style.animation = ''; }
     }
 
     function applyRegionSalaries() {
@@ -1106,16 +1198,46 @@
       st('b-bk-f-maint', fmtFull(r.foreMaintenance) + '/run');
       st('b-bk-f-exec', fmtFull(r.foreExecution) + '/run');
 
-      // 3-part breakdown table — cost per test per run
+      // 3-part breakdown table — cost per test per run, split by method
       const T = r.totalTests;
-      st('b-t-authoring-pt', fmt2(r.curAuthoring / T));
+      const manPct = r.totalTests > 0 ? r.manTests / r.totalTests : 0;
+      const autoPct = r.totalTests > 0 ? r.autoTests / r.totalTests : 0;
+
+      // Manual column: manual testers have execution cost only (no authoring/maintenance scripting)
+      const manAuthoringPt = 0; // manual testers don't script
+      const manMaintPt = 0;     // no automated maintenance for manual tests
+      const manExecPt = r.manTests > 0 ? r.manPortion / r.manTests : 0; // labour per manual test
+      const manTotalPt = manAuthoringPt + manMaintPt + manExecPt;
+
+      // Automated column: authoring + maintenance + infra execution for auto tests only
+      const autoAuthoringPt = r.autoTests > 0 ? r.curAuthoring / r.autoTests : 0;
+      const autoMaintPt = r.autoTests > 0 ? r.curMaintenance / r.autoTests : 0;
+      const autoExecPt = r.autoTests > 0 ? (r.curExecution - r.manPortion) / r.autoTests : 0;
+      const autoTotalPt = autoAuthoringPt + autoMaintPt + autoExecPt;
+
+      // Fore AI column: per total test
+      st('b-t-man-authoring-pt', r.manTests > 0 ? fmt2(manAuthoringPt) : '—');
+      st('b-t-auto-authoring-pt', r.autoTests > 0 ? fmt2(autoAuthoringPt) : '—');
       st('b-t-fore-authoring-pt', fmt2(r.foreAuthoring / T));
-      st('b-t-maint-pt', fmt2(r.curMaintenance / T));
+      st('b-t-man-maint-pt', r.manTests > 0 ? fmt2(manMaintPt) : '—');
+      st('b-t-auto-maint-pt', r.autoTests > 0 ? fmt2(autoMaintPt) : '—');
       st('b-t-fore-maint-pt', fmt2(r.foreMaintenance / T));
-      st('b-t-exec-pt', fmt2(r.curExecution / T));
+      st('b-t-man-exec-pt', r.manTests > 0 ? fmt2(manExecPt) : '—');
+      st('b-t-auto-exec-pt', r.autoTests > 0 ? fmt2(autoExecPt) : '—');
       st('b-t-fore-exec-pt', fmt2(r.foreExecution / T));
-      st('b-t-total-current-pt', fmt2(r.currentTotalPerRun / T));
+      st('b-t-man-total-pt', r.manTests > 0 ? fmt2(manTotalPt) : '—');
+      st('b-t-auto-total-pt', r.autoTests > 0 ? fmt2(autoTotalPt) : '—');
       st('b-t-total-fore-pt', fmt2(r.foreTotalPerRun / T));
+
+      // Column visibility: hide Manual col if 0 manual FTEs, hide Auto col if 0 auto FTEs
+      const showManual = r.manFTEs > 0;
+      const showAuto = r.autoFTEs > 0;
+      document.querySelectorAll('.col-manual').forEach(el => el.style.display = showManual ? '' : 'none');
+      document.querySelectorAll('.col-auto').forEach(el => el.style.display = showAuto ? '' : 'none');
+      const thMan = document.getElementById('th-manual');
+      const thAuto = document.getElementById('th-auto');
+      if (thMan) thMan.style.display = showManual ? '' : 'none';
+      if (thAuto) thAuto.style.display = showAuto ? '' : 'none';
 
       // ── Detailed calculation rows ─────────────────────────────
       // Team
@@ -1161,13 +1283,31 @@
       // fore ai annual package — $20k floor, $150k custom offer cap, rounded to nearest $5k
       const foreAnnualRaw = r.foreTotalPerRun * r.runsPerMonth * 12;
       const foreAnnualFloored = Math.max(foreAnnualRaw, 20000);
-      const foreAnnual = Math.round(foreAnnualFloored / 5000) * 5000;
-      if (foreAnnualRaw > 150000) {
-        st('b-annual-cost', 'Custom offer');
-        st('b-annual-sub', 'Contact us for enterprise pricing');
+      const foreMonthly = Math.round(foreAnnualFloored / 12 / 1000) * 1000;
+      const foreAnnual = foreMonthly * 12;
+
+      // Service package: 25% higher, rounded to nearest 1000
+      const serviceAnnualRaw = foreAnnualFloored * 1.25;
+      const serviceMonthly = Math.round(serviceAnnualRaw / 12 / 1000) * 1000;
+      const serviceAnnual = serviceMonthly * 12;
+
+      // If either exceeds custom threshold, both become custom
+      const isCustom = foreAnnualRaw > 150000 || serviceAnnualRaw > 150000;
+
+      if (isCustom) {
+        st('b-annual-cost', 'Custom');
+        st('b-annual-sub', 'Contact us for pricing');
+        st('b-annual-cost-yr', '');
+        st('b-service-cost', 'Custom');
+        st('b-service-sub', 'Contact us for pricing');
+        st('b-service-cost-yr', '');
       } else {
-        st('b-annual-cost', '$' + foreAnnual.toLocaleString());
-        st('b-annual-sub', foreAnnualRaw < 20000 ? 'minimum annual package' : 'per year, all-in');
+        st('b-annual-cost', '$' + foreMonthly.toLocaleString());
+        st('b-annual-sub', foreAnnualRaw < 20000 ? 'minimum package' : 'per month');
+        st('b-annual-cost-yr', '$' + foreAnnual.toLocaleString() + ' / year');
+        st('b-service-cost', '$' + serviceMonthly.toLocaleString());
+        st('b-service-sub', 'per month, incl. service');
+        st('b-service-cost-yr', '$' + serviceAnnual.toLocaleString() + ' / year');
       }
 
       // Payback period: how many months of savings cover the fore AI annual cost
@@ -1243,64 +1383,85 @@
       // Update stacked segment bars for breakdown
       (function() {
         const T = r.totalTests;
-        const curTot = r.currentTotalPerRun / T || 0.0001;
-        const foreTot = r.foreTotalPerRun / T;
 
-        // Current segments — true linear scale, always fills 100%
-        const authCurPct  = Math.min(100, (r.curAuthoring   / T / curTot) * 100);
-        const maintCurPct = Math.min(100, (r.curMaintenance  / T / curTot) * 100);
-        const execCurPct  = Math.min(100, (r.curExecution    / T / curTot) * 100);
+        // Per-test costs for each method
+        const manAuthoringPerT  = 0;
+        const manMaintPerT      = 0;
+        const manExecPerT       = r.manTests > 0 ? r.manPortion / r.manTests : 0;
+        const manTotalPerT      = manAuthoringPerT + manMaintPerT + manExecPerT;
 
-        // Fore AI total as true % of current
-        const foreRawPct = Math.min(100, (foreTot / curTot) * 100);
+        const autoAuthoringPerT = r.autoTests > 0 ? r.curAuthoring   / r.autoTests : 0;
+        const autoMaintPerT     = r.autoTests > 0 ? r.curMaintenance / r.autoTests : 0;
+        const autoExecPerT      = r.autoTests > 0 ? (r.curExecution - r.manPortion) / r.autoTests : 0;
+        const autoTotalPerT     = autoAuthoringPerT + autoMaintPerT + autoExecPerT;
 
-        // Visual width for fore AI: sqrt extrapolation so small values are still readable,
-        // with a 12% minimum floor. Current bar = 100% reference.
-        const MIN_FORE = 12;
-        const foreVisPct = Math.max(MIN_FORE, Math.sqrt(foreRawPct / 100) * 100);
+        const foreAuthoringPerT = r.foreAuthoring   / T;
+        const foreMaintPerT     = r.foreMaintenance / T;
+        const foreExecPerT      = r.foreExecution   / T;
+        const foreTotalPerT     = foreAuthoringPerT + foreMaintPerT + foreExecPerT;
 
-        // Distribute the visual width proportionally across fore AI segments
-        const foreSegTot = (r.foreAuthoring + r.foreMaintenance + r.foreExecution) / T || 0.0001;
-        const authForePct  = (r.foreAuthoring   / T / foreSegTot) * foreVisPct;
-        const maintForePct = (r.foreMaintenance  / T / foreSegTot) * foreVisPct;
-        const execForePct  = (r.foreExecution    / T / foreSegTot) * foreVisPct;
+        // Reference = largest of the three totals (bar fills 100%)
+        const refMax = Math.max(manTotalPerT, autoTotalPerT, foreTotalPerT) || 0.0001;
+
+        // Manual bar: proportional segments filling its visual width
+        const manVisPct = (manTotalPerT / refMax) * 100;
+        // Automated bar: sqrt-compressed so it doesn't dwarf fore AI, with 15% floor
+        const autoRawPct = (autoTotalPerT / refMax) * 100;
+        const MIN_BAR = 15;
+        const autoVisPct = autoTotalPerT > 0 ? Math.max(MIN_BAR, Math.sqrt(autoRawPct / 100) * 100) : 0;
+        // Fore AI bar: same sqrt treatment with 10% floor
+        const foreRawPct = (foreTotalPerT / refMax) * 100;
+        const foreVisPct = foreTotalPerT > 0 ? Math.max(10, Math.sqrt(foreRawPct / 100) * 100) : 0;
 
         function setW(id, pct) {
           const el = document.getElementById(id);
           if (el) el.style.width = pct.toFixed(1) + '%';
         }
-        function setWLbl(id, pct) {
-          const el = document.getElementById(id);
-          if (el) { el.style.width = pct.toFixed(1) + '%'; }
-        }
 
-        setW('bar-seg-auth-cur',  authCurPct);
-        setW('bar-seg-maint-cur', maintCurPct);
-        setW('bar-seg-exec-cur',  execCurPct);
-        setWLbl('bar-seg-auth-cur-lbl',  authCurPct);
-        setWLbl('bar-seg-maint-cur-lbl', maintCurPct);
-        setWLbl('bar-seg-exec-cur-lbl',  execCurPct);
+        // Manual bar segments — only exec matters (authoring/maint = 0)
+        setW('bar-seg-auth-man',  0);
+        setW('bar-seg-maint-man', 0);
+        setW('bar-seg-exec-man',  manVisPct);
 
-        setW('bar-seg-auth-fore',  authForePct);
-        setW('bar-seg-maint-fore', maintForePct);
-        setW('bar-seg-exec-fore',  execForePct);
-        setWLbl('bar-seg-auth-fore-lbl',  authForePct);
-        setWLbl('bar-seg-maint-fore-lbl', maintForePct);
-        setWLbl('bar-seg-exec-fore-lbl',  execForePct);
+        // Automated bar segments (proportional within autoVisPct)
+        const autoSegTot = autoTotalPerT || 0.0001;
+        setW('bar-seg-auth-cur',  (autoAuthoringPerT / autoSegTot) * autoVisPct);
+        setW('bar-seg-maint-cur', (autoMaintPerT     / autoSegTot) * autoVisPct);
+        setW('bar-seg-exec-cur',  (autoExecPerT      / autoSegTot) * autoVisPct);
 
-        // Top card — single colour bars: current linear, fore AI sqrt-extrapolated
-        setW('top-seg-auth-cur',   authCurPct);
-        setW('top-seg-maint-cur',  maintCurPct);
-        setW('top-seg-exec-cur',   execCurPct);
-        // fore AI top bar: single block using the visual width (split across 3 segments proportionally)
-        setW('top-seg-auth-fore',  authForePct);
-        setW('top-seg-maint-fore', maintForePct);
-        setW('top-seg-exec-fore',  execForePct);
+        // Fore AI bar segments (proportional within foreVisPct)
+        const foreSegTot = foreTotalPerT || 0.0001;
+        setW('bar-seg-auth-fore',  (foreAuthoringPerT / foreSegTot) * foreVisPct);
+        setW('bar-seg-maint-fore', (foreMaintPerT     / foreSegTot) * foreVisPct);
+        setW('bar-seg-exec-fore',  (foreExecPerT      / foreSegTot) * foreVisPct);
 
-        // Also mirror totals to the table's duplicate total row
-        const el1 = document.getElementById('b-t-total-current-pt-2');
+        // Top card bars — current always fills 100%, fore AI sqrt-scaled relative to current
+        const topCurTot = r.currentTotalPerRun / T || 0.0001;
+        const topForeTot = r.foreTotalPerRun / T;
+        const topForeRawPct = Math.min(100, (topForeTot / topCurTot) * 100);
+        const topForeVisPct = topForeTot > 0 ? Math.max(10, Math.sqrt(topForeRawPct / 100) * 100) : 0;
+        // current segments: proportional, summing to 100%
+        const curSegTotTop = topCurTot || 0.0001;
+        setW('top-seg-auth-cur',  (r.curAuthoring   / T / curSegTotTop) * 100);
+        setW('top-seg-maint-cur', (r.curMaintenance / T / curSegTotTop) * 100);
+        setW('top-seg-exec-cur',  (r.curExecution   / T / curSegTotTop) * 100);
+        // fore AI segments: proportional within topForeVisPct
+        setW('top-seg-auth-fore',  (foreAuthoringPerT / foreSegTot) * topForeVisPct);
+        setW('top-seg-maint-fore', (foreMaintPerT     / foreSegTot) * topForeVisPct);
+        setW('top-seg-exec-fore',  (foreExecPerT      / foreSegTot) * topForeVisPct);
+
+        // Labels for the new bars
+        st('b-t-total-manual-pt', r.manTests > 0 ? fmt2(manTotalPerT) : '—');
+        st('b-t-total-auto-pt',   r.autoTests > 0 ? fmt2(autoTotalPerT) : '—');
+
+        // Show/hide manual and auto bar rows
+        const manRow  = document.getElementById('bar-row-manual');
+        const autoRow = document.getElementById('bar-row-auto');
+        if (manRow)  manRow.style.display  = r.manFTEs  > 0 ? '' : 'none';
+        if (autoRow) autoRow.style.display = r.autoFTEs > 0 ? '' : 'none';
+
+        // Mirror fore total to compat element
         const el2 = document.getElementById('b-t-total-fore-pt-2');
-        if (el1) el1.textContent = document.getElementById('b-t-total-current-pt')?.textContent || '—';
         if (el2) el2.textContent = document.getElementById('b-t-total-fore-pt')?.textContent || '—';
       })();
 
@@ -1334,10 +1495,34 @@
     }
 
     function onBlendedSlider() {
-      const tests   = +document.getElementById('b-sl-tests').value;
-      const rpw     = +document.getElementById('b-sl-rpw').value;
-      const manFTEs = +document.getElementById('b-sl-mfte').value;
-      const autoFTEs= +document.getElementById('b-sl-afte').value;
+      const tests    = +document.getElementById('b-sl-tests').value;
+      const rpwEl    = document.getElementById('b-sl-rpw');
+      const mfteEl   = document.getElementById('b-sl-mfte');
+      const afteEl   = document.getElementById('b-sl-afte');
+      const rpw      = +rpwEl.value;
+      const manFTEs  = +mfteEl.value;
+      const autoFTEs = +afteEl.value;
+
+      // ── rpw slider: adapt mode as value crosses thresholds ───
+      const rpwV = Math.max(0.5, rpw);
+      if (rpwV < 1) {
+        rpwEl.min = 0.5; rpwEl.max = 2; rpwEl.step = 0.5;
+      } else if (rpwV < 5) {
+        rpwEl.min = 1; rpwEl.max = 10; rpwEl.step = 1;
+      } else {
+        rpwEl.min = 5; rpwEl.max = 100; rpwEl.step = 5;
+      }
+
+      // ── Manual FTEs slider ───────────────────────────────────
+      if (mfteEl.step !== '5' || mfteEl.max !== '100') {
+        mfteEl.min = 0; mfteEl.max = 100; mfteEl.step = 5;
+      }
+
+      // ── Automation FTEs slider ───────────────────────────────
+      if (afteEl.step !== '5' || afteEl.max !== '100') {
+        afteEl.min = 0; afteEl.max = 100; afteEl.step = 5;
+      }
+
       st('b-sv-tests',  tests.toLocaleString());
       st('b-sv-rpw',    rpw + ' / wk');
       st('b-sv-mfte',   manFTEs);
@@ -1379,16 +1564,49 @@
         el.value = Math.round(val / step) * step;                           // snap to nearest step
       }
 
-      applyGuardrails('b-sl-mfte',  manFTEs,  5,  0);
-      applyGuardrails('b-sl-afte',  autoFTEs, 5,  0);
-      applyGuardrails('b-sl-tests', tests,   50, 50);
-      applyGuardrails('b-sl-rpw',   rpw,      5,  5);
+      // ── Manual FTEs slider — step 5, min 0, max 100, starts at input value
+      (function() {
+        const el = document.getElementById('b-sl-mfte');
+        if (!el) return;
+        el.min = 0; el.max = 100; el.step = 5;
+        el.value = manFTEs;
+      })();
 
-      // Populate labels immediately so they never show —
-      st('b-sv-mfte',  Math.round(manFTEs  / 5)  * 5);
-      st('b-sv-afte',  Math.round(autoFTEs / 5)  * 5);
-      st('b-sv-tests', Math.round(tests    / 50) * 50);
-      st('b-sv-rpw',   Math.round(rpw      / 5)  * 5 + ' / wk');
+      // ── Automation FTEs slider — step 5, min 0, max 100, starts at input value
+      (function() {
+        const el = document.getElementById('b-sl-afte');
+        if (!el) return;
+        el.min = 0; el.max = 100; el.step = 5;
+        el.value = autoFTEs;
+      })();
+
+      // ── No. of Tests slider ──────────────────────────────────
+      // ±100% guardrails, step 50, floor 50
+      applyGuardrails('b-sl-tests', tests, 50, 50);
+
+      // ── Avg Executions / Week slider ─────────────────────────
+      // input < 1  → values: 0.5, 1, 1.5, 2          (step 0.5, min 0.5, max 2)
+      // input 1–4  → values: 1, 2, 3 … 10             (step 1,   min 1,   max 10)
+      // input ≥ 5  → values: 5, 10, 15 … (rpw×2)     (step 5,   min 5,   max rpw*2 rounded to nearest 5)
+      (function() {
+        const el = document.getElementById('b-sl-rpw');
+        if (!el) return;
+        const v = Math.max(0.5, rpw);
+        if (v < 1) {
+          el.min = 0.5; el.max = 2; el.step = 0.5; el.value = v;
+        } else if (v < 5) {
+          el.min = 1; el.max = 10; el.step = 1; el.value = Math.round(v);
+        } else {
+          el.min = 5; el.max = 100; el.step = 5;
+          el.value = Math.round(v / 5) * 5;
+        }
+      })();
+
+      // Populate labels immediately
+      st('b-sv-mfte',  manFTEs);
+      st('b-sv-afte',  autoFTEs);
+      st('b-sv-tests', Math.round(tests / 50) * 50);
+      st('b-sv-rpw',   rpw + ' / wk');
 
       const r = computeBlended();
       renderBlended(r);
@@ -1417,9 +1635,64 @@
       arrow.classList.toggle('open', open);
     }
 
+    function saveOffer() {
+      const company = document.getElementById('offer-company').value.trim();
+      if (!company) {
+        document.getElementById('offer-company').style.borderColor = '#e53e3e';
+        document.getElementById('offer-company').focus();
+        setTimeout(() => document.getElementById('offer-company').style.borderColor = 'var(--border)', 2000);
+        return;
+      }
+      const contact = document.getElementById('offer-contact').value.trim();
+      const notes   = document.getElementById('offer-notes').value.trim();
+
+      // Pull current package values from the DOM
+      const baseMo  = document.getElementById('b-annual-cost')?.textContent || '—';
+      const baseYr  = document.getElementById('b-annual-cost-yr')?.textContent || '—';
+      const svcMo   = document.getElementById('b-service-cost')?.textContent || '—';
+      const svcYr   = document.getElementById('b-service-cost-yr')?.textContent || '—';
+      const industry = _industry ? (_industry.charAt(0).toUpperCase() + _industry.slice(1)) : '—';
+      const region   = _region || '—';
+      const date     = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+
+      // Build preview
+      const preview = document.getElementById('offer-preview');
+      preview.style.display = 'block';
+      preview.innerHTML =
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;">' +
+        '<span style="color:var(--muted);">Company</span><span style="font-weight:700;">' + company + '</span>' +
+        (contact ? '<span style="color:var(--muted);">Contact</span><span style="font-weight:600;">' + contact + '</span>' : '') +
+        '<span style="color:var(--muted);">Industry</span><span>' + industry + '</span>' +
+        '<span style="color:var(--muted);">Region</span><span>' + region + '</span>' +
+        '<span style="color:var(--muted);">Base Monthly</span><span style="font-weight:700;color:var(--text);">' + baseMo + '</span>' +
+        '<span style="color:var(--muted);">Base Annual</span><span>' + baseYr + '</span>' +
+        '<span style="color:var(--muted);">Full Service Mo.</span><span style="font-weight:700;color:var(--teal);">' + svcMo + '</span>' +
+        '<span style="color:var(--muted);">Full Service Yr.</span><span>' + svcYr + '</span>' +
+        '<span style="color:var(--muted);">Date</span><span>' + date + '</span>' +
+        (notes ? '<span style="color:var(--muted);">Notes</span><span>' + notes + '</span>' : '') +
+        '</div>';
+
+      // Save to localStorage
+      try {
+        const key = 'fore-offers';
+        const existing = JSON.parse(localStorage.getItem(key) || '[]');
+        existing.unshift({ company, contact, notes, industry, region, baseMo, baseYr, svcMo, svcYr, date });
+        localStorage.setItem(key, JSON.stringify(existing.slice(0, 50)));
+      } catch(e) {}
+
+      // Show confirmation
+      document.getElementById('offer-saved-msg').style.display = 'block';
+      document.getElementById('offer-saved-name').textContent = company;
+    }
+
     function resetCalc() {
       document.getElementById('resultsSection').style.display = 'none';
       document.getElementById('inputSection').style.display = 'block';
+      // Re-show region and form sections if they were already selected
+      const regionSec = document.getElementById('region-section');
+      const mainForm  = document.getElementById('main-form-section');
+      if (regionSec) regionSec.style.display = _industry ? 'block' : 'none';
+      if (mainForm)  mainForm.style.display  = _region   ? 'block' : 'none';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   </script>

@@ -1532,11 +1532,11 @@
         <div style="margin-bottom:12px;">
           <div class="kpi-card green">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-              <div class="kpi-label" style="margin-bottom:0;">Annual Package</div>
+              <div class="kpi-label" style="margin-bottom:0;">Monthly Package</div>
               <span id="kpiPlanBadge" style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);background:rgba(7,80,86,.12);border:1px solid var(--teal-mid);border-radius:99px;padding:2px 10px;">Standard</span>
             </div>
             <div class="kpi-value green" id="kpiAnnualPackage">—</div>
-            <div class="kpi-sub" id="kpiPackageSub">estimated all-in per year</div>
+            <div class="kpi-sub" id="kpiPackageSub">estimated all-in per month</div>
           </div>
         </div>
 
@@ -2660,7 +2660,7 @@
       const subEl   = document.getElementById('kpiPackageSub');
       const badgeEl = document.getElementById('kpiPlanBadge');
       const isEnterprise = r.isCustom || r.foreAnnual > 75000;
-      if (pkgEl) pkgEl.textContent = r.isCustom ? 'Custom Package' : fmt$(r.foreAnnual);
+      if (pkgEl) pkgEl.textContent = r.isCustom ? 'Custom Package' : fmt$(Math.round(r.foreAnnual/12000)*1000);
       if (subEl) subEl.textContent = r.isCustom ? 'Contact us for enterprise pricing' : 'estimated all-in per year';
       if (badgeEl) badgeEl.textContent = isEnterprise ? 'Enterprise' : 'Standard';
 

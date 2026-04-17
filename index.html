@@ -506,6 +506,29 @@
       <!-- Step 3: Rest of form (shown after region selected) -->
       <div id="main-form-section" style="display:none;animation:fadeUp .35s ease both;">
 
+        <!-- Test Suite -->
+        <div class="form-section">
+          <div class="form-section-title" style="margin-bottom:4px;">Test Suite</div>
+          <div class="form-grid">
+            <div class="field">
+              <label>Average executions per week</label>
+              <div class="input-wrap">
+                <input type="number" id="runsPerWeek" min="0.5" max="100" step="0.5" value="20" class="has-suffix">
+                <span class="input-suffix">/test</span>
+              </div>
+            </div>
+            <div class="field">
+              <label>Total Test Cases</label>
+              <div class="input-wrap">
+                <input type="number" id="numTests" min="10" max="10000" step="10" value="300" class="has-suffix" oninput="onTeamInput()">
+                <span class="input-suffix">tests</span>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" id="numFTEs" value="10">
+          <input type="hidden" id="salaryInput" value="80000">
+        </div>
+
         <!-- QA Team -->
         <div class="form-section">
           <div class="form-section-title" style="margin-bottom:4px;">QA Team</div>
@@ -529,29 +552,6 @@
               <span><span class="split-dot" style="background:var(--teal)"></span><span id="split-auto-label">Automation</span></span>
             </div>
           </div>
-        </div>
-
-        <!-- Test Suite -->
-        <div class="form-section">
-          <div class="form-section-title" style="margin-bottom:4px;">Test Suite</div>
-          <div class="form-grid">
-            <div class="field">
-              <label>Average executions per week</label>
-              <div class="input-wrap">
-                <input type="number" id="runsPerWeek" min="0.5" max="100" step="0.5" value="20" class="has-suffix">
-                <span class="input-suffix">/test</span>
-              </div>
-            </div>
-            <div class="field">
-              <label>Total Test Cases</label>
-              <div class="input-wrap">
-                <input type="number" id="numTests" min="10" max="10000" step="10" value="300" class="has-suffix" oninput="onTeamInput()">
-                <span class="input-suffix">tests</span>
-              </div>
-            </div>
-          </div>
-          <input type="hidden" id="numFTEs" value="10">
-          <input type="hidden" id="salaryInput" value="80000">
         </div>
 
         <button class="calc-btn" onclick="runCalc()">
@@ -582,7 +582,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;">
 
         <!-- Current Package -->
-        <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:18px;padding:26px 28px;position:relative;overflow:hidden;">
+        <div id="pkg-card-base" style="background:var(--surface2);border:1.5px solid var(--border);border-radius:18px;padding:26px 28px;position:relative;overflow:hidden;">
           <div style="position:absolute;top:-40px;right:-40px;width:130px;height:130px;border-radius:50%;background:rgba(0,0,0,.03);"></div>
           <div style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Base Monthly Package</div>
           <div id="b-annual-cost" style="font-family:var(--display);font-size:clamp(28px,4vw,40px);font-weight:400;line-height:1;letter-spacing:-1.5px;color:var(--text);">—</div>
@@ -593,64 +593,12 @@
         <!-- With Service Package (25% higher) -->
         <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:18px;padding:26px 28px;position:relative;overflow:hidden;">
           <div style="position:absolute;top:-40px;right:-40px;width:130px;height:130px;border-radius:50%;background:rgba(0,0,0,.03);"></div>
-          <div style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Full Service Monthly Package</div>
+          <div id="pkg-card-svc-label" style="font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Full Service Monthly Package</div>
           <div id="b-service-cost" style="font-family:var(--display);font-size:clamp(28px,4vw,40px);font-weight:400;line-height:1;letter-spacing:-1.5px;color:var(--text);">—</div>
           <div id="b-service-sub" style="font-size:12px;color:var(--muted);margin-top:6px;font-weight:500;">per month</div>
           <div id="b-service-cost-yr" style="font-size:11px;color:var(--muted);margin-top:4px;font-weight:600;">— / year</div>
         </div>
 
-      </div>
-
-      <!-- Monthly Cost Breakdown — Invoice Style -->
-      <div id="monthly-breakdown-wrap" style="margin-top:4px;margin-bottom:0;">
-        <div style="border:1.5px solid var(--border);border-radius:18px;overflow:hidden;background:var(--surface);">
-
-          <!-- Invoice header -->
-          <div style="padding:20px 28px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:baseline;">
-            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">Monthly Cost Breakdown · <span id="inv-executions-per-month">—</span> executions / month</div>
-            <div style="font-size:11px;color:var(--muted);font-weight:500;" id="inv-date-label"></div>
-          </div>
-
-          <!-- Line items -->
-          <table style="width:100%;border-collapse:collapse;font-size:13px;">
-            <thead>
-              <tr style="background:var(--surface2);">
-                <th style="padding:10px 28px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);">Service</th>
-                <th style="padding:10px 20px;text-align:right;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);">Base</th>
-                <th style="padding:10px 28px;text-align:right;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);">Full Service</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="padding:13px 28px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text);">Test Generation</td>
-                <td style="padding:13px 20px;text-align:right;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);" id="inv-gen-monthly">—</td>
-                <td style="padding:13px 28px;text-align:right;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);" id="inv-gen-monthly-svc">—</td>
-              </tr>
-              <tr>
-                <td style="padding:13px 28px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text);">Test Executions</td>
-                <td style="padding:13px 20px;text-align:right;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);" id="inv-exec-monthly">—</td>
-                <td style="padding:13px 28px;text-align:right;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);" id="inv-exec-monthly-svc">—</td>
-              </tr>
-              <tr>
-                <td style="padding:13px 28px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text);">Maintenance &amp; Self-Healing</td>
-                <td style="padding:13px 20px;text-align:right;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);" id="inv-maint-monthly">—</td>
-                <td style="padding:13px 28px;text-align:right;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);" id="inv-maint-monthly-svc">—</td>
-              </tr>
-              <tr>
-                <td style="padding:13px 28px;border-bottom:1.5px solid var(--border);font-weight:600;color:var(--text);">HOTL Services</td>
-                <td style="padding:13px 20px;text-align:right;font-weight:600;color:var(--muted);border-bottom:1.5px solid var(--border);" id="inv-hotl-base">—</td>
-                <td style="padding:13px 28px;text-align:right;font-weight:700;color:var(--text);border-bottom:1.5px solid var(--border);" id="inv-hotl-svc">—</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr style="background:var(--surface2);">
-                <td style="padding:15px 28px;font-weight:700;color:var(--text);font-size:13px;">Monthly Total</td>
-                <td style="padding:15px 20px;text-align:right;font-weight:800;color:var(--text);font-size:15px;letter-spacing:-.3px;" id="inv-base-total">—</td>
-                <td style="padding:15px 28px;text-align:right;font-weight:800;color:var(--text);font-size:15px;letter-spacing:-.3px;" id="inv-service-total">—</td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
       </div>
 
       <!-- Execution Pricing Tiers -->
@@ -663,7 +611,7 @@
           <thead>
             <tr style="background:var(--surface2);">
               <th style="padding:9px 28px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);">Executions range</th>
-              <th style="padding:9px 20px;text-align:right;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);">Rate per run</th>
+              <th style="padding:9px 20px;text-align:right;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);">Rate per execution</th>
               <th style="padding:9px 28px;text-align:right;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);">Discount</th>
             </tr>
           </thead>
@@ -692,12 +640,61 @@
         </div>
       </div>
 
+      <!-- Monthly Cost Breakdown — Toggle, single column -->
+      <div id="monthly-breakdown-wrap" class="toggle-wrap animate" style="margin-top:12px;">
+        <div class="toggle-header" onclick="toggleSection('monthly-breakdown')">
+          <span class="toggle-title">Monthly Cost Breakdown</span>
+          <span class="toggle-arrow" id="monthly-breakdown-arrow">▼</span>
+        </div>
+        <div class="toggle-body" id="monthly-breakdown-body">
+          <table style="width:100%;border-collapse:collapse;font-size:13px;">
+            <tbody>
+              <!-- Generation, Execution, Maintenance → Base Package Cost subtotal -->
+              <tr>
+                <td style="padding:13px 28px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text);">Generation</td>
+                <td style="padding:13px 28px;text-align:right;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);" id="inv-gen-monthly">—</td>
+              </tr>
+              <tr>
+                <td style="padding:13px 28px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text);">Execution</td>
+                <td style="padding:13px 28px;text-align:right;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);" id="inv-exec-monthly">—</td>
+              </tr>
+              <tr>
+                <td style="padding:13px 28px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text);">Maintenance</td>
+                <td style="padding:13px 28px;text-align:right;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);" id="inv-maint-monthly">—</td>
+              </tr>
+              <!-- Base Package Cost subtotal -->
+              <tr style="background:var(--surface2);">
+                <td style="padding:13px 28px;font-weight:700;color:var(--text);font-size:13px;border-bottom:1px solid var(--border);">Base Package Cost</td>
+                <td style="padding:13px 28px;text-align:right;font-weight:800;color:var(--text);font-size:14px;letter-spacing:-.3px;border-bottom:1px solid var(--border);" id="inv-base-total">—</td>
+              </tr>
+              <!-- HOTL Service add-on -->
+              <tr>
+                <td style="padding:13px 28px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text);">HOTL Service</td>
+                <td style="padding:13px 28px;text-align:right;font-weight:700;color:var(--text);border-bottom:1px solid var(--border);" id="inv-hotl-svc">—</td>
+              </tr>
+              <!-- Full Package Cost total -->
+              <tr style="background:var(--teal-dim);">
+                <td style="padding:15px 28px;font-weight:700;color:var(--teal);font-size:13px;">Full Package Cost</td>
+                <td style="padding:15px 28px;text-align:right;font-weight:800;color:var(--teal);font-size:15px;letter-spacing:-.3px;" id="inv-service-total">—</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- hidden compat ids that JS writes to for the svc column -->
+          <span id="inv-executions-per-month" style="display:none;"></span>
+          <span id="inv-gen-monthly-svc" style="display:none;"></span>
+          <span id="inv-exec-monthly-svc" style="display:none;"></span>
+          <span id="inv-maint-monthly-svc" style="display:none;"></span>
+          <span id="inv-hotl-base" style="display:none;"></span>
+          <span id="inv-date-label" style="display:none;"></span>
+        </div>
+      </div>
+
     </div>
 
     <div class="tab-panel active" id="panel-blended">
 
       <!-- Per-test cost execution — thick stacked bars -->
-      <div class="animate" style="background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:24px 24px 22px;margin-bottom:16px;">
+      <div id="cost-per-test-card" class="animate" style="background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:24px 24px 22px;margin-bottom:16px;">
 
         <!-- Header -->
         <div style="margin-bottom:20px;">
@@ -743,7 +740,7 @@
       <span id="cp-tagline" class="js-compat"></span>
 
       <!-- Metric cards: Payback + Time Saved -->
-      <div class="metrics-row animate">
+      <div id="metrics-row-compare" class="metrics-row animate">
         <div class="metric-card">
           <div class="metric-label">Payback Period</div>
           <div class="metric-value">
@@ -801,7 +798,7 @@
       </div>
 
       <!-- Cost breakdown collapsible -->
-      <div class="toggle-wrap animate">
+      <div id="cost-breakdown-toggle" class="toggle-wrap animate">
         <div class="toggle-header" onclick="toggleSection('b-breakdown')">
           <span class="toggle-title">Cost Component Breakdown</span>
           <span class="toggle-arrow" id="b-breakdown-arrow">▼</span>
@@ -814,7 +811,7 @@
             <!-- Component legend -->
             <div style="display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
               <span style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--muted);">
-                <span style="width:10px;height:10px;border-radius:2px;background:#075056;display:inline-block;"></span>Authoring
+                <span style="width:10px;height:10px;border-radius:2px;background:#075056;display:inline-block;"></span>Generation
               </span>
               <span style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--muted);">
                 <span style="width:10px;height:10px;border-radius:2px;background:#3d8a8e;display:inline-block;"></span>Maintenance
@@ -877,7 +874,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td style="padding:9px 8px;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);">Authoring</td>
+                  <td style="padding:9px 8px;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);">Generation</td>
                   <td id="b-t-man-exec-pt" class="col-manual" rowspan="3"
                       style="padding:9px 8px;text-align:right;font-weight:700;color:var(--text);
                              border-bottom:1.5px solid var(--teal-mid);vertical-align:middle;">—</td>
@@ -1288,6 +1285,23 @@
     function renderBlended(r) {
       _bData = r;
 
+      // ── Zero-engineers mode: hide all comparison UI, show only fore AI costs ──
+      const noEngineers = r.manFTEs === 0 && r.autoFTEs === 0;
+      // Elements that only make sense when there's a current-state to compare against
+      const comparisonIds = [
+        'cost-per-test-card',     // current vs fore ai bars
+        'metrics-row-compare',    // payback + time saved cards
+        'cost-breakdown-toggle',  // cost component breakdown
+        'pkg-card-base',          // "Base Monthly Package" card
+      ];
+      comparisonIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = noEngineers ? 'none' : '';
+      });
+      // When no engineers, relabel the full-service card to just "fore ai Monthly Package"
+      const svcLabel = document.getElementById('pkg-card-svc-label');
+      if (svcLabel) svcLabel.textContent = noEngineers ? 'fore ai Monthly Package' : 'Full Service Monthly Package';
+
       // hero breakdown lines
       st('b-bk-manual', fmtFull(r.manPortion) + '/run');
       st('b-bk-auto', fmtFull(r.autoPortion) + '/run');
@@ -1641,12 +1655,12 @@
         if (nudgeEl) {
           if (activeTier === 0) {
             const need = 50000 - execs;
-            nudgeEl.textContent = need.toLocaleString() + ' more executions/month to unlock 15% off ($0.17/run)';
+            nudgeEl.textContent = need.toLocaleString() + ' more executions/month to unlock 15% off ($0.17/execution)';
           } else if (activeTier === 1) {
             const need = 200000 - execs;
-            nudgeEl.textContent = need.toLocaleString() + ' more executions/month to unlock 50% off ($0.10/run)';
+            nudgeEl.textContent = need.toLocaleString() + ' more executions/month to unlock 50% off ($0.10/execution)';
           } else {
-            nudgeEl.textContent = 'You\'re on the best rate — $0.10 per run (50% off).';
+            nudgeEl.textContent = 'You\'re on the best rate — $0.10 per execution (50% off).';
           }
         }
       })();
@@ -1721,7 +1735,7 @@
         if (indLabel) descParts.push(indLabel);
         if (regLabel) descParts.push(regLabel);
         descParts.push(r.totalTests + ' tests');
-        descParts.push(r.rpw + ' run cycles/wk');
+        descParts.push(r.rpw + ' execution cycles/wk');
         descParts.push(r.manFTEs + ' manual testers');
         descParts.push(r.autoFTEs + ' automation engineers');
         st('resultsSub', descParts.join(' · '));
@@ -1802,7 +1816,7 @@
       if (indLabel) descParts.push(indLabel);
       if (regLabel) descParts.push(regLabel);
       descParts.push(r.totalTests + ' tests');
-      descParts.push(r.rpw + ' run cycles/wk');
+      descParts.push(r.rpw + ' execution cycles/wk');
       descParts.push(r.manFTEs + ' manual testers');
       descParts.push(r.autoFTEs + ' automation engineers');
       st('resultsSub', descParts.join(' · '));

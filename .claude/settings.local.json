@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"/Users/bhavit/Desktop/fore ai/ROI Calc/roicalc\")",
+      "Bash(cp \"/Users/bhavit/Desktop/fore ai/ROI Calc/roicalc.html\" \"/Users/bhavit/Desktop/fore ai/ROI Calc/roicalc/index.html\")"
+    ]
+  }
+}

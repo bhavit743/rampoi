@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>fore ai — ROI Calculator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/@fontsource/nohemi/index.css" onerror="this.remove()">
   <style>
     *,
@@ -17,25 +17,24 @@
     }
 
     :root {
-      --bg: #ffffff;
+      --bg: #f4f6f5;
       --surface: #ffffff;
-      --surface2: #f6f8f9;
-      --surface3: #eef1f0;
-      --border: #e5e7eb;
-      --text: #101010;
-      --muted: #6b7280;
+      --surface2: #f0f3f2;
+      --surface3: #e6ecea;
+      --border: #dde3e1;
+      --text: #0a1412;
+      --muted: #6b7a77;
       --teal: #075056;
-      --teal-dim: rgba(7, 80, 86, 0.08);
-      --teal-mid: rgba(7, 80, 86, 0.15);
-      --red: #dc2626;
-      --red-dim: rgba(220, 38, 38, 0.08);
+      --teal-dim: rgba(7, 80, 86, .07);
+      --teal-mid: rgba(7, 80, 86, .18);
+      --teal-light: #e8f0ef;
       --amber: #d97706;
-      --amber-dim: rgba(217, 119, 6, 0.08);
-      --green-text: #065f46;
-      --green-dim: rgba(6, 95, 70, 0.08);
-      --font: 'Inter', -apple-system, sans-serif;
-      --mono: 'JetBrains Mono', monospace;
-      --r: 12px;
+      --amber-dim: rgba(217, 119, 6, .08);
+      --green: #059669;
+      --green-dim: rgba(5, 150, 105, .08);
+      --font: "Inter", -apple-system, sans-serif;
+      --display: "Nohemi", "Inter", sans-serif;
+      --r: 14px;
       --r2: 8px;
     }
 
@@ -44,36 +43,27 @@
       color: var(--text);
       font-family: var(--font);
       min-height: 100vh;
-      overflow-x: hidden;
-      font-size: 16px;
+      font-size: 15px;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
 
-    .view {
-      display: none;
-    }
-
-    .view.active {
-      display: block;
-    }
-
-    /* Nav */
+    /* ── NAV ── */
     .topnav {
-      background: #fff;
+      background: var(--surface);
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
       z-index: 100;
-      height: 57px;
+      height: 60px;
       display: flex;
       align-items: center;
     }
 
     .topnav-inner {
-      max-width: 780px;
+      max-width: 720px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -87,11 +77,16 @@
       text-decoration: none;
     }
 
+    .nav-logo-svg {
+      width: 28px;
+      height: 28px;
+    }
+
     .nav-logo-text {
       font-size: 15px;
-      font-weight: 500;
+      font-weight: 700;
       color: var(--text);
-      letter-spacing: -0.01em;
+      letter-spacing: -.01em;
     }
 
     .nav-cta {
@@ -99,196 +94,188 @@
       color: #fff;
       border: none;
       border-radius: 10px;
-      padding: 9px 18px;
+      padding: 9px 20px;
       font-family: var(--font);
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: opacity 0.15s;
+      transition: opacity .15s;
     }
 
     .nav-cta:hover {
-      opacity: 0.88;
+      opacity: .85;
     }
 
-    /* Layout */
-    .page {
-      max-width: 780px;
+    /* ── INPUT PAGE ── */
+    .page-wrap {
+      max-width: 720px;
       margin: 0 auto;
-      padding: 48px 24px 80px;
+      padding: 48px 32px 80px;
     }
 
-    @media (max-width: 580px) {
-      .page {
+    @media(max-width:600px) {
+      .page-wrap {
         padding: 32px 16px 60px;
       }
-
-      h1 {
-        font-size: 26px;
-      }
     }
 
-    /* Header */
-    .logo-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--teal-dim);
-      border: 1px solid var(--teal-mid);
-      padding: 4px 12px 4px 10px;
-      border-radius: 99px;
-      font-size: 11px;
-      color: var(--teal);
-      margin-bottom: 20px;
-      font-weight: 500;
-      letter-spacing: 0.04em;
+    .page-header {
+      margin-bottom: 36px;
     }
 
-    .logo-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--teal);
-    }
-
-    h1 {
-      font-family: 'Nohemi', 'Inter', sans-serif;
-      font-size: clamp(28px, 5vw, 44px);
+    .page-header h1 {
+      font-family: var(--display);
+      font-size: clamp(26px, 4vw, 38px);
       font-weight: 400;
       line-height: 1.1;
-      letter-spacing: -0.4px;
-      color: #000;
-      margin-bottom: 12px;
+      letter-spacing: -.3px;
+      color: var(--text);
+      margin-bottom: 8px;
     }
 
-    h1 em {
+    .page-header h1 em {
       font-style: italic;
       color: var(--teal);
-      font-weight: 400;
     }
 
-    .subtitle {
-      font-size: 15px;
+    .page-header p {
+      font-size: 14px;
       color: var(--muted);
-      line-height: 1.65;
-      max-width: 500px;
-      margin-bottom: 40px;
     }
 
-    /* Section labels */
-    .section-label {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      margin: 32px 0 14px;
-    }
-
-    .section-label span {
-      font-weight: 400;
-      text-transform: none;
-      letter-spacing: 0;
-      font-size: 11px;
-    }
-
-    /* Industry grid */
-    .industry-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 10px;
-      margin-bottom: 4px;
-      animation: fadeUp 0.2s ease;
-    }
-
-    .ind-card {
+    /* Form sections */
+    .form-section {
       background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: var(--r);
-      padding: 16px 14px;
-      cursor: pointer;
-      transition: all 0.15s;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px 24px 20px;
+      margin-bottom: 14px;
     }
 
-    .ind-card:hover {
-      border-color: var(--teal);
-    }
-
-    .ind-card.active {
-      border-color: var(--teal);
-      background: var(--teal-dim);
-    }
-
-    .ind-icon {
-      width: 28px;
-      height: 28px;
-      margin-bottom: 10px;
-      display: block;
-      color: var(--teal);
-    }
-
-    .ind-card.active .ind-icon {
-      color: var(--teal);
-    }
-
-    .ind-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 2px;
-    }
-
-    .ind-sub {
+    .form-section-title {
       font-size: 11px;
+      font-weight: 700;
       color: var(--muted);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
     }
 
-    /* Region pills */
-    .region-row {
+    /* Pills */
+    .pill-row {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 4px;
-      animation: fadeUp 0.2s ease;
     }
 
-    .reg-pill {
+    .pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
-      background: var(--surface);
+      gap: 7px;
+      padding: 8px 16px;
+      background: var(--surface2);
       border: 1.5px solid var(--border);
       border-radius: 99px;
       font-size: 13px;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all .15s;
       font-weight: 500;
       color: var(--text);
+      user-select: none;
     }
 
-    .reg-pill:hover {
+    .pill svg {
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+    }
+
+    .pill:hover {
       border-color: var(--teal);
+      background: var(--teal-dim);
     }
 
-    .reg-pill.active {
+    .pill.active {
       background: var(--teal);
       border-color: var(--teal);
       color: #fff;
     }
 
-    /* Form */
+    /* Mode cards */
+    .mode-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    @media(max-width:540px) {
+      .mode-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .mode-card {
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 12px 12px;
+      cursor: pointer;
+      transition: all .15s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+      user-select: none;
+    }
+
+    .mode-card:hover {
+      border-color: var(--teal);
+      background: var(--teal-dim);
+    }
+
+    .mode-card.active {
+      border-color: var(--teal);
+      background: var(--teal-dim);
+    }
+
+    .mode-card svg {
+      color: var(--muted);
+      transition: color .15s;
+      width: 20px;
+      height: 20px;
+    }
+
+    .mode-card:hover svg,
+    .mode-card.active svg {
+      color: var(--teal);
+    }
+
+    .mode-card-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .mode-card-sub {
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
+    /* Form grid */
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 14px;
     }
 
-    @media (max-width: 580px) {
+    @media(max-width:520px) {
       .form-grid {
         grid-template-columns: 1fr;
       }
@@ -307,7 +294,7 @@
     label {
       font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.04em;
+      letter-spacing: .02em;
       color: var(--text);
     }
 
@@ -316,6 +303,11 @@
       font-size: 11px;
       font-weight: 400;
       margin-left: 3px;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--muted);
     }
 
     .input-wrap {
@@ -338,60 +330,36 @@
       pointer-events: none;
       background: var(--teal-dim);
       border-left: 1px solid var(--teal-mid);
-      padding: 0 10px;
+      padding: 0 12px;
       height: 100%;
       display: flex;
       align-items: center;
       border-radius: 0 var(--r2) var(--r2) 0;
     }
 
-    .input-prefix {
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--teal);
-      pointer-events: none;
-      background: var(--teal-dim);
-      border-right: 1px solid var(--teal-mid);
-      padding: 0 10px;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      border-radius: var(--r2) 0 0 var(--r2);
-    }
-
-    input[type="number"],
-    input[type="text"],
-    input[type="password"],
+    input[type=number],
     select {
       width: 100%;
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       color: var(--text);
       font-family: var(--font);
       font-size: 14px;
-      padding: 10px 12px;
+      padding: 11px 14px;
       border-radius: var(--r2);
       outline: none;
-      transition: border-color 0.15s;
+      transition: border-color .15s;
       -moz-appearance: textfield;
       appearance: textfield;
     }
 
-    input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button {
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
       -webkit-appearance: none;
     }
 
     input.has-suffix {
-      padding-right: 56px;
-    }
-
-    input.has-prefix {
-      padding-left: 52px;
+      padding-right: 60px;
     }
 
     input:focus,
@@ -403,114 +371,115 @@
       cursor: pointer;
     }
 
-    .hint {
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.5;
+    /* FTE fields wrapper — shown/hidden by mode */
+    #fte-fields {
+      display: none;
     }
 
+    #fte-fields.visible {
+      display: block;
+      animation: fadeUp .3s ease both;
+    }
+
+    /* Calc button */
     .calc-btn {
       width: 100%;
       background: var(--teal);
       color: #fff;
       border: none;
-      border-radius: 10px;
-      padding: 14px 22px;
+      border-radius: 12px;
+      padding: 16px 24px;
       font-family: var(--font);
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      margin-top: 20px;
-      transition: opacity 0.15s;
+      transition: opacity .15s;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .calc-btn:hover {
-      opacity: 0.88;
+      opacity: .88;
     }
 
-    /* Cards */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      margin-bottom: 12px;
-      overflow: hidden;
-      animation: fadeUp 0.25s ease;
+    .calc-btn-meta {
+      font-size: 12px;
+      font-weight: 400;
+      opacity: .7;
     }
 
-    .card-body {
-      padding: 24px 20px;
+    /* ── RESULTS ── */
+    #resultsSection {
+      display: none;
     }
 
-    /* Buttons */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      font-family: var(--font);
-      font-size: 14px;
-      font-weight: 500;
-      padding: 11px 22px;
-      border-radius: 10px;
-      border: none;
-      transition: opacity 0.15s, background 0.15s;
+    .results-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 32px 80px;
     }
 
-    .btn-ghost {
-      background: var(--surface3);
+    @media(max-width:600px) {
+      .results-wrap {
+        padding: 28px 16px 60px;
+      }
+    }
+
+    .results-topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      gap: 20px;
+    }
+
+    .results-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
       color: var(--teal);
-      border: 1px solid var(--border);
+      margin-bottom: 6px;
     }
 
-    .btn-ghost:hover {
-      background: var(--border);
+    .results-headline {
+      font-family: var(--display);
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -.3px;
+      color: var(--text);
     }
 
-    .btn-primary {
-      background: var(--teal);
-      color: #fff;
+    .results-headline em {
+      font-style: italic;
+      color: var(--teal);
     }
 
-    .btn-primary:hover {
-      opacity: 0.88;
-    }
-
-    .btn-danger {
-      background: var(--red-dim);
-      border: 1px solid rgba(220, 38, 38, 0.2);
-      color: var(--red);
-    }
-
-    .btn-danger:hover {
-      background: rgba(220, 38, 38, 0.14);
-    }
-
-    .btn-success {
-      background: var(--teal);
-      color: #fff;
-      font-weight: 600;
-    }
-
-    .btn-success:hover {
-      opacity: 0.88;
+    .results-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
     }
 
     .back-btn {
-      background: none;
+      background: var(--surface);
       border: 1.5px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 16px;
+      border-radius: 10px;
+      padding: 10px 18px;
       font-family: var(--font);
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       color: var(--muted);
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.15s;
-      margin-bottom: 28px;
+      transition: all .15s;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .back-btn:hover {
@@ -518,608 +487,284 @@
       color: var(--teal);
     }
 
-    /* Results */
-    .results-header {
-      margin-bottom: 28px;
-    }
-
-    .results-header h2 {
-      font-family: 'Nohemi', 'Inter', sans-serif;
-      font-size: 28px;
-      font-weight: 400;
-      color: #000;
-      letter-spacing: -0.4px;
-      line-height: 1.15;
-    }
-
-    .results-header h2 em {
-      font-style: italic;
-      color: var(--teal);
-    }
-
-    .results-header p {
-      font-size: 14px;
-      color: var(--muted);
-      margin-top: 6px;
-    }
-
-    /* ROI hero */
-    .roi-hero-card {
+    /* ── Year 1 ROI card ── */
+    .pkg-single {
       background: var(--teal);
-      border-radius: var(--r);
-      padding: 28px 32px;
-      margin-bottom: 12px;
+      border: 1px solid var(--teal);
+      border-radius: 18px;
+      padding: 28px 28px 24px;
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
-      gap: 28px;
-      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 24px;
     }
 
-    .roi-hero-num-wrap {
+    .pkg-single-left {
       flex-shrink: 0;
     }
 
-    .roi-hero-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.65);
-      margin-bottom: 4px;
+    .pkg-single-right {
+      border-left: 2px solid rgba(255, 255, 255, 0.25);
+      padding-left: 20px;
+      flex: 1;
     }
 
-    .roi-hero-num {
-      font-family: 'Nohemi', 'Inter', sans-serif;
-      font-size: 68px;
+    .pkg-single-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 10px;
+    }
+
+    .pkg-single-amount {
+      font-family: var(--display);
+      font-size: clamp(36px, 6vw, 56px);
       font-weight: 400;
       line-height: 1;
       letter-spacing: -2px;
       color: #fff;
     }
 
-    .roi-hero-unit {
-      font-size: 20px;
-      font-weight: 400;
-      color: rgba(255, 255, 255, 0.6);
-      margin-left: 2px;
-    }
-
-    .roi-hero-divider {
-      width: 1px;
-      height: 64px;
-      background: rgba(255, 255, 255, 0.18);
-      flex-shrink: 0;
-    }
-
-    @media (max-width: 580px) {
-      .roi-hero-divider {
-        display: none;
-      }
-    }
-
-    .roi-hero-copy {
-      flex: 1;
-      min-width: 180px;
-    }
-
-    .roi-hero-copy-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: #fff;
-      line-height: 1.3;
-      margin-bottom: 5px;
-    }
-
-    .roi-hero-copy-sub {
+    .pkg-single-sub {
       font-size: 13px;
-      color: rgba(255, 255, 255, 0.7);
-      line-height: 1.55;
+      color: rgba(255, 255, 255, 0.65);
+      margin-top: 8px;
     }
 
-    /* KPI grid */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      margin-bottom: 20px;
+    .pkg-single-sideline {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.5;
+      font-weight: 500;
     }
 
-    @media (max-width: 480px) {
-      .kpi-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .kpi-card {
+    /* ── 3-year ROI trajectory ── */
+    .traj-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--r);
-      padding: 16px;
-      position: relative;
-      overflow: hidden;
+      border-radius: 18px;
+      padding: 28px 28px 24px;
+      margin-bottom: 14px;
     }
 
-    .kpi-card::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: var(--card-stripe, var(--border));
-    }
-
-    .kpi-card.green {
-      background: var(--teal-dim);
-      border-color: var(--teal-mid);
-      --card-stripe: var(--teal);
-    }
-
-    .kpi-card.amber {
-      background: var(--amber-dim);
-      border-color: rgba(217, 119, 6, 0.2);
-      --card-stripe: var(--amber);
-    }
-
-    .kpi-label {
+    .traj-title {
       font-size: 10px;
       font-weight: 700;
-      letter-spacing: 0.09em;
+      letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--muted);
+      margin-bottom: 28px;
     }
 
-    .kpi-value {
-      font-family: 'Nohemi', 'Inter', sans-serif;
-      font-size: 28px;
+    .traj-bars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .traj-bar-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .traj-bar-top {
+      font-family: var(--display);
+      font-size: clamp(26px, 4vw, 36px);
       font-weight: 400;
-      letter-spacing: -0.8px;
-      margin-top: 8px;
-      line-height: 1;
-    }
-
-    .kpi-value.green {
       color: var(--teal);
+      letter-spacing: -1.5px;
+      line-height: 1;
+      margin-bottom: 6px;
     }
 
-    .kpi-value.amber {
-      color: var(--amber);
-    }
-
-    .kpi-sub {
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.4;
-      border-top: 1px solid var(--border);
-      padding-top: 6px;
-      margin-top: 8px;
-    }
-
-    /* Plan cards */
-    .plan-section {
-      margin-bottom: 20px;
-    }
-
-    .plan-section h3 {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
+    .traj-bar-roi-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .08em;
       text-transform: uppercase;
       color: var(--muted);
       margin-bottom: 12px;
     }
 
-    .plan-cards {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
-
-    @media (max-width: 640px) {
-      .plan-cards {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .plan-card {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: var(--r);
-      padding: 16px 12px;
-      text-align: center;
-      position: relative;
-      transition: border-color 0.15s;
-    }
-
-    .plan-card.recommended {
-      background: var(--teal-dim);
-      border-color: var(--teal);
-    }
-
-    .plan-badge {
-      position: absolute;
-      top: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--teal);
-      color: #fff;
-      font-size: 9px;
-      font-weight: 700;
-      padding: 2px 9px;
-      border-radius: 99px;
-      white-space: nowrap;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    .plan-name {
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .plan-price {
-      font-family: 'Nohemi', 'Inter', sans-serif;
-      font-size: 20px;
-      font-weight: 400;
-      color: var(--text);
-      margin-top: 6px;
-      letter-spacing: -0.3px;
-    }
-
-    .plan-price span {
-      font-size: 11px;
-      color: var(--muted);
-      font-weight: 400;
-      font-family: var(--font);
-    }
-
-    .plan-sub {
-      font-size: 10px;
-      color: var(--muted);
-      margin-top: 3px;
-    }
-
-    .plan-saving {
-      font-size: 10px;
-      font-weight: 600;
-      margin-top: 6px;
-      padding: 4px 6px;
-      border-radius: 5px;
-    }
-
-    .plan-saving.pos {
-      color: var(--green-text);
-      background: var(--green-dim);
-    }
-
-    .plan-saving.neg {
-      color: var(--red);
-      background: var(--red-dim);
-    }
-
-    .plan-card.recommended .plan-price {
-      color: var(--teal);
-    }
-
-    /* Summary cards */
-    .summary-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
+    .traj-bar-track {
+      width: 100%;
+      border-radius: 10px 10px 0 0;
       overflow: hidden;
-      margin-bottom: 0;
-    }
-
-    .summary-row {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 11px 16px;
-      border-bottom: 1px solid var(--border);
+      flex-direction: column;
+      justify-content: flex-end;
+      background: var(--surface3);
+      flex: 1;
+      min-height: 160px;
     }
 
-    .summary-row:last-child {
-      border-bottom: none;
+    .traj-bar-fill {
+      width: 100%;
+      background: var(--teal);
+      border-radius: 8px 8px 0 0;
+      transition: height .7s cubic-bezier(.4, 0, .2, 1);
     }
 
-    .summary-row.total {
-      background: var(--teal-dim);
-      border-top: 1px solid var(--teal-mid);
-    }
-
-    .summary-label {
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 400;
-    }
-
-    .summary-value {
-      font-size: 13px;
-      color: var(--text);
-      font-weight: 600;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .summary-value.positive {
-      color: var(--teal);
-    }
-
-    .summary-value.highlight {
-      color: var(--teal);
-      font-size: 14px;
-    }
-
-    .calc-note {
+    .traj-bar-lbl {
       font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
       color: var(--muted);
-      font-weight: 400;
-      font-family: var(--mono);
-      margin-left: 5px;
+      margin-top: 12px;
     }
 
-    /* Sensitivity sliders */
-    .sensitivity-card {
-      background: var(--surface2);
+    /* ── FTE reallocation ── */
+    .fte-card {
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--r);
-      padding: 20px 22px;
-      margin-bottom: 20px;
+      border-radius: 18px;
+      padding: 28px 28px 24px;
+      margin-bottom: 14px;
     }
 
-    .sensitivity-card h3 {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 3px;
-    }
-
-    .sensitivity-card .sens-sub {
-      font-size: 12px;
+    .fte-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 18px;
+      margin-bottom: 6px;
     }
 
-    .sliders-grid {
+    .fte-headline {
+      font-size: 16px;
+      color: var(--text);
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .fte-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 18px 28px;
+      gap: 12px;
     }
 
-    @media (max-width: 580px) {
-      .sliders-grid {
+    @media(max-width:440px) {
+      .fte-grid {
         grid-template-columns: 1fr;
       }
     }
 
-    .slider-field {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    .slider-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-
-    .slider-label {
-      font-size: 12px;
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    .slider-val {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--teal);
-      min-width: 80px;
-      text-align: right;
-    }
-
-    input[type=range] {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 100%;
-      height: 4px;
-      border-radius: 2px;
-      background: var(--border);
-      outline: none;
-      cursor: pointer;
-      accent-color: var(--teal);
-    }
-
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: var(--teal);
-      cursor: pointer;
-      border: 2px solid #fff;
-      box-shadow: 0 0 0 2px var(--teal-mid);
-    }
-
-    input[type=range]::-moz-range-thumb {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: var(--teal);
-      border: 2px solid #fff;
-      cursor: pointer;
-    }
-
-    /* Breakdown */
-    .breakdown-toggle {
-      width: 100%;
+    .fte-metric {
       background: var(--surface2);
       border: 1px solid var(--border);
-      border-radius: var(--r);
-      padding: 14px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      margin-bottom: 0;
-      transition: background 0.15s, border-color 0.15s;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 600;
-      font-family: var(--font);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+      border-radius: 14px;
+      padding: 20px 20px 18px;
     }
 
-    .breakdown-toggle:hover {
-      background: var(--surface3);
-      color: var(--text);
-    }
-
-    .breakdown-toggle .toggle-arrow {
-      font-size: 11px;
-      transition: transform 0.2s;
-    }
-
-    .breakdown-toggle.open {
-      border-radius: var(--r) var(--r) 0 0;
-      border-color: var(--teal);
-      color: var(--teal);
-      background: var(--teal-dim);
-    }
-
-    .breakdown-toggle.open .toggle-arrow {
-      transform: rotate(180deg);
-    }
-
-    .breakdown-body {
-      display: none;
-      border: 1px solid var(--border);
-      border-top: none;
-      border-radius: 0 0 var(--r) var(--r);
-      padding: 20px;
-      margin-bottom: 20px;
-      background: var(--surface2);
-    }
-
-    .breakdown-body.open {
-      display: block;
-      animation: fadeUp 0.2s ease;
-    }
-
-    .calc-section-label {
+    .fte-metric-label {
       font-size: 10px;
-      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: .09em;
       text-transform: uppercase;
-      letter-spacing: 1.4px;
-      font-weight: 600;
-      margin: 16px 0 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      color: var(--teal);
+      margin-bottom: 10px;
     }
 
-    .calc-section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
+    .fte-metric-value {
+      font-family: var(--display);
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -2px;
+      color: var(--teal);
     }
 
-    /* 3-year analysis */
-    .yr-bar-wrap { display:flex; flex-direction:column; align-items:center; gap:8px; }
-    .yr-bar-track {
-      width:100%; background:var(--surface3); border-radius:8px;
-      display:flex; flex-direction:column; justify-content:flex-end;
-      position:relative; overflow:hidden; height:140px;
+    .fte-metric-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
     }
-    .yr-bar-cur {
-      width:100%; background:#e5e7eb; border-radius:4px 4px 0 0;
-      transition:height .8s ease;
-    }
-    .yr-bar-fore {
-      position:absolute; bottom:0; left:0; right:0;
-      background:var(--teal); opacity:.85; border-radius:4px 4px 0 0;
-      transition:height .8s ease;
-    }
-    .yr-bar-label { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
-    .yr-total-cell { text-align:center; }
-    .yr-total-label { font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px; }
-    .yr-total-saving { font-family:'Nohemi','Inter',sans-serif;font-size:20px;font-weight:400;color:var(--teal);letter-spacing:-.3px; }
-    .yr-total-sub { font-size:11px;color:var(--muted);margin-top:2px; }
-
-    /* FTE pills */
-    .fte-pill {
-      background:var(--surface2); border:1px solid var(--border);
-      border-radius:var(--r2); padding:12px 14px;
-      display:flex; align-items:center; gap:10px;
-    }
-    .fte-pill-icon { font-size:20px; flex-shrink:0; }
-    .fte-pill-val { font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.2px;line-height:1.2; }
-    .fte-pill-label { font-size:11px;color:var(--muted);margin-top:1px; }
-    .fte-story-item { display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text); }
-    .fte-story-dot { width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:6px; }
 
     /* CTA */
     .cta-card {
-      background: var(--teal);
-      border-radius: var(--r);
-      padding: 32px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px 28px 24px;
+      margin-top: 14px;
       text-align: center;
-      margin-bottom: 20px;
     }
 
     .cta-card h3 {
-      font-family: 'Nohemi', 'Inter', sans-serif;
+      font-family: var(--display);
       font-size: 22px;
       font-weight: 400;
-      color: #fff;
-      letter-spacing: -0.3px;
+      color: var(--text);
       margin-bottom: 8px;
     }
 
     .cta-card p {
       font-size: 13px;
-      color: rgba(255, 255, 255, 0.75);
+      color: var(--muted);
       margin-bottom: 20px;
-      line-height: 1.65;
-      max-width: 460px;
-      margin-left: auto;
-      margin-right: auto;
     }
 
     .cta-row {
       display: flex;
+      gap: 12px;
       justify-content: center;
-      gap: 10px;
       flex-wrap: wrap;
     }
 
-    .cta-row .btn-ghost {
-      background: rgba(255, 255, 255, 0.15);
+    .btn-primary {
+      background: var(--teal);
       color: #fff;
-      border-color: rgba(255, 255, 255, 0.25);
+      border: none;
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .15s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .cta-row .btn-ghost:hover {
-      background: rgba(255, 255, 255, 0.25);
+    .btn-primary:hover {
+      opacity: .88;
     }
 
-    .cta-row .btn-primary {
-      background: #fff;
+    .btn-ghost {
+      background: var(--surface);
       color: var(--teal);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-family: var(--font);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .15s;
     }
 
-    .cta-row .btn-primary:hover {
-      opacity: 0.92;
+    .btn-ghost:hover {
+      border-color: var(--teal);
+    }
+
+    /* Animate */
+    .animate {
+      animation: fadeUp .4s ease both;
     }
 
     @keyframes fadeUp {
       from {
         opacity: 0;
-        transform: translateY(8px);
+        transform: translateY(12px);
       }
 
       to {
@@ -1128,1703 +773,1202 @@
       }
     }
 
-    /* Lock */
-    .lock-screen {
-      min-height: 100vh;
+    /* Visibility helpers */
+    .hidden {
+      display: none !important;
+    }
+
+    /* ── Formula breakdown ── */
+    .formula-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .formula-card-header {
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 24px;
+      justify-content: space-between;
+      padding: 18px 24px;
+      cursor: pointer;
+      user-select: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s;
+    }
+
+    .formula-card-header:hover {
       background: var(--surface2);
     }
 
-    .lock-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 36px 32px;
-      width: 100%;
-      max-width: 360px;
-      text-align: center;
+    .formula-card-header.open {
+      border-bottom-color: var(--border);
     }
 
-    .lock-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
+    .formula-card-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .formula-card-arrow {
+      width: 18px;
+      height: 18px;
+      color: var(--muted);
+      transition: transform .25s;
+      flex-shrink: 0;
+    }
+
+    .formula-card-arrow.open {
+      transform: rotate(180deg);
+    }
+
+    .formula-card-body {
+      display: none;
+      padding: 0 24px 20px;
+    }
+
+    .formula-card-body.open {
+      display: block;
+      animation: fadeUp .25s ease both;
+    }
+
+    .fml-section {
+      margin-bottom: 18px;
+    }
+
+    .fml-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .fml-section-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin: 14px 0 10px;
+    }
+
+    .fml-row {
+      margin-bottom: 12px;
+    }
+
+    .fml-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .fml-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .fml-expr {
+      font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace;
+      font-size: 11px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: var(--text);
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .fml-expr .fn {
+      color: var(--teal);
+      font-weight: 600;
+    }
+
+    .fml-expr .fv {
+      color: #059669;
+      font-weight: 600;
+    }
+
+    .fml-result {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--teal);
+      margin-top: 4px;
+      padding-left: 2px;
+    }
+
+    .fml-highlight {
       background: var(--teal-dim);
       border: 1px solid var(--teal-mid);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin: 14px 0;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 16px;
-      font-size: 18px;
-    }
-
-    .lock-title {
-      font-size: 17px;
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: -0.2px;
-      margin-bottom: 5px;
-    }
-
-    .lock-sub {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 22px;
-      line-height: 1.55;
-    }
-
-    .lock-field {
-      text-align: left;
-      margin-bottom: 10px;
-    }
-
-    .lock-field label {
-      display: block;
-      font-size: 12px;
-      color: var(--text);
-      margin-bottom: 5px;
-      font-weight: 600;
-    }
-
-    .lock-field input {
-      font-size: 14px;
-      padding: 10px 12px;
-      letter-spacing: 2px;
-    }
-
-    .lock-error {
-      font-size: 12px;
-      color: var(--red);
-      margin-top: 8px;
-      min-height: 16px;
-    }
-
-    .lock-btn {
-      width: 100%;
-      justify-content: center;
-      margin-top: 6px;
-    }
-
-    .lock-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      color: var(--muted);
-      cursor: pointer;
-      margin-top: 16px;
-    }
-
-    .lock-back:hover {
-      color: var(--text);
-    }
-
-    /* Admin */
-    .admin-topbar {
-      display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 14px 24px;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .admin-brand {
-      display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
+      gap: 12px;
     }
 
-    .admin-badge {
-      font-size: 9px;
+    .fml-highlight-label {
+      font-size: 12px;
+      color: var(--teal);
+      font-weight: 600;
+      flex: 1;
+    }
+
+    .fml-highlight-val {
+      font-size: 20px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      background: var(--amber-dim);
-      color: var(--amber);
-      border: 1px solid rgba(217, 119, 6, 0.2);
-      padding: 3px 9px;
-      border-radius: 99px;
-    }
-
-    .admin-body {
-      max-width: 780px;
-      margin: 0 auto;
-      padding: 36px 24px 100px;
-    }
-
-    .admin-page-title {
-      margin-bottom: 28px;
-    }
-
-    .admin-page-title h2 {
-      font-family: 'Nohemi', 'Inter', sans-serif;
-      font-size: 22px;
-      font-weight: 400;
-      color: var(--text);
-      letter-spacing: -0.3px;
-    }
-
-    .admin-page-title p {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 5px;
-      line-height: 1.55;
-    }
-
-    .admin-section-title {
-      font-size: 10px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .admin-section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    .admin-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      padding: 22px;
-      margin-bottom: 12px;
-    }
-
-    .admin-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    @media (max-width: 580px) {
-      .admin-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .admin-field {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .admin-field label {
-      font-size: 11px;
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    .admin-field input {
-      font-size: 13px;
-      padding: 9px 10px;
-    }
-
-    .admin-field input.has-suffix {
-      padding-right: 56px;
-    }
-
-    .admin-field .hint {
-      font-size: 10px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .save-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 200;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      padding: 12px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      transform: translateY(100%);
-      transition: transform 0.3s ease;
-    }
-
-    .save-bar.visible {
-      transform: translateY(0);
-    }
-
-    .save-bar-msg {
-      font-size: 13px;
-      color: var(--text);
-    }
-
-    .save-bar-msg strong {
-      color: var(--amber);
-    }
-
-    .save-bar-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 72px;
-      left: 50%;
-      transform: translateX(-50%) translateY(10px);
-      background: var(--teal);
-      color: #fff;
-      font-size: 12px;
-      padding: 8px 18px;
-      border-radius: 99px;
-      opacity: 0;
-      transition: all 0.25s ease;
-      pointer-events: none;
-      z-index: 300;
+      color: var(--teal);
       white-space: nowrap;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .calc-section-label {
-      font-size: 10px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 1.4px;
-      font-weight: 600;
-      margin: 16px 0 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .calc-section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
     }
   </style>
 </head>
 
 <body>
 
-  <!-- ════════════════════════════════
-     VIEW: CALCULATOR
-════════════════════════════════ -->
-  <div class="view active" id="view-calc">
-
-    <nav class="topnav">
-      <div class="topnav-inner">
-        <a class="nav-logo" href="https://foreai.co">
-          <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCABIAK4DASIAAhEBAxEB/8QAHAABAAMBAAMBAAAAAAAAAAAAAAYHCAUBAwQC/8QASBAAAQMDAgMEAgsMCwEAAAAAAQIDBAAFBgcREiExCBNBUTJhFBYXIkJWcYGRodEVGCM3UlRVYnWTs9IkV3SChJKUlaKxxMH/xAAZAQEAAwEBAAAAAAAAAAAAAAAAAQIDBAX/xAAuEQACAgEEAAQDCAMAAAAAAAABAgADEQQSITEFE0FRFCIyMzRSYXGBkbHR4fH/2gAMAwEAAhEDEQA/ANl0pSkRSorA1Gwafkhx2Hk1vfugcLQYQvfiWASUhW3Co8j0J58utdrIL1acftjlzvdxjW+G2QFPPrCU7noPWT5CpwRKCxSCQZ0KVXfu3aV/HCL+4d/kp7t2lfxwi/uHf5Ktsb2lPiKfxj+RLEpUVxPUXCcrnm34/kUSdLCCvuU8SVlI23ICgN+o6f8AypVVSCO5orq4ypzFKV4WpKEFa1BKUjcknYAVEtPNKr25616XW6YYsnL4inEqKT3DTryQR+shJH11NLBd7dfrPHu9olIlwZKeJl5IICxuR4gHqDUlSOxM1tRzhSCZ91KUqJpFKUpEUpSkRSlKRFKUpEVy8wgzLniV4ttvdDMyXAfYjuHohxTakpPzEiupX5ecbZaW664lttCSpa1HYJA6knwFBIIyMGYExzS3USRmEW0oxq7wJKJCeKS7FUltkJXsXeM7JUB1BB57ct60v2tsTyLKcDg+1+I/PVAmd+/EZ3UtaeBSQpKfhEb7bDc++O3jX2T+0RphEluRxdJkngUUlxiGtSCQSORO245dRyr0ffIaY/ndz/0SvtrqZrGYNt6nj1U6Sut6/M+r8xMie0zMPinfv9ud/lp7TMw+Kd+/253+Wtk2DX3TS8XZi2tXZ+K4+rhQ5Ljlpvi8AVHkN/M7CrIu1xh2qC5NnvBlhG26iNySegAHMmrnUOO1mKeF02DK2ZmLez9gGaO6q2OcbNdbZFgSUyJMp+OtlKUJBJRuoDfj2KNh+V4Dc1t2o9Y8ysN4miFEkrS+r0EONlPH57HpUhrntsLnJE9PR6ZNOhVTmKobtoZLMtOC26xQ3iyLxIWJBSdlKabCSU/IVKTv8m3jV8KG6SB4isKa66e5LgZs/tiyMXr2d3/cbOOK7rg7vi9Pz409PKradQX5mXidrpQQo79fb/sunSrs84bIwm23PJ2pc+4z4yJKwmQppDIWkKCQE7HcAjcknnv4Vd+J2G3YvjsOw2lDiIUNJQylxfEoAqKuZ8eZNZlxzQrUS649bbnG1BDDEyI0+20ZEjdCVoCgnly5A7V09U9Qsg0ww6zaaWm5ibkqY59nXFPEtTaVrUUBHFzKyD1PQbbcyCLOpc4DZmVNiadNzV7RjvjJmmlKSnbiUBudhueprzWSbV2dM/yiILzlOSNRJ0hPed1LUuS+CegWd9gfkJ2+qua7O1R7P+SxGbhMVcrI+TwNF5TkWQkbcQTxc21jceA/vCq+SDwrZM1OudBusrIX3/1NkUqkO0fk7d10Ai5Jj06QyzNkx3GnWlltYSeLdJ2PIg8iPMVCcBznOnNJLFiuDRpV0yeaqQ/ImOEOCGx3y0pUpSzwgkpIBVyASeRJFVFRK5mj61Us2Yzxnj1mpaVQGkmn+qtiz2NlGc5MJdvYZeL7bt0deKd0EA8JHDsD6+VQLLs8z3WjOncVwV9+HZklQQltwshxoHYvPrHPhPL3vrA2J6yKsng8SG1uxAWQgk4A9TNdhaSsoCgVDqN+YrzWTpfZizCDENwteVQXrm2CtLaQ40SryS55+sgVIezbqpkByp7TrO5Dq5rZW1EelH8Ml1HpMrV8LkCQTz3G253Gw1DGVOZCaxg4S1NuevWaQpSlYzviublVsVesXutmQ+Y6p8J6KHR1bLiCni+bfeulX4kPNR47kh9YQ00grWo9EpA3JoJBAIwZgu4aKanw5rsVWJTHy2rbvGFIWhY8ClQPMfX57GvR7jup3xMuf+VP21pW1dpPArhkzVnTGuzLDz4YbnOtIS0STsFKHFxJSfMjcctwOe1r5Je4Vhtqp01SincJQhG3EtR8B/3XYb7F4Inhp4bpbASjkgfp/iYjx/QzUq6XWPEexyRb2HHEpdkyVIShpJ6qI4tzsN+Q5/TWxNRrBMvGNNRYK1OvxnEuBK1c3QEkdfyue/01y/dSs/6Pnf8AD7ae6lZ/0fO/4fbWTu7kEiden09FCsFbuR7BcNviMkiTJsNcSNGcDilOEbkjmABvvzO311b9RLHc+s94uSICW5EZ1zk2XQOFR8tweR/7qW1kxJPM7aVUL8pisxdu3rh3+O/89adrMXbt64d/jv8Az1pp/tBOXxP7q37f2Jfumn4uMZ/ZET+Cmsu2ptF/7ZziLkAtLd5fKQ7zH9HbWW/4advmrUWmn4uMZ/ZET+Cmsxa+2+6aba8w8+gxyuHMkImNE+ipwAJeaJ8CRufkXy6Van6mHvMtdxVW56BBM17VSdreBGl6J3KS8lBdhSI7zBUOYUXUtnb+6tVSXFtV9P8AIbS3cI2UWyJxI4nI82Shh5rzCkqI6eY3Hkao7tUar2fI7WxhOJyk3JLkhLkyQwOJtRHoNoPwjxEEkcuQAJ57VqRt44m2svq+HbkHI4kbRLek9jhbLpUURch7prfwSdl8vVutX11cfY5tjETSNNwQ2nv58x1Ti/hFKDwJT8g2Udv1j51B9SsSfwzslW+zzUd3OXPaky0778LjhUeH5UjhT8oqx+yV+JC1f2iT/FVWlhzWSPecmlQrqVDdhBJJrtLehaPZS/HKg59z3G909QF+9J+hRrJOiOoWQ4Exc14/izd2VNU2HnltOKKAgHZI4OnpE/RW1sxsrWR4pdbC+rgRPiOR+L8kqSQFfMdj81ZO7PmcDSbN7zimZtuQosh1Lb6ykq9jPo3AVsOqFBXUb/BPSlJ+QjGZbXAjUVtu2jrPtJH98TqP/V8x/p5FVtcLvlGS6x27NHcYlW6WqfFccSxGc4OJtSBxcx4hI3rYcrUbAY1tVcXcysRjAb8SJzayfUEpJUT6gN6pbENWs41E1pRasUeMTFkPBbvHEQpaYyPSUpRBKSsjYeXEPKpRuyFxM9RXkqr2lsngACaSpSlck9uK5+SWtq+Y7c7K+soauER2KtQG5SlxBST9BroUpIIBGDMe2Xsy5mvKURrpIt7VnQ9+Elod4lONgn0UDmFEAcjttv15VpzUTHXsis6GYi0JksOd42FnZKhtsRUmpWj2s5BM5qNHVSpVfWUidPMpBIENo+sPo5/XT3Pcp/Mmv36Ptq7qU8wyfhUlV4ZgV5iX+NPuIZjsxlhzhCwtSyOgG1WpSlULEzausIMCKgmrOluP6lG2fd2ZdI33O73ufYTraOLvODi4uNCt/QG223jU7pQEqciLK1sXawyJ8djtzFnssG0xlOLYhRm47anCCopQkJBJAA32HkK+fKMfs2T2V6z36AzOhPD3zbg6HwUkjmlQ8CNiK6lKZ5zLFQRg9TP127LOKvy1O27IbrCZUrfuloQ7wjyB5H6d6mWmmh2E4PObujDMi6XNs7tyZqgruj5oQAEg+vmR4GrPpVza5GCZzJoqEbcqjMjOpWFWrPsZVj94kTWIqnkPFcRaUr4k77c1JUNuflXt07xC24NisfHLS/LfiMLWtK5S0qcJWoqO5SlI6nyqQ0qm44xN/LXfvxz1FQbU3SrENQUpdvUNxqe2jgbnRVcDyR5E7EKHqUDt4bb1OaUBIORDotg2sMiZ5Y7KuNJklT+UXdxjwQhptKv8xBH1VceBYRjWD2o27HLcmKhZBedJKnXlDoVqPM+PLoNzsBUjpVmsZuCZlVpaajlFwYpSlUnRFKUpEUpSkRSlKRFKUpEUpSkRSlKRFKUpEUpSkRSlKRFKUpEUpSkT/9k=" alt="fore ai" style="height:32px;width:auto;display:block;">
-        </a>
-      </div>
-    </nav>
-
-    <div class="page">
-
-      <header>
-        <div class="logo-pill">
-          <div class="logo-dot"></div>ROI Calculator
-        </div>
-        <h1>Discover your <em>ROI with fore ai</em></h1>
-        <p class="subtitle">Select your industry and region to get a tailored estimate in seconds.</p>
-      </header>
-
-      <!-- Industry + Region (hidden after calc) -->
-      <div id="presetsWrap">
-      <div class="section-label">Industry</div>
-      <div class="industry-grid" id="industryGrid"></div>
-
-      <!-- Region -->
-      <div id="regionWrap" style="display:none;">
-        <div class="section-label">Region</div>
-        <div class="region-row">
-          <div class="reg-pill" id="reg-Swiss" onclick="selectRegion('Swiss')">Switzerland / W. Europe</div>
-          <div class="reg-pill" id="reg-USA/Canada" onclick="selectRegion('USA/Canada')">USA / Canada</div>
-          <div class="reg-pill" id="reg-East Europe" onclick="selectRegion('East Europe')">Eastern Europe</div>
-          <div class="reg-pill" id="reg-India/China" onclick="selectRegion('India/China')">India / APAC</div>
-          <div class="reg-pill" id="reg-Mixed" onclick="selectRegion('Mixed')">Mixed / Global</div>
-        </div>
-      </div>
-
-      </div><!-- /presetsWrap -->
-
-      <!-- Form -->
-      <div id="calcFormWrap" style="display:none;">
-        <div class="section-label">Your Team's Numbers <span>— edit any field if presets don't match</span></div>
-        <div class="card">
-          <div class="card-body">
-            <div class="form-grid">
-              <div class="field">
-                <label>QA Engineers (FTEs)</label>
-                <select id="numFTEs"></select>
-              </div>
-              <div class="field">
-                <label>Existing Test Cases</label>
-                <select id="existingTests"></select>
-              </div>
-              <div class="field">
-                <label>New Tests / Month</label>
-                <select id="newTestsPerMonth"></select>
-              </div>
-              <div class="field">
-                <label>Test Executions / Week</label>
-                <select id="runsPerTest"></select>
-              </div>
-              <div class="field full">
-                <label>Annual Salary per FTE <span></span></label>
-                <div class="input-wrap">
-                  <span class="input-prefix">$</span>
-                  <input type="number" id="salaryInput" min="10000" max="500000" step="1000" class="has-prefix"
-                    placeholder="e.g. 80000">
-                </div>
-                <span class="hint" id="salaryHint"></span>
-              </div>
-            </div>
-            <button class="calc-btn" onclick="runCalc()">Calculate My ROI →</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Results -->
-      <div id="resultsSection" style="display:none;">
-
-        <div class="results-header">
-          <h2>Your ROI with <em>fore ai</em></h2>
-          <p id="resultsSubtitle">Based on your inputs — here's what fore ai could deliver.</p>
-        </div>
-
-        <!-- ROI hero -->
-        <div class="roi-hero-card">
-          <div class="roi-hero-num-wrap">
-            <div class="roi-hero-label">Return on Investment</div>
-            <div><span class="roi-hero-num" id="kpiROI">—</span><span class="roi-hero-unit">×</span></div>
-          </div>
-          <div class="roi-hero-divider"></div>
-          <div class="roi-hero-copy">
-            <div class="roi-hero-copy-title" id="roiHeroCopyTitle">—</div>
-            <div class="roi-hero-copy-sub" id="roiHeroCopySub">Net annual value (manual QA cost − fore ai cost −
-              retained overhead) divided by the annual plan cost — how many times your plan investment you recoup.</div>
-          </div>
-        </div>
-
-        <!-- Offer Value -->
-        <div style="margin-bottom:12px;">
-          <div class="kpi-card green">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-              <div class="kpi-label" style="margin-bottom:0;">Monthly Package</div>
-              <span id="kpiPlanBadge" style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);background:rgba(7,80,86,.12);border:1px solid var(--teal-mid);border-radius:99px;padding:2px 10px;">Standard</span>
-            </div>
-            <div class="kpi-value green" id="kpiAnnualPackage">—</div>
-            <div class="kpi-sub" id="kpiPackageSub">estimated all-in per month</div>
-          </div>
-        </div>
-
-        <!-- 3-Year Cumulative Analysis -->
-        <div class="card" style="margin-bottom:12px;overflow:visible;">
-          <div class="card-body">
-            <div style="margin-bottom:20px;">
-              <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);">3-Year ROI Trajectory</div>
-            </div>
-            <!-- ROI bars -->
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;" id="threeYearBars"></div>
-          </div>
-        </div>
-
-        <!-- FTE Reallocation Story -->
-        <div class="card" style="margin-bottom:12px;">
-          <div class="card-body">
-            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">FTE Reallocation</div>
-            <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">Engineering time your team gets back each year</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-              <div style="background:var(--teal-dim);border:1px solid var(--teal-mid);border-radius:var(--r);padding:20px 22px;">
-                <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:8px;">Hours Reclaimed</div>
-                <div id="fte-hours-val" style="font-family:'Nohemi','Inter',sans-serif;font-size:36px;font-weight:400;color:var(--teal);letter-spacing:-1px;line-height:1;">—</div>
-                <div id="fte-hours-sub" style="font-size:12px;color:var(--teal);opacity:.7;margin-top:6px;">hours per year</div>
-              </div>
-              <div style="background:var(--teal-dim);border:1px solid var(--teal-mid);border-radius:var(--r);padding:20px 22px;">
-                <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:8px;">Faster Release</div>
-                <div id="fte-release-val" style="font-family:'Nohemi','Inter',sans-serif;font-size:36px;font-weight:400;color:var(--teal);letter-spacing:-1px;line-height:1;">—</div>
-                <div style="font-size:12px;color:var(--teal);opacity:.7;margin-top:6px;">× faster release cycles</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Breakdown -->
-        <button class="breakdown-toggle" id="breakdownToggle" onclick="toggleBreakdown()" style="display:none;">
-          <span>Calculation breakdown</span>
-          <span class="toggle-arrow">▼</span>
-        </button>
-        <div class="breakdown-body" id="breakdownBody">
-
-          <p class="calc-section-label">① Inputs</p>
-          <div class="summary-card">
-            <div class="summary-row"><span class="summary-label">Existing test cases</span><span class="summary-value"
-                id="d_tests">—</span></div>
-            <div class="summary-row"><span class="summary-label">New tests / month</span><span class="summary-value"
-                id="d_newTests">—</span></div>
-            <div class="summary-row"><span class="summary-label">QA engineers (FTEs)</span><span class="summary-value"
-                id="d_fte">—</span></div>
-            <div class="summary-row"><span class="summary-label">QA region / salary</span><span class="summary-value"
-                id="d_salary">—</span></div>
-            <div class="summary-row"><span class="summary-label">Runs per test per week</span><span class="summary-value"
-                id="d_runsPerDay">—</span></div>
-          </div>
-
-          <p class="calc-section-label">② Backend assumptions</p>
-          <div class="summary-card">
-            <div class="summary-row"><span class="summary-label">Weekly hours per engineer</span><span
-                class="summary-value" id="d_wkH">—</span></div>
-            <div class="summary-row"><span class="summary-label">Time to write one test</span><span
-                class="summary-value" id="d_tGen">—</span></div>
-            <div class="summary-row"><span class="summary-label">Time per test run</span><span class="summary-value"
-                id="d_tRun">—</span></div>
-            <div class="summary-row"><span class="summary-label">Test failure rate</span><span class="summary-value"
-                id="d_failRate">—</span></div>
-            <div class="summary-row"><span class="summary-label">Test maintenance rate</span><span class="summary-value"
-                id="d_maintRate">—</span></div>
-            <div class="summary-row"><span class="summary-label">Time to fix a failing test</span><span
-                class="summary-value" id="d_tFix">—</span></div>
-            <div class="summary-row"><span class="summary-label">Time to maintain one test</span><span
-                class="summary-value" id="d_tMaint">—</span></div>
-            <div class="summary-row"><span class="summary-label">Generation time reduction (α)</span><span
-                class="summary-value" id="d_alpha">—</span></div>
-            <div class="summary-row"><span class="summary-label">Maintenance time reduction (β)</span><span
-                class="summary-value" id="d_beta">—</span></div>
-            <div class="summary-row"><span class="summary-label">Run time reduction (γ)</span><span
-                class="summary-value" id="d_gamma">—</span></div>
-            <div class="summary-row"><span class="summary-label">Working days / year</span><span class="summary-value"
-                id="d_WD">—</span></div>
-            <div class="summary-row"><span class="summary-label">Working hours / day</span><span class="summary-value"
-                id="d_WH">—</span></div>
-            <div class="summary-row"><span class="summary-label">Maintenance frequency</span><span class="summary-value"
-                id="d_maintFreq">—</span></div>
-            <div class="summary-row"><span class="summary-label">Sequential run cost / test</span><span
-                class="summary-value" id="d_seqRunCost">—</span></div>
-            <div class="summary-row"><span class="summary-label">Parallel + server cost / test</span><span
-                class="summary-value" id="d_parUnit">—</span></div>
-            <div class="summary-row"><span class="summary-label">fore AI cost / run</span><span class="summary-value"
-                id="d_cpRun">—</span></div>
-          </div>
-
-          <p class="calc-section-label">③ Run volume</p>
-          <div class="summary-card">
-            <div class="summary-row"><span class="summary-label">Monthly runs</span><span class="summary-value"
-                id="d_monthlyRuns">—</span></div>
-            <div class="summary-row"><span class="summary-label">Annual runs</span><span class="summary-value"
-                id="d_annualRuns">—</span></div>
-          </div>
-
-          <p class="calc-section-label">④ Current authoring hours (annual)</p>
-          <div class="summary-card">
-            <div class="summary-row"><span class="summary-label">Test generation</span><span class="summary-value"
-                id="d_genYr">—</span></div>
-            <div class="summary-row"><span class="summary-label">Test fixing</span><span class="summary-value"
-                id="d_fixYr">—</span></div>
-            <div class="summary-row"><span class="summary-label">Test maintenance</span><span class="summary-value"
-                id="d_maintYr">—</span></div>
-            <div class="summary-row total"><span class="summary-label" style="font-weight:500;color:var(--text)">Total
-                authoring hours today</span><span class="summary-value highlight" id="d_totalYr">—</span></div>
-          </div>
-
-          <p class="calc-section-label">⑤ fore AI authoring hours (annual)</p>
-          <div class="summary-card">
-            <div class="summary-row"><span class="summary-label">Gen + fix with fore AI</span><span
-                class="summary-value" id="d_foreGenYr">—</span></div>
-            <div class="summary-row"><span class="summary-label">Maintenance with fore AI</span><span
-                class="summary-value" id="d_foreMaintYr">—</span></div>
-            <div class="summary-row total"><span class="summary-label" style="font-weight:500;color:var(--text)">Total
-                authoring hours with fore AI</span><span class="summary-value positive highlight" id="d_foreYr">—</span>
-            </div>
-          </div>
-
-          <p class="calc-section-label">⑥ Time savings</p>
-          <div class="summary-card">
-            <div class="summary-row"><span class="summary-label">Hours saved / year</span><span
-                class="summary-value positive" id="d_hrsSaved">—</span></div>
-            <div class="summary-row"><span class="summary-label">Days saved</span><span class="summary-value positive"
-                id="d_daysSaved">—</span></div>
-            <div class="summary-row"><span class="summary-label">Annual hours / FTE</span><span class="summary-value"
-                id="d_annualHperFTE">—</span></div>
-            <div class="summary-row"><span class="summary-label">Equivalent FTEs saved</span><span
-                class="summary-value positive" id="d_ftesSaved">—</span></div>
-            <div class="summary-row"><span class="summary-label">Current annual run time</span><span
-                class="summary-value" id="d_runYr">—</span></div>
-            <div class="summary-row"><span class="summary-label">fore AI annual run time</span><span
-                class="summary-value positive" id="d_foreRunYr">—</span></div>
-            <div class="summary-row total"><span class="summary-label" style="font-weight:500;color:var(--text)">Run
-                time saved / year</span><span class="summary-value positive highlight" id="d_runSaved">—</span></div>
-          </div>
-
-          <p class="calc-section-label">⑦ Current QA cost (annual)</p>
-          <div class="summary-card">
-            <div class="summary-row"><span class="summary-label">Total salary cost</span><span class="summary-value"
-                id="d_totalSalary">—</span></div>
-            <div class="summary-row"><span class="summary-label">QA utilisation ratio</span><span class="summary-value"
-                id="d_utilRatio">—</span></div>
-            <div class="summary-row"><span class="summary-label">Adjusted annual QA cost</span><span
-                class="summary-value" id="d_adjQACost">—</span></div>
-            <div class="summary-row"><span class="summary-label">Blended team hourly rate</span><span
-                class="summary-value" id="d_hrly">—</span></div>
-            <div class="summary-row"><span class="summary-label">Human QA cost</span><span class="summary-value"
-                id="d_humanCost">—</span></div>
-            <div class="summary-row"><span class="summary-label">Sequential run cost</span><span class="summary-value"
-                id="d_runBase">—</span></div>
-            <div class="summary-row"><span class="summary-label">Parallel + server cost</span><span
-                class="summary-value" id="d_parCost">—</span></div>
-            <div class="summary-row total"><span class="summary-label" style="font-weight:500;color:var(--text)">Total
-                current QA cost / year</span><span class="summary-value highlight" id="d_totalCostYr">—</span></div>
-            <div class="summary-row"><span class="summary-label">→ Monthly equivalent</span><span class="summary-value"
-                id="d_curMo">—</span></div>
-          </div>
-
-          <p class="calc-section-label">⑧ fore AI cost estimate</p>
-          <div class="summary-card">
-            <div class="summary-row"><span class="summary-label">fore AI human hours cost</span><span
-                class="summary-value" id="d_foreHrCost">—</span></div>
-            <div class="summary-row"><span class="summary-label">fore AI run cost</span><span class="summary-value"
-                id="d_foreRunCost">—</span></div>
-            <div class="summary-row total"><span class="summary-label" style="font-weight:500;color:var(--text)">Min.
-                fore AI cost / year</span><span class="summary-value highlight" id="d_minCost">—</span></div>
-            <div class="summary-row"><span class="summary-label">Suggested monthly plan budget</span><span
-                class="summary-value" id="d_sugMonthly">—</span></div>
-          </div>
-
-          <p class="calc-section-label">⑨ Plan selection &amp; ROI</p>
-          <div class="summary-card">
-            <div class="summary-row"><span class="summary-label">Suggested monthly budget</span><span
-                class="summary-value" id="d_sugMonthly2">—</span></div>
-            <div class="summary-row"><span class="summary-label">Recommended plan</span><span
-                class="summary-value highlight" id="d_planName">—</span></div>
-            <div class="summary-row"><span class="summary-label">Plan monthly cost</span><span class="summary-value"
-                id="d_planMo">—</span></div>
-            <div class="summary-row"><span class="summary-label">Annual plan cost</span><span class="summary-value"
-                id="d_planAnnual">—</span></div>
-            <div class="summary-row"><span class="summary-label">Current monthly QA cost</span><span
-                class="summary-value" id="d_curMo2">—</span></div>
-            <div class="summary-row"><span class="summary-label">Net monthly saving</span><span
-                class="summary-value positive" id="d_netSave">—</span></div>
-            <div class="summary-row"><span class="summary-label">% cost saved</span><span class="summary-value positive"
-                id="d_savePct">—</span></div>
-            <div class="summary-row"><span class="summary-label">Delta — retained overhead</span><span
-                class="summary-value" id="d_delta">—</span></div>
-            <div class="summary-row"><span class="summary-label">ROI numerator</span><span
-                class="summary-value positive" id="d_roiNumerator">—</span></div>
-            <div class="summary-row total"><span class="summary-label"
-                style="font-weight:500;color:var(--text)">ROI</span><span class="summary-value positive highlight"
-                id="d_roi">—</span></div>
-          </div>
-
-        </div><!-- /breakdownBody -->
-
-        <div class="cta-card">
-          <h3 id="ctaTitle">Ready to unlock this ROI?</h3>
-          <p id="ctaBody">Book a demo and we'll walk you through how fore ai fits into your workflow.</p>
-          <div class="cta-row">
-            <button class="btn btn-primary" onclick="window.open('https://meet.fore-ai.com/teams','_blank')">Book a demo
-              →</button>
-            <button class="btn btn-ghost" onclick="resetCalc()">← Recalculate</button>
-          </div>
-        </div>
-
-      </div><!-- /resultsSection -->
-
-    </div><!-- /page -->
-  </div><!-- /view-calc -->
-
-
-  <!-- ════════════════════════════════
-     VIEW: LOCK SCREEN
-════════════════════════════════ -->
-  <div class="view" id="view-lock">
-    <div class="lock-screen">
-      <div class="lock-card">
-        <div class="lock-icon">🔒</div>
-        <div class="lock-title">Admin access</div>
-        <div class="lock-sub">Enter the admin password to edit fore ai model assumptions and plan pricing.</div>
-        <div class="lock-field">
-          <label>Password</label>
-          <input type="password" id="lockPassword" placeholder="••••••••"
-            onkeydown="if(event.key==='Enter')tryUnlock()">
-        </div>
-        <div class="lock-error" id="lockError"></div>
-        <button class="btn btn-primary lock-btn" onclick="tryUnlock()">Unlock →</button>
-        <div class="lock-back" onclick="showView('calc')">← Back to calculator</div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- ════════════════════════════════
-     VIEW: ADMIN PANEL
-════════════════════════════════ -->
-  <div class="view" id="view-admin">
-    <div class="admin-topbar">
-      <div class="admin-brand">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <a class="nav-logo" href="https://foreai.co">
+        <svg class="nav-logo-svg" viewBox="0 0 24 24" fill="none">
           <rect width="24" height="24" rx="6" fill="#075056" />
           <path d="M7 8h10M7 12h7M7 16h4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" />
         </svg>
-        fore ai — Admin
-        <span class="admin-badge">Internal only</span>
-      </div>
-      <div style="display:flex;gap:10px;">
-        <button class="btn btn-ghost" style="padding:8px 16px;font-size:13px;" onclick="showView('calc')">←
-          Calculator</button>
-        <button class="btn btn-danger" style="padding:8px 16px;font-size:13px;" onclick="adminLogout()">Log out</button>
-      </div>
+        <span class="nav-logo-text">fore ai</span>
+      </a>
+      <a class="nav-cta" href="https://meet.fore-ai.com/teams" target="_blank">Book a demo →</a>
     </div>
+  </nav>
 
-    <div class="admin-body">
-      <div class="admin-page-title">
-        <h2>Model assumptions</h2>
-        <p>These values are applied behind the scenes to every ROI calculation. Changes take effect on the next
-          calculation.</p>
+  <!-- ══════════════ INPUTS ══════════════ -->
+  <div id="inputSection">
+    <div class="page-wrap">
+
+      <div class="page-header">
+        <h1>Calculate your <em>ROI</em> with fore ai</h1>
+        <p>See how much time and money your team saves by switching to AI-powered testing.</p>
       </div>
 
-      <!-- Input defaults (backend) -->
-      <p class="admin-section-title">Input defaults <span
-          style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;">(pre-filled for the calculator —
-          users never see these)</span></p>
-      <div class="admin-card">
-        <div class="admin-grid">
-          <div class="admin-field">
-            <label>Weekly QA hours per engineer</label>
-            <div class="input-wrap"><input type="number" id="a_weeklyHours" min="1" max="40" step="1" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">hrs/wk</span></div>
-            <span class="hint">Used to derive daily QA hours and the utilisation ratio. Default: 35.</span>
+      <!-- Step 1: Industry -->
+      <div class="form-section">
+        <div class="form-section-title">Industry</div>
+        <div class="pill-row" id="industry-row">
+          <div class="pill" id="ind-banking" onclick="selectIndustry('banking')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <line x1="3" y1="22" x2="21" y2="22" />
+              <line x1="6" y1="18" x2="6" y2="11" />
+              <line x1="10" y1="18" x2="10" y2="11" />
+              <line x1="14" y1="18" x2="14" y2="11" />
+              <line x1="18" y1="18" x2="18" y2="11" />
+              <polygon points="12 2 20 7 4 7" />
+            </svg>
+            Banking &amp; Finance
           </div>
-          <div class="admin-field">
-            <label>Time to write one test (from scratch)</label>
-            <div class="input-wrap"><input type="number" id="a_timeToGenerate" min="0.25" max="24" step="0.25"
-                class="has-suffix" oninput="markDirty()"><span class="input-suffix">hrs</span></div>
-            <span class="hint">Average engineer hours to write a single new test. Default: 2.</span>
+          <div class="pill" id="ind-insurance" onclick="selectIndustry('insurance')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            Insurance
           </div>
-          <div class="admin-field">
-            <label>Average time to run one test</label>
-            <div class="input-wrap"><input type="number" id="a_timePerRun" min="0.5" max="60" step="0.5"
-                class="has-suffix" oninput="markDirty()"><span class="input-suffix">mins</span></div>
-            <span class="hint">Duration of one sequential test execution. Default: 3.</span>
+          <div class="pill" id="ind-travel" onclick="selectIndustry('travel')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path
+                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+            </svg>
+            Travel
           </div>
-          <div class="admin-field">
-            <label>Delta — retained overhead (1–9 FTEs)</label>
-            <div class="input-wrap"><input type="number" id="a_delta_1_9" min="0" max="1" step="0.01" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">ratio</span></div>
-            <span class="hint">Fraction of manual QA cost still incurred for teams with 1–9 FTEs. Default: 0.10.</span>
+          <div class="pill" id="ind-ecommerce" onclick="selectIndustry('ecommerce')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
+            E-Commerce
           </div>
-          <div class="admin-field">
-            <label>Delta — retained overhead (10–24 FTEs)</label>
-            <div class="input-wrap"><input type="number" id="a_delta_10_24" min="0" max="1" step="0.01" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">ratio</span></div>
-            <span class="hint">Fraction of manual QA cost still incurred for teams with 10–24 FTEs. Default: 0.10.</span>
+          <div class="pill" id="ind-media" onclick="selectIndustry('media')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="15" rx="2" />
+              <polyline points="17 2 12 7 7 2" />
+            </svg>
+            Media
           </div>
-          <div class="admin-field">
-            <label>Delta — retained overhead (25–49 FTEs)</label>
-            <div class="input-wrap"><input type="number" id="a_delta_25_49" min="0" max="1" step="0.01" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">ratio</span></div>
-            <span class="hint">Fraction of manual QA cost still incurred for teams with 25–49 FTEs. Default: 0.10.</span>
+          <div class="pill" id="ind-saas" onclick="selectIndustry('saas')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" />
+              <path d="M8 21h8M12 17v4" />
+            </svg>
+            B2B SaaS
           </div>
-          <div class="admin-field">
-            <label>Delta — retained overhead (50+ FTEs)</label>
-            <div class="input-wrap"><input type="number" id="a_delta_50_plus" min="0" max="1" step="0.01" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">ratio</span></div>
-            <span class="hint">Fraction of manual QA cost still incurred for teams with 50+ FTEs. Default: 0.10.</span>
+          <div class="pill" id="ind-other" onclick="selectIndustry('other')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" />
+            </svg>
+            Other
           </div>
         </div>
       </div>
 
-      <!-- AI performance coefficients -->
-      <p class="admin-section-title">AI performance coefficients</p>
-      <div class="admin-card">
-        <div class="admin-grid">
-          <div class="admin-field">
-            <label>Generation time reduction (alpha)</label>
-            <div class="input-wrap"><input type="number" id="a_alpha" min="10" max="95" step="5" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">%</span></div>
-            <span class="hint">How much faster fore AI writes new tests vs. a human engineer. Default: 60%.</span>
-          </div>
-          <div class="admin-field">
-            <label>Maintenance time reduction (beta)</label>
-            <div class="input-wrap"><input type="number" id="a_beta" min="10" max="98" step="5" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">%</span></div>
-            <span class="hint">Reduction in time spent updating and maintaining existing tests. Default: 80%.</span>
-          </div>
-          <div class="admin-field">
-            <label>Run time reduction (gamma)</label>
-            <div class="input-wrap"><input type="number" id="a_gamma" min="10" max="90" step="5" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">%</span></div>
-            <span class="hint">Reduction in per-test execution time via parallelisation. Default: 60%.</span>
-          </div>
-          <div class="admin-field">
-            <label>Cost per run (blended)</label>
-            <div class="input-wrap"><input type="number" id="a_costPerRun" min="0.01" max="2" step="0.01"
-                class="has-suffix" oninput="markDirty()"><span class="input-suffix">$/run</span></div>
-            <span class="hint">Blended compute + infrastructure cost per fore AI test execution. Default: 0.10.</span>
-          </div>
+      <!-- Step 2: Region -->
+      <div class="form-section hidden" id="region-section">
+        <div class="form-section-title">Team Location</div>
+        <div class="pill-row">
+          <div class="pill" id="reg-North America" onclick="selectRegion('North America')">North America</div>
+          <div class="pill" id="reg-Western Europe" onclick="selectRegion('Western Europe')">Western Europe</div>
+          <div class="pill" id="reg-Middle East" onclick="selectRegion('Middle East')">Middle East</div>
+          <div class="pill" id="reg-Eastern Europe" onclick="selectRegion('Eastern Europe')">Eastern Europe</div>
+          <div class="pill" id="reg-Latin America" onclick="selectRegion('Latin America')">Latin America</div>
+          <div class="pill" id="reg-Asia" onclick="selectRegion('Asia')">Asia</div>
         </div>
       </div>
 
-      <!-- Benchmark defaults -->
-      <p class="admin-section-title">Benchmark defaults</p>
-      <div class="admin-card">
-        <div class="admin-grid">
-          <div class="admin-field">
-            <label>Default test failure rate</label>
-            <div class="input-wrap"><input type="number" id="a_failureRate" min="0" max="50" step="0.5"
-                class="has-suffix" oninput="markDirty()"><span class="input-suffix">%</span></div>
-            <span class="hint">Industry benchmark for test failure rate. Default: 7.5%.</span>
-          </div>
-          <div class="admin-field">
-            <label>Default maintenance rate</label>
-            <div class="input-wrap"><input type="number" id="a_maintenanceRate" min="0" max="100" step="5"
-                class="has-suffix" oninput="markDirty()"><span class="input-suffix">%</span></div>
-            <span class="hint">% of tests requiring maintenance per new-test cycle. Default: 40%.</span>
-          </div>
-          <div class="admin-field">
-            <label>Time to fix a failing test</label>
-            <div class="input-wrap"><input type="number" id="a_tFix" min="0.25" max="24" step="0.25" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">hrs</span></div>
-            <span class="hint">Average hours an engineer spends fixing one failed test. Default: 1.5.</span>
-          </div>
-          <div class="admin-field">
-            <label>Time to maintain / update one test</label>
-            <div class="input-wrap"><input type="number" id="a_tMaint" min="0.25" max="24" step="0.25"
-                class="has-suffix" oninput="markDirty()"><span class="input-suffix">hrs</span></div>
-            <span class="hint">Average hours to update an existing test when the app changes. Default: 3.</span>
-          </div>
-          <div class="admin-field">
-            <label>Working days per year</label>
-            <div class="input-wrap"><input type="number" id="a_workingDays" min="200" max="260" step="5"
-                class="has-suffix" oninput="markDirty()"><span class="input-suffix">days</span></div>
-            <span class="hint">Used to convert annual hours into FTE equivalents. Default: 240.</span>
-          </div>
-          <div class="admin-field">
-            <label>Working hours per day</label>
-            <div class="input-wrap"><input type="number" id="a_workingHours" min="4" max="12" step="0.5"
-                class="has-suffix" oninput="markDirty()"><span class="input-suffix">hrs/day</span></div>
-            <span class="hint">Standard workday length for computing QA utilisation ratio. Default: 8.</span>
-          </div>
-          <div class="admin-field">
-            <label>Existing test maintenance frequency</label>
-            <div class="input-wrap"><input type="number" id="a_maintFreq" min="1" max="12" step="1" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">× / yr</span></div>
-            <span class="hint">How many times per year existing tests are maintained/updated. Default: 2.</span>
-          </div>
-          <div class="admin-field">
-            <label>Sequential run cost per test</label>
-            <div class="input-wrap"><input type="number" id="a_seqRunCost" min="0" max="1" step="0.005"
-                class="has-suffix" oninput="markDirty()"><span class="input-suffix">$/run</span></div>
-            <span class="hint">Infrastructure cost per individual sequential test execution. Default: 0.03.</span>
-          </div>
-          <div class="admin-field">
-            <label>Parallel + server cost per test</label>
-            <div class="input-wrap"><input type="number" id="a_parallelCost" min="0" max="500" step="10"
-                class="has-suffix" oninput="markDirty()"><span class="input-suffix">$/yr</span></div>
-            <span class="hint">Annual infrastructure cost attributed per test in the suite. Default: 130.</span>
+      <!-- Step 3: Testing Mode + Team + Suite -->
+      <div class="hidden" id="main-form-section">
+
+        <!-- Testing Mode -->
+        <div class="form-section">
+          <div class="form-section-title">Testing Mode</div>
+          <div class="pill-row">
+            <div class="pill" id="mode-manual" onclick="selectMode('manual')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              Manual QA
+            </div>
+            <div class="pill" id="mode-automated" onclick="selectMode('automated')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6" />
+                <polyline points="8 6 2 12 8 18" />
+              </svg>
+              Automated
+            </div>
+            <div class="pill" id="mode-devs" onclick="selectMode('devs')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" />
+                <path d="M8 21h8M12 17v4" />
+              </svg>
+              Developers
+            </div>
+            <div class="pill" id="mode-mixed" onclick="selectMode('mixed')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                <line x1="12" y1="22.08" x2="12" y2="12" />
+              </svg>
+              Mixed
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Plan pricing -->
-      <p class="admin-section-title">Plan pricing (monthly)</p>
-      <div class="admin-card">
-        <div class="admin-grid">
-          <div class="admin-field">
-            <label>PoC plan</label>
-            <div class="input-wrap"><input type="number" id="a_poc" min="0" step="500" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">$/mo</span></div>
-          </div>
-          <div class="admin-field">
-            <label>Standard plan</label>
-            <div class="input-wrap"><input type="number" id="a_standard" min="0" step="500" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">$/mo</span></div>
-          </div>
-          <div class="admin-field">
-            <label>Pro plan</label>
-            <div class="input-wrap"><input type="number" id="a_pro" min="0" step="500" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">$/mo</span></div>
-          </div>
-          <div class="admin-field">
-            <label>Enterprise plan</label>
-            <div class="input-wrap"><input type="number" id="a_enterprise" min="0" step="1000" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">$/mo</span></div>
+        <!-- QA Team FTEs (revealed after mode selected) -->
+        <div class="form-section hidden" id="fte-section">
+          <div class="form-section-title">QA Team</div>
+          <div class="form-grid" id="fte-fields-grid">
+            <!-- populated by buildFTEFields() -->
           </div>
         </div>
-      </div>
 
-      <!-- Salaries -->
-      <p class="admin-section-title">QA engineer salaries (annual)</p>
-      <div class="admin-card">
-        <div class="admin-grid">
-          <div class="admin-field">
-            <label>Switzerland / Western Europe</label>
-            <div class="input-wrap"><input type="number" id="a_sal_swiss" min="0" step="5000" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">$/yr</span></div>
-          </div>
-          <div class="admin-field">
-            <label>USA / Canada</label>
-            <div class="input-wrap"><input type="number" id="a_sal_usa" min="0" step="5000" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">$/yr</span></div>
-          </div>
-          <div class="admin-field">
-            <label>Eastern Europe</label>
-            <div class="input-wrap"><input type="number" id="a_sal_ee" min="0" step="2000" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">$/yr</span></div>
-          </div>
-          <div class="admin-field">
-            <label>India / China / APAC</label>
-            <div class="input-wrap"><input type="number" id="a_sal_india" min="0" step="1000" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">$/yr</span></div>
-          </div>
-          <div class="admin-field">
-            <label>Mixed / Global team</label>
-            <div class="input-wrap"><input type="number" id="a_sal_mixed" min="0" step="2000" class="has-suffix"
-                oninput="markDirty()"><span class="input-suffix">$/yr</span></div>
+        <!-- Test Suite -->
+        <div class="form-section">
+          <div class="form-section-title">Test Suite &amp; Runs</div>
+          <div class="form-grid">
+            <div class="field">
+              <label>Existing test cases</label>
+              <div class="input-wrap">
+                <select id="numTests">
+                  <option value="100">100</option>
+                  <option value="200">200</option>
+                  <option value="300">300</option>
+                  <option value="400">400</option>
+                  <option value="500" selected>500</option>
+                  <option value="800">800</option>
+                  <option value="1000">1000+</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label>New tests / month</label>
+              <div class="input-wrap">
+                <select id="newTestsPerMonth">
+                  <option value="0">0</option>
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="25">25</option>
+                  <option value="30">30+</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label>Executions per week</label>
+              <div class="input-wrap">
+                <select id="runsPerWeek">
+                  <option value="0">0</option>
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="25">25</option>
+                  <option value="30">30+</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Industry Presets -->
-      <p class="admin-section-title">Industry presets <span
-          style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;">(pre-filled values when user
-          selects an industry)</span></p>
-      <div id="adminPresetsContainer"></div>
+        <button class="calc-btn" onclick="runCalc()">
+          Calculate my ROI
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </button>
 
-      <!-- Security -->
-      <p class="admin-section-title">Security</p>
-      <div class="admin-card">
-        <div class="admin-grid" style="grid-template-columns:1fr 1fr 1fr;">
-          <div class="admin-field"><label>Current password</label><input type="password" id="pwCurrent"
-              placeholder="••••••••"></div>
-          <div class="admin-field"><label>New password</label><input type="password" id="pwNew" placeholder="••••••••">
-          </div>
-          <div class="admin-field"><label>Confirm new password</label><input type="password" id="pwConfirm"
-              placeholder="••••••••"></div>
-        </div>
-        <div style="margin-top:16px;display:flex;align-items:center;gap:12px;">
-          <button class="btn btn-ghost" style="font-size:13px;padding:9px 18px;" onclick="changePassword()">Update
-            password</button>
-          <span id="pwMsg" style="font-size:13px;color:var(--muted);"></span>
-        </div>
-      </div>
-    </div>
-  </div><!-- /view-admin -->
-
-  <!-- Save bar -->
-  <div class="save-bar" id="saveBar">
-    <span class="save-bar-msg"><strong>Unsaved changes</strong> — these won't apply until you save.</span>
-    <div class="save-bar-actions">
-      <button class="btn btn-ghost" style="padding:9px 18px;font-size:13px;" onclick="discardChanges()">Discard</button>
-      <button class="btn btn-success" style="padding:9px 18px;font-size:13px;" onclick="saveAssumptions()">Save
-        changes</button>
+      </div><!-- /main-form-section -->
     </div>
   </div>
 
-  <div class="toast" id="toast"></div>
+  <!-- ══════════════ RESULTS ══════════════ -->
+  <div id="resultsSection">
+    <div class="results-wrap">
+
+      <div class="results-topbar animate">
+        <div>
+          <div class="results-eyebrow">fore ai — ROI estimate</div>
+          <div class="results-headline">Your <em>results</em></div>
+          <p class="results-sub" id="resultsSub">—</p>
+        </div>
+        <button class="back-btn" onclick="resetCalc()">← Recalculate</button>
+      </div>
+
+      <!-- Year 1 ROI card -->
+      <div class="pkg-single animate">
+        <div class="pkg-single-left">
+          <div class="pkg-single-amount" id="res-base-mo">—</div>
+          <div class="pkg-single-sub">return on fore ai spend</div>
+        </div>
+        <div class="pkg-single-right">
+          <div class="pkg-single-sideline">up to 90% reduction in generation, maintenance &amp; execution time</div>
+        </div>
+      </div>
+
+      <!-- 3-year ROI trajectory -->
+      <div class="traj-card animate">
+        <div class="traj-title">3-Year ROI Trajectory</div>
+        <div class="traj-bars" id="traj-bars">
+          <!-- populated by render3Year() -->
+        </div>
+      </div>
+
+      <!-- FTE reallocation -->
+      <div class="fte-card animate">
+        <div class="fte-eyebrow">FTE Reallocation</div>
+        <div class="fte-headline">Engineering time your team gets back each year</div>
+        <div class="fte-grid">
+          <div class="fte-metric">
+            <div class="fte-metric-label">Hours Reclaimed</div>
+            <div class="fte-metric-value" id="res-hrs-reclaimed">—</div>
+            <div class="fte-metric-sub">manpower hours per year</div>
+          </div>
+          <div class="fte-metric">
+            <div class="fte-metric-label">Faster Release</div>
+            <div class="fte-metric-value" id="res-release-mult">—</div>
+            <div class="fte-metric-sub">up to X faster release cycles</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formula breakdown -->
+      <div class="formula-card animate">
+        <div class="formula-card-header" id="fml-header" onclick="toggleFormulas()">
+          <div class="formula-card-title">How we calculated this</div>
+          <svg class="formula-card-arrow" id="fml-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </div>
+        <div class="formula-card-body" id="fml-body">
+          <div id="fml-content"><!-- populated by renderFormulas() --></div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-card animate">
+        <h3>Ready to transform your QA?</h3>
+        <p>Book a demo and see how fore ai fits into your workflow.</p>
+        <div class="cta-row">
+          <a class="btn-primary" href="https://meet.fore-ai.com/teams" target="_blank">Book a demo →</a>
+          <button class="btn-ghost" onclick="resetCalc()">← Recalculate</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
   <script>
-    // ── Defaults ──────────────────────────────────────────────────────────────────
-    const DEFAULTS = {
-      // Input defaults (backend — never shown on the form)
-      weeklyHours: 35, timeToGenerate: 2, timePerRun: 3,
-      // ROI model — per-FTE-tier deltas
-      delta_1_9: 0.10,
-      delta_10_24: 0.20,
-      delta_25_49: 0.30,
-      delta_50_plus: 0.50,
-      // AI performance coefficients
-      alpha: 60, beta: 80, gamma: 60, costPerRun: 0.10,
-      // Benchmark defaults
-      failureRate: 7.5, maintenanceRate: 40,
-      tFix: 1.5, tMaint: 3,
-      maintFreq: 2, seqRunCost: 0.03, workingHours: 8, workingDays: 240, parallelCost: 130,
-      // Plans
-      poc: 6000, standard: 9000, pro: 12000, enterprise: 30000,
-      // Salaries
-      sal_swiss: 120000, sal_usa: 80000, sal_ee: 40000, sal_india: 12000, sal_mixed: 45000,
+    // ══════════════════════════════════════════
+    // MODEL ASSUMPTIONS
+    // ══════════════════════════════════════════
+    const M = {
+      // Authoring
+      timeToGenerate: 2,        // hrs to write one test (from scratch)
+      failureRate: 0.075,    // 7.5% of new tests fail initial run
+      tFix: 1.5,      // hrs to fix one failing test
+      // Maintenance
+      maintenanceRate: 0.40,    // 40% of tests need maintenance per cycle
+      tMaint: 3,       // hrs to maintain one test
+      maintFreq: 2,       // maintenance cycles per year
+      // Infra (automated)
+      seqRunCost: 0.03,     // $ per test per run
+      parallelCost: 130,      // $ per test per year
+      // Calendar
+      workingHours: 8,
+      // fore AI
+      alpha: 0.60,              // authoring time reduction (60% faster)
+      beta: 0.80,              // maintenance time reduction (not used for fore AI hrs — self-heal)
+      platformPerRun: 0.05,     // $ per test per run (execution platform fee)
+      selfHealWeekly: 0.02,     // $ per test per week (self-heal, ALL tests)
     };
 
-    const PW_KEY = 'foreai_admin_pw';
-    const ASS_KEY = 'foreai_assumptions_v3';
-    const DEFAULT_PW = 'foreai2024';
-
-    function loadA() {
-      try { const r = localStorage.getItem(ASS_KEY); return r ? { ...DEFAULTS, ...JSON.parse(r) } : { ...DEFAULTS }; }
-      catch (e) { return { ...DEFAULTS }; }
-    }
-    function saveA(obj) { localStorage.setItem(ASS_KEY, JSON.stringify(obj)); }
-    function getPW() { return localStorage.getItem(PW_KEY) || DEFAULT_PW; }
-
-    let A = loadA();
-    let isDirty = false;
-
-    // ── Industry SVG icons (single-colour, stroke-based) ─────────────────────────
-    const ICONS = {
-      banking: `<svg class="ind-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7"/><rect x="5" y="10" width="3" height="7"/><rect x="10.5" y="10" width="3" height="7"/><rect x="16" y="10" width="3" height="7"/><path d="M3 19h18"/></svg>`,
-      insurance: `<svg class="ind-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l7 4v6c0 4.5-3 8-7 10C8 20 5 16.5 5 12V6l7-4z"/><polyline points="9 12 11 14 15 10"/></svg>`,
-      travel: `<svg class="ind-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.5a9.5 9.5 0 01-9.5 4.5A9.5 9.5 0 013 12.5c0-3 1.3-5.7 3.4-7.6"/><path d="M6 3l1.5 4.5L12 6l1 4.5 4.5-.5L19 14"/><line x1="2" y1="22" x2="22" y2="22"/></svg>`,
-      ecommerce: `<svg class="ind-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>`,
-      media: `<svg class="ind-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><polygon points="10 8 16 11 10 14 10 8"/></svg>`,
-      saas: `<svg class="ind-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><circle cx="7.5" cy="6" r="0.8" fill="currentColor" stroke="none"/><circle cx="11" cy="6" r="0.8" fill="currentColor" stroke="none"/><path d="M8 13l2 2 4-4"/></svg>`,
-      other: `<svg class="ind-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>`,
+    // ── Salary tables (annual) ─────────────────────────────────────────────
+    const SAL_MANUAL = {
+      'North America': 75000,
+      'Western Europe': 55000,
+      'Middle East': 40000,
+      'Eastern Europe': 30000,
+      'Latin America': 20000,
+      'Asia': 12000,
+    };
+    const SAL_AUTO = {
+      'North America': 100000,
+      'Western Europe': 80000,
+      'Middle East': 65000,
+      'Eastern Europe': 50000,
+      'Latin America': 35000,
+      'Asia': 25000,
+    };
+    const SAL_DEV = {
+      'North America': 170000,
+      'Western Europe': 120000,
+      'Middle East': 100000,
+      'Eastern Europe': 80000,
+      'Latin America': 60000,
+      'Asia': 40000,
     };
 
-    // ── Industry presets ──────────────────────────────────────────────────────────
-    const PRESET_DEFAULTS = {
-      banking: { label: 'Banking & Finance', nFTE: 30, tests: 500, newTests: 10, runsPerWeek: 10 },
-      insurance: { label: 'Insurance', nFTE: 30, tests: 400, newTests: 5, runsPerWeek: 10 },
-      travel: { label: 'Travel & Hospitality', nFTE: 15, tests: 200, newTests: 10, runsPerWeek: 5 },
-      ecommerce: { label: 'E-Commerce', nFTE: 15, tests: 400, newTests: 20, runsPerWeek: 10 },
-      media: { label: 'Media & Streaming', nFTE: 10, tests: 200, newTests: 5, runsPerWeek: 5 },
-      saas: { label: 'B2B SaaS', nFTE: 10, tests: 300, newTests: 10, runsPerWeek: 10 },
-      other: { label: 'Other', nFTE: 10, tests: 300, newTests: 10, runsPerWeek: 10 },
+    // ── Industry presets ────────────────────────────────────────────────────
+    const PRESETS = {
+      banking: { tests: 500, newTests: 10, rpw: 10, manFTEs: 12, autoFTEs: 18, devFTEs: 0 },
+      insurance: { tests: 400, newTests: 5, rpw: 10, manFTEs: 12, autoFTEs: 18, devFTEs: 0 },
+      travel: { tests: 200, newTests: 10, rpw: 5, manFTEs: 6, autoFTEs: 9, devFTEs: 0 },
+      ecommerce: { tests: 400, newTests: 20, rpw: 10, manFTEs: 6, autoFTEs: 9, devFTEs: 0 },
+      media: { tests: 200, newTests: 5, rpw: 5, manFTEs: 4, autoFTEs: 6, devFTEs: 0 },
+      saas: { tests: 300, newTests: 10, rpw: 10, manFTEs: 5, autoFTEs: 7, devFTEs: 0 },
+      other: { tests: 300, newTests: 10, rpw: 10, manFTEs: 5, autoFTEs: 7, devFTEs: 0 },
     };
 
-    const PRESETS_KEY = 'foreai_presets_v1';
-    function loadPresets() {
-      try {
-        const saved = localStorage.getItem(PRESETS_KEY);
-        if (!saved) return JSON.parse(JSON.stringify(PRESET_DEFAULTS));
-        const parsed = JSON.parse(saved);
-        // Merge: keep label/emoji from defaults, allow nFTE/tests/newTests/runsPerWeek to be overridden
-        const merged = JSON.parse(JSON.stringify(PRESET_DEFAULTS));
-        for (const key of Object.keys(merged)) {
-          if (parsed[key]) {
-            merged[key].nFTE = parsed[key].nFTE ?? merged[key].nFTE;
-            merged[key].tests = parsed[key].tests ?? merged[key].tests;
-            merged[key].newTests = parsed[key].newTests ?? merged[key].newTests;
-            merged[key].runsPerWeek = parsed[key].runsPerWeek ?? merged[key].runsPerWeek;
-          }
-        }
-        return merged;
-      } catch (e) { return JSON.parse(JSON.stringify(PRESET_DEFAULTS)); }
-    }
-    function savePresets(data) { localStorage.setItem(PRESETS_KEY, JSON.stringify(data)); }
-
-    let PRESETS = loadPresets();
-
-    // ── Dropdown options ──────────────────────────────────────────────────────────
-    const FTE_OPTS = [10, 15, 20, 30, 40, 50, 75, 100];
-    const FTE_LABELS = ['10', '15', '20', '30', '40', '50', '75', '100+'];
-    const TESTS_OPTS = [50, 100, 200, 500, 800, 1000];
-    const TESTS_LABELS = ['50', '100', '200', '500', '800', '1000+'];
-    const NEWTESTS_OPTS = [5, 10, 15, 20];
-    const NEWTESTS_LABELS = ['5', '10', '15', '20+'];
-    const RUNS_OPTS = [5, 10, 20, 25];
-    const RUNS_LABELS = ['5', '10', '20', '25+'];
-
-    // ── State ─────────────────────────────────────────────────────────────────────
+    // State
     let _industry = null;
     let _region = null;
+    let _mode = null;   // 'manual' | 'automated' | 'devs' | 'mixed'
+    let _slTimer = null;
+    let _lastR = null;
 
-    // ── View routing ──────────────────────────────────────────────────────────────
-    function showView(name) {
-      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-      document.getElementById('view-' + name).classList.add('active');
-      window.scrollTo(0, 0);
-    }
-
-    window.addEventListener('hashchange', () => { if (location.hash === '#admin') { location.hash = ''; showView('lock'); } });
-    window.addEventListener('load', () => { if (location.hash === '#admin') { location.hash = ''; showView('lock'); } });
-
-    // ── Auth ──────────────────────────────────────────────────────────────────────
-    function tryUnlock() {
-      const pw = document.getElementById('lockPassword').value;
-      const err = document.getElementById('lockError');
-      if (pw === getPW()) {
-        document.getElementById('lockPassword').value = '';
-        err.textContent = '';
-        populateAdminForm();
-        showView('admin');
-      } else {
-        err.textContent = 'Incorrect password. Please try again.';
-        document.getElementById('lockPassword').select();
-      }
-    }
-
-    function adminLogout() {
-      if (isDirty && !confirm('You have unsaved changes. Leave anyway?')) return;
-      isDirty = false;
-      document.getElementById('saveBar').classList.remove('visible');
-      showView('calc');
-    }
-
-    // ── Admin form ────────────────────────────────────────────────────────────────
-    const FIELD_MAP = {
-      a_weeklyHours: 'weeklyHours',
-      a_timeToGenerate: 'timeToGenerate',
-      a_timePerRun: 'timePerRun',
-      a_delta_1_9: 'delta_1_9',
-      a_delta_10_24: 'delta_10_24',
-      a_delta_25_49: 'delta_25_49',
-      a_delta_50_plus: 'delta_50_plus',
-      a_alpha: 'alpha',
-      a_beta: 'beta',
-      a_gamma: 'gamma',
-      a_costPerRun: 'costPerRun',
-      a_failureRate: 'failureRate',
-      a_maintenanceRate: 'maintenanceRate',
-      a_tFix: 'tFix',
-      a_tMaint: 'tMaint',
-      a_workingDays: 'workingDays',
-      a_workingHours: 'workingHours',
-      a_maintFreq: 'maintFreq',
-      a_seqRunCost: 'seqRunCost',
-      a_parallelCost: 'parallelCost',
-      a_poc: 'poc',
-      a_standard: 'standard',
-      a_pro: 'pro',
-      a_enterprise: 'enterprise',
-      a_sal_swiss: 'sal_swiss',
-      a_sal_usa: 'sal_usa',
-      a_sal_ee: 'sal_ee',
-      a_sal_india: 'sal_india',
-      a_sal_mixed: 'sal_mixed',
-    };
-
-    function populateAdminForm() {
-      const a = loadA();
-      for (const [id, key] of Object.entries(FIELD_MAP)) {
-        const el = document.getElementById(id);
-        if (el) el.value = a[key] != null ? a[key] : DEFAULTS[key];
-      }
-      buildAdminPresets();
-      isDirty = false;
-      document.getElementById('saveBar').classList.remove('visible');
-    }
-
-    function buildAdminPresets() {
-      const p = loadPresets();
-      const container = document.getElementById('adminPresetsContainer');
-      if (!container) return;
-      container.innerHTML = Object.entries(p).map(([id, preset]) => `
-    <div class="admin-card" style="margin-bottom:12px;">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
-        <span style="display:inline-flex;align-items:center;color:var(--teal);">${ICONS[id] || ''}</span>
-        <span style="font-size:13px;font-weight:600;color:var(--text);">${preset.label}</span>
-      </div>
-      <div class="admin-grid">
-        <div class="admin-field">
-          <label>FTEs (QA engineers)</label>
-          <div class="input-wrap">
-            <input type="number" id="preset_${id}_nFTE" value="${preset.nFTE}" min="1" max="500" step="1" class="has-suffix" oninput="markDirty()">
-            <span class="input-suffix">FTEs</span>
-          </div>
-        </div>
-        <div class="admin-field">
-          <label>Existing test cases</label>
-          <div class="input-wrap">
-            <input type="number" id="preset_${id}_tests" value="${preset.tests}" min="1" max="10000" step="10" class="has-suffix" oninput="markDirty()">
-            <span class="input-suffix">tests</span>
-          </div>
-        </div>
-        <div class="admin-field">
-          <label>New tests / month</label>
-          <div class="input-wrap">
-            <input type="number" id="preset_${id}_newTests" value="${preset.newTests}" min="1" max="500" step="5" class="has-suffix" oninput="markDirty()">
-            <span class="input-suffix">tests/mo</span>
-          </div>
-        </div>
-        <div class="admin-field">
-          <label>Test runs / week</label>
-          <div class="input-wrap">
-            <input type="number" id="preset_${id}_runsPerWeek" value="${preset.runsPerWeek}" min="1" max="200" step="5" class="has-suffix" oninput="markDirty()">
-            <span class="input-suffix">runs/wk</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  `).join('');
-    }
-
-    function markDirty() {
-      isDirty = true;
-      document.getElementById('saveBar').classList.add('visible');
-    }
-
-    function saveAssumptions() {
-      const updated = {};
-      for (const [id, key] of Object.entries(FIELD_MAP)) {
-        const val = parseFloat(document.getElementById(id)?.value);
-        if (!isNaN(val)) updated[key] = val;
-      }
-      saveA(updated);
-      A = loadA();
-
-      // Save presets
-      const currentPresets = loadPresets();
-      const updatedPresets = JSON.parse(JSON.stringify(currentPresets));
-      for (const id of Object.keys(PRESET_DEFAULTS)) {
-        const nFTE = parseInt(document.getElementById(`preset_${id}_nFTE`)?.value);
-        const tests = parseInt(document.getElementById(`preset_${id}_tests`)?.value);
-        const newTests = parseInt(document.getElementById(`preset_${id}_newTests`)?.value);
-        const runsPerWeek = parseInt(document.getElementById(`preset_${id}_runsPerWeek`)?.value);
-        if (!isNaN(nFTE)) updatedPresets[id].nFTE = nFTE;
-        if (!isNaN(tests)) updatedPresets[id].tests = tests;
-        if (!isNaN(newTests)) updatedPresets[id].newTests = newTests;
-        if (!isNaN(runsPerWeek)) updatedPresets[id].runsPerWeek = runsPerWeek;
-      }
-      savePresets(updatedPresets);
-      PRESETS = loadPresets();
-      buildIndustryGrid();
-
-      isDirty = false;
-      document.getElementById('saveBar').classList.remove('visible');
-      showToast('✓ Assumptions & presets saved — active on next calculation');
-    }
-
-    function discardChanges() { populateAdminForm(); buildAdminPresets(); }
-
-    function changePassword() {
-      const cur = document.getElementById('pwCurrent').value;
-      const nw = document.getElementById('pwNew').value;
-      const con = document.getElementById('pwConfirm').value;
-      const msg = document.getElementById('pwMsg');
-      if (cur !== getPW()) { msg.style.color = 'var(--red)'; msg.textContent = 'Current password is incorrect.'; return; }
-      if (!nw || nw.length < 6) { msg.style.color = 'var(--red)'; msg.textContent = 'New password must be at least 6 characters.'; return; }
-      if (nw !== con) { msg.style.color = 'var(--red)'; msg.textContent = 'Passwords do not match.'; return; }
-      localStorage.setItem(PW_KEY, nw);
-      ['pwCurrent', 'pwNew', 'pwConfirm'].forEach(id => document.getElementById(id).value = '');
-      msg.style.color = 'var(--teal)'; msg.textContent = 'Password updated!';
-      setTimeout(() => msg.textContent = '', 3000);
-    }
-
-    // ── Toast ─────────────────────────────────────────────────────────────────────
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg; t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2800);
-    }
-
-    // ── Helpers ───────────────────────────────────────────────────────────────────
+    // ── Helpers ────────────────────────────────────────────────────────────
+    const $ = id => document.getElementById(id);
+    function st(id, t) { const el = $(id); if (el) el.textContent = t; }
+    function gv(id) { const el = $(id); return el ? (parseFloat(el.value) || 0) : 0; }
     function fmt$(n) { return '$' + Math.round(Math.abs(n)).toLocaleString(); }
-    function v(id) { const el = document.getElementById(id); return el ? parseFloat(el.value) || 0 : 0; }
-
-    function salaryForRegion(region) {
-      const a = loadA();
-      return ({ Swiss: a.sal_swiss, 'USA/Canada': a.sal_usa, 'East Europe': a.sal_ee, 'India/China': a.sal_india, Mixed: a.sal_mixed })[region] || a.sal_mixed;
+    function fmtK(n) {
+      if (Math.abs(n) >= 1000000) return '$' + (n / 1000000).toFixed(1) + 'M';
+      if (Math.abs(n) >= 1000) return '$' + Math.round(n / 1000) + 'k';
+      return '$' + Math.round(n);
+    }
+    function fmtHrs(n) {
+      if (n >= 1000) return Math.round(n / 100) * 100 + ' hrs';
+      return Math.round(n) + ' hrs';
     }
 
-    // ── Build UI ──────────────────────────────────────────────────────────────────
-    function buildIndustryGrid() {
-      document.getElementById('industryGrid').innerHTML = Object.entries(PRESETS).map(([id, p]) =>
-        `<div class="ind-card" id="ind-${id}" onclick="selectIndustry('${id}')">
-      ${ICONS[id] || ''}
-      <div class="ind-label">${p.label}</div>
-    </div>`
-      ).join('');
+    function toggleSection(id) {
+      const body = $(id + '-body');
+      const arrow = $(id + '-arrow');
+      const open = body.classList.toggle('open');
+      if (arrow) arrow.classList.toggle('open', open);
     }
 
-    const TESTS_OPTS_RESTRICTED = [50, 100, 200, 500];
-    const TESTS_LABELS_RESTRICTED = ['50', '100', '200', '500+'];
-    const INDIA_CHINA_REGIONS = ['India/China'];
-
-    function buildDropdowns(region) {
-      buildSel('numFTEs', FTE_OPTS, FTE_LABELS);
-      const isRestricted = region && INDIA_CHINA_REGIONS.includes(region);
-      const tOpts = isRestricted ? TESTS_OPTS_RESTRICTED : TESTS_OPTS;
-      const tLabels = isRestricted ? TESTS_LABELS_RESTRICTED : TESTS_LABELS;
-      const prevVal = parseInt(document.getElementById('existingTests')?.value) || 0;
-      buildSel('existingTests', tOpts, tLabels);
-      // If previously selected value exceeds the new max, snap to max
-      if (isRestricted && prevVal > 500) {
-        document.getElementById('existingTests').value = 500;
-      }
-      buildSel('newTestsPerMonth', NEWTESTS_OPTS, NEWTESTS_LABELS);
-      buildSel('runsPerTest', RUNS_OPTS, RUNS_LABELS);
-    }
-
-    function buildSel(id, vals, labels) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.innerHTML = vals.map((v, i) => `<option value="${v}">${labels[i]}</option>`).join('');
-    }
-
-    function closestOpt(id, val) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      let best = null, bestDist = Infinity;
-      for (const opt of el.options) {
-        const d = Math.abs(Number(opt.value) - val);
-        if (d < bestDist) { bestDist = d; best = opt.value; }
-      }
-      if (best != null) el.value = best;
-    }
-
-    // ── Selection ─────────────────────────────────────────────────────────────────
-    function selectIndustry(id) {
-      _industry = id;
-      document.querySelectorAll('.ind-card').forEach(c => c.classList.remove('active'));
-      document.getElementById('ind-' + id)?.classList.add('active');
-
-      const p = PRESETS[id];
+    // ── Step progression ───────────────────────────────────────────────────
+    function selectIndustry(ind) {
+      _industry = ind;
+      document.querySelectorAll('#industry-row .pill').forEach(p => p.classList.remove('active'));
+      $('ind-' + ind)?.classList.add('active');
+      const p = PRESETS[ind];
       if (p) {
-        closestOpt('numFTEs', p.nFTE);
-        closestOpt('existingTests', p.tests);
-        closestOpt('newTestsPerMonth', p.newTests);
-        closestOpt('runsPerTest', p.runsPerWeek);
+        $('numTests').value = p.tests;
+        $('newTestsPerMonth').value = p.newTests;
+        $('runsPerWeek').value = p.rpw;
       }
-
-      document.getElementById('regionWrap').style.display = 'block';
-      maybeShowForm();
+      show('region-section');
     }
 
     function selectRegion(r) {
       _region = r;
-      document.querySelectorAll('.reg-pill').forEach(p => p.classList.remove('active'));
-      document.getElementById('reg-' + r)?.classList.add('active');
+      document.querySelectorAll('.pill[id^="reg-"]').forEach(p => p.classList.remove('active'));
+      $('reg-' + r)?.classList.add('active');
+      show('main-form-section');
+      // If mode already selected, refresh salary hint
+      if (_mode) buildFTEFields(_mode);
+    }
 
-      const sal = salaryForRegion(r);
-      document.getElementById('salaryInput').value = sal;
-      document.getElementById('salaryHint').textContent = '';
+    function selectMode(mode) {
+      _mode = mode;
+      document.querySelectorAll('.pill[id^="mode-"]').forEach(c => c.classList.remove('active'));
+      $('mode-' + mode)?.classList.add('active');
+      show('fte-section');
+      buildFTEFields(mode);
+    }
 
-      // Rebuild dropdowns with region-specific options
-      buildDropdowns(r);
+    function buildFTEFields(mode) {
+      const grid = $('fte-fields-grid');
+      const isMixed = mode === 'mixed';
+      const opts = isMixed
+        ? [0, 5, 10, 15, 20, 25, 30]
+        : [0, 5, 10, 15, 20, 30, 50];
 
-      // Re-apply full industry preset after rebuild so all fields match
-      if (_industry && PRESETS[_industry]) {
-        const p = PRESETS[_industry];
-        closestOpt('numFTEs', p.nFTE);
-        closestOpt('existingTests', p.tests);
-        closestOpt('newTestsPerMonth', p.newTests);
-        closestOpt('runsPerTest', p.runsPerWeek);
+      function fteSelect(id, label, defaultVal) {
+        const options = opts.map((v, i) => {
+          const isLast = i === opts.length - 1;
+          const lbl = isLast ? v + '+' : v;
+          const sel = v === defaultVal ? ' selected' : '';
+          return `<option value="${v}"${sel}>${lbl}</option>`;
+        }).join('');
+        return `<div class="field">
+      <label>${label}</label>
+      <select id="${id}">${options}</select>
+    </div>`;
       }
 
-      maybeShowForm();
+      const p = PRESETS[_industry] || {};
+      if (mode === 'manual') {
+        grid.innerHTML = fteSelect('numManFTEs', 'Manual QA engineers', p.manFTEs || 5);
+      } else if (mode === 'automated') {
+        grid.innerHTML = fteSelect('numAutoFTEs', 'Automation engineers', p.autoFTEs || 5);
+      } else if (mode === 'devs') {
+        grid.innerHTML = fteSelect('numDevFTEs', 'Developers', p.autoFTEs || 5);
+      } else {
+        grid.innerHTML =
+          fteSelect('numManFTEs', 'Manual QA engineers', p.manFTEs || 5) +
+          fteSelect('numAutoFTEs', 'Automation engineers', p.autoFTEs || 5) +
+          fteSelect('numDevFTEs', 'Developers', p.devFTEs || 0);
+      }
     }
 
-    function maybeShowForm() {
-      const show = _industry && _region;
-      document.getElementById('calcFormWrap').style.display = show ? 'block' : 'none';
+    function show(id) {
+      const el = $(id);
+      if (el) { el.classList.remove('hidden'); el.style.animation = 'none'; void el.offsetWidth; el.style.animation = ''; }
     }
 
-    // ── Core compute ─────────────────────────────────────────────────────────────
-    // Cost methodology (all inputs and assumptions combined):
-    //   totalCostYr  = humanCost + runBase + parCost
-    //     humanCost  = totalAuthHrs × blendedHourlyRate
-    //     runBase    = annualRuns × seqRunCost
-    //     parCost    = parallelCost × (tests + newTests×12)
-    //   fore AI cost = plan monthly × 12 (plan selected based on minCost estimate)
-    //   Annual savings = totalCostYr − planMo×12
-    //   ROI            = (hrsSaved + runSaved) × 60 ÷ (planMo × 12)
+    // ══════════════════════════════════════════
+    // COMPUTE ENGINE
+    // ══════════════════════════════════════════
     function compute(ov) {
-      if (!ov) ov = {};
-      A = loadA();
+      ov = ov || {};
+      const reg = _region || 'North America';
+      const mode = _mode || 'automated';
+      const WD = ov.workingDays != null ? ov.workingDays : 240;
+      const WH = M.workingHours;
+      const tests = ov.tests != null ? ov.tests : gv('numTests');
+      const newTests = ov.newTests != null ? ov.newTests : gv('newTestsPerMonth');
+      const rpw = ov.rpw != null ? ov.rpw : gv('runsPerWeek');
 
-      // Inputs — from form selects or slider overrides
-      const nFTE = ov.nFTE != null ? ov.nFTE : v('numFTEs');
-      const tests = ov.testsOverride != null ? ov.testsOverride : v('existingTests');
-      const newTests = Math.min(v('newTestsPerMonth'), 20);   // 20+ treated as 20
-      const runsPerWeek = Math.min(v('runsPerTest'), 25);     // 25+ treated as 25
+      const runsPerMonth = rpw * 4.33;
+      const annualRuns = runsPerMonth * 12;
 
-      // Salary — editable field or region default
-      const salary = ov.salaryOverride != null ? ov.salaryOverride
-        : (Number(document.getElementById('salaryInput').value) || salaryForRegion(_region || 'Mixed'));
+      // FTEs by mode
+      let manFTEs = 0, autoFTEs = 0, devFTEs = 0;
+      if (mode === 'manual') { manFTEs = ov.fte != null ? ov.fte : gv('numManFTEs'); }
+      if (mode === 'automated') { autoFTEs = ov.fte != null ? ov.fte : gv('numAutoFTEs'); }
+      if (mode === 'devs') { devFTEs = ov.fte != null ? ov.fte : gv('numDevFTEs'); }
+      if (mode === 'mixed') {
+        manFTEs = gv('numManFTEs');
+        autoFTEs = gv('numAutoFTEs');
+        devFTEs = gv('numDevFTEs');
+      }
+      const totalFTEs = manFTEs + autoFTEs + devFTEs;
 
-      // Backend assumptions (all from admin panel)
-      const wkH = A.weeklyHours;
-      const tGen = A.timeToGenerate;
-      const tRun = A.timePerRun;
-      const tFix = A.tFix;
-      const tMaint = A.tMaint;
-      const failRate = A.failureRate / 100;
-      const maintRate = A.maintenanceRate / 100;
-      const alpha = A.alpha / 100;
-      const beta = A.beta / 100;
-      const gamma = A.gamma / 100;
-      const cpRun = A.costPerRun;
-      const WH = A.workingHours;
-      const WD = A.workingDays;
-      const maintFreq = A.maintFreq;
-      const seqRunCost = A.seqRunCost;
+      // Salaries + hourly rates
+      const salMan = SAL_MANUAL[reg];
+      const salAuto = SAL_AUTO[reg];
+      const salDev = SAL_DEV[reg];
+      const hrlyMan = salMan / (WD * WH);
+      const hrlyAuto = salAuto / (WD * WH);
+      const hrlyDev = salDev / (WD * WH);
 
-      const dailyH = wkH / 5;  // QA hours per day per engineer
+      // Test split for mixed; for single modes all tests under that type
+      const mixTotal = Math.max(totalFTEs, 1);
+      const manTests = mode === 'mixed' ? Math.round(tests * manFTEs / mixTotal) :
+        mode === 'manual' ? tests : 0;
+      const autoTests = mode === 'mixed' ? Math.round(tests * autoFTEs / mixTotal) :
+        mode === 'automated' ? tests : 0;
+      const devTests = mode === 'mixed' ? (tests - Math.round(tests * manFTEs / mixTotal) - Math.round(tests * autoFTEs / mixTotal)) :
+        mode === 'devs' ? tests : 0;
 
-      // ③ Run volume — weekly cadence (matching index.html logic)
-      const runsPerMonth = runsPerWeek * 4.33;
-      const annualRuns = Math.round(runsPerMonth * 12);
-      const monthlyRuns = Math.round(runsPerMonth);
+      const MANUAL_MINS = 35; // mins per test for manual execution
 
-      // ④ Current authoring hours (annual)
-      const genYr = tGen * 12 * newTests;
-      const fixYr = failRate * newTests * 12 * tFix;
-      const maintYr = (newTests * 12 + tests * maintFreq) * maintRate * tMaint;
-      const totalYr = Math.round(genYr + fixYr + maintYr);
+      // ── Current annual hours ────────────────────────────────────────────
+      // Manual: execution only (35 min/test × tests × annual runs)
+      // Automated/devs: authoring + fix + maintenance
+      const manExecHrsAnn = (MANUAL_MINS / 60) * manTests * annualRuns;
 
-      // ⑤ fore AI authoring hours (annual)
-      const foreGenYr = (genYr + fixYr) * (1 - alpha);
-      const foreMaintYr = maintYr * (1 - beta);
-      const foreYr = Math.round(foreGenYr + foreMaintYr);
+      const genHrs = M.timeToGenerate;
+      const fixHrs = M.failureRate * M.tFix;   // expected fix hrs per new test
+      const writeHrs = genHrs + fixHrs;          // total authoring hrs per new test script
 
-      // ⑥ Time savings
-      const hrsSaved = Math.round((totalYr - foreYr) / 10) * 10;
-      const daysSaved = Math.round(hrsSaved / 24);
-      const annualHperFTE = Math.max(dailyH * WD, 500);
-      const ftesSaved = Math.round(hrsSaved / annualHperFTE * 100) / 100;
-      const runYr = annualRuns * tRun / 60;
-      const foreRunYr = annualRuns * tRun * (1 - gamma) / 60;
-      const runSaved = runYr - foreRunYr;
+      // Authoring: new tests written this year
+      const autoAuthorHrs = writeHrs * newTests * 12;
+      const devAuthorHrs = writeHrs * newTests * 12;  // same formula for devs
 
-      // ⑦ Current QA cost (annual)
-      const totalSalaryCost = salary * nFTE;
-      const utilRatio = dailyH / WH;
-      const adjustedQACost = totalSalaryCost * utilRatio;
-      const hrly = Math.round(adjustedQACost / (WD * WH) * 10) / 10;
-      const humanCost = Math.round(totalYr * hrly / 100) * 100;
-      const runBase = annualRuns * seqRunCost;
-      const parCost = A.parallelCost * (tests + newTests * 12);
-      const totalCostYr = Math.round((runBase + humanCost + parCost) / 100) * 100;
+      // Maintenance: existing suite × freq × rate × tMaint
+      const autoMaintHrs = autoTests * M.maintFreq * M.maintenanceRate * M.tMaint;
+      const devMaintHrs = devTests * M.maintFreq * M.maintenanceRate * M.tMaint;
 
-      // ⑧ fore AI annual package — same logic as index.html
-      // fore cost per run = authoring + maintenance + execution (per test per run)
-      // Using simplified model: platform fee $0.05/test/run, self-healing $0.02/test/run
-      const platformPerRun = 0.05;   // $ per test per run
-      const selfHealPerRun = 0.02;   // $ per test per run (self-healing)
-      const foreExecPerRun = tests * platformPerRun;
-      const foreMaintPerRun = tests * selfHealPerRun;
-      const foreAuthorPerRun = annualRuns > 0 ? (foreGenYr + foreMaintYr) * hrly / annualRuns : 0;
-      const foreTotalPerRun = foreAuthorPerRun + foreMaintPerRun + foreExecPerRun;
-      const foreAnnualRaw = foreTotalPerRun * runsPerMonth * 12;
+      const curHrsAnn = manExecHrsAnn +
+        (mode === 'mixed' ? (autoAuthorHrs * (autoFTEs / Math.max(autoFTEs + devFTEs, 1)) + autoMaintHrs +
+          autoAuthorHrs * (devFTEs / Math.max(autoFTEs + devFTEs, 1)) + devMaintHrs)
+          : mode === 'manual' ? 0
+            : (autoAuthorHrs + (mode === 'automated' ? autoMaintHrs : devMaintHrs)));
+
+      // ── Max manpower caps (time display only) ──────────────────────────────
+      // Manual:    nFTE × 240 × 8  (100% utilisation)
+      // Automated: nFTE × 240 × 8  (full QA time)
+      // Devs:      nFTE × 240 × 8 × 0.40  (40% QA utilisation)
+      const maxManHrs = manFTEs * WD * WH;
+      const maxAutoHrs = autoFTEs * WD * WH;
+      const maxDevHrs = devFTEs * WD * WH * 0.40;
+
+      // Simplified: total annual QA hours per mode, capped at available manpower
+      let totalCurHrs;
+      if (mode === 'manual') {
+        totalCurHrs = Math.min(manExecHrsAnn, maxManHrs);
+      } else if (mode === 'automated') {
+        totalCurHrs = Math.min(autoAuthorHrs + autoMaintHrs, maxAutoHrs);
+      } else if (mode === 'devs') {
+        totalCurHrs = Math.min(devAuthorHrs + devMaintHrs, maxDevHrs);
+      } else {
+        // mixed — cap each segment independently then sum
+        const autoShare = totalFTEs > 0 ? autoFTEs / mixTotal : 0;
+        const devShare = totalFTEs > 0 ? devFTEs / mixTotal : 0;
+        const rawMixed = manExecHrsAnn +
+          (autoAuthorHrs * autoShare + autoMaintHrs) +
+          (devAuthorHrs * devShare + devMaintHrs);
+        const maxMixed = maxManHrs + maxAutoHrs + maxDevHrs;
+        totalCurHrs = Math.min(rawMixed, maxMixed);
+      }
+
+      // ── fore AI hours (time calc only — not used in cost) ────────────────
+      // Reduced authoring (alpha) + 1.5 min per test per run execution time
+      // No maintenance (self-heal). Capped at same manpower ceiling as current.
+      const foreAuthorHrs = writeHrs * newTests * 12 * (1 - M.alpha);
+      const foreExecTimeHrs = (5 / 60) * annualRuns;  // 5 min per full suite run (parallel), annualRuns = rpw×4.33×12
+      const rawForeHrs = foreAuthorHrs + foreExecTimeHrs;
+      // Cap fore AI time at same max manpower as current mode
+      const maxForeHrs = mode === 'manual' ? maxManHrs
+        : mode === 'automated' ? maxAutoHrs
+          : mode === 'devs' ? maxDevHrs
+            : (maxManHrs + maxAutoHrs + maxDevHrs);
+      const totalForeHrs = Math.min(rawForeHrs, maxForeHrs);
+      const hrsSaved = Math.max(0, totalCurHrs - totalForeHrs);
+
+      // ── Current QA cost (annual) ─────────────────────────────────────────
+      let humanCost = 0;
+      let genCostCur = 0, maintCostCur = 0, execCostCur = 0;
+
+      if (mode === 'manual') {
+        const hrly = hrlyMan;
+        const execRaw = manExecHrsAnn * hrly;
+        humanCost = Math.min(execRaw, salMan * manFTEs); // cap at salary
+        genCostCur = 0;
+        maintCostCur = 0;
+        execCostCur = humanCost;
+      } else if (mode === 'automated') {
+        const hrly = hrlyAuto;  // single engineer rate — hours already reflect team output
+        genCostCur = autoAuthorHrs * hrly;
+        maintCostCur = autoMaintHrs * hrly;
+        execCostCur = annualRuns * (tests + newTests * 12) * M.seqRunCost + M.parallelCost * (tests + newTests * 12);
+        humanCost = genCostCur + maintCostCur + execCostCur;
+      } else if (mode === 'devs') {
+        const hrly = hrlyDev * 0.40;  // single engineer rate (40% QA time) — no FTE multiplier
+        genCostCur = devAuthorHrs * hrly;
+        maintCostCur = devMaintHrs * hrly;
+        execCostCur = annualRuns * (tests + newTests * 12) * M.seqRunCost + M.parallelCost * (tests + newTests * 12);
+        humanCost = genCostCur + maintCostCur + execCostCur;
+      } else {
+        // mixed — split tests by FTE ratio, then apply each mode's own logic
+        const autoShare = totalFTEs > 0 ? autoFTEs / mixTotal : 0;
+        const devShare = totalFTEs > 0 ? devFTEs / mixTotal : 0;
+
+        // Manual portion: execution cost capped at salary
+        const manExecCostRaw = manExecHrsAnn * hrlyMan;
+        const manCostCapped = Math.min(manExecCostRaw, salMan * manFTEs);
+
+        // Automated portion: single engineer rate on authoring + maintenance (proportional author share)
+        const autoGenC = autoAuthorHrs * autoShare * hrlyAuto;
+        const autoMaintC = autoMaintHrs * hrlyAuto;
+
+        // Dev portion: single engineer rate × 40% on authoring + maintenance (proportional author share)
+        const devGenC = devAuthorHrs * devShare * hrlyDev * 0.40;
+        const devMaintC = devMaintHrs * hrlyDev * 0.40;
+
+        genCostCur = autoGenC + devGenC;
+        maintCostCur = autoMaintC + devMaintC;
+        execCostCur = annualRuns * (tests + newTests * 12) * M.seqRunCost + M.parallelCost * (tests + newTests * 12);
+        humanCost = manCostCapped + genCostCur + maintCostCur + execCostCur;
+      }
+
+      const totalCostYr = Math.round(humanCost / 100) * 100;
+
+      // ── fore AI annual package ───────────────────────────────────────────
+      // Priced always on automated-engineer rate
+      const autoHrlyBase = salAuto / (WD * WH);
+      const foreAutoGenHrs = writeHrs * newTests * 12 * (1 - M.alpha);
+      // foreAutoMaintHrs = 0 — self-heal
+      const foreAuthorPerRun = annualRuns > 0
+        ? foreAutoGenHrs * autoHrlyBase / annualRuns : 0;
+      const forePlatformPerRun = tests * M.platformPerRun;    // existing tests × $0.05/test/run
+      const foreTotalPerRun = foreAuthorPerRun + forePlatformPerRun;
+
+      // Self-heal: ALL tests (existing + new×12) × $0.02 × 52 weeks
+      const allTests = tests + newTests * 12;
+      const selfHealAnnual = allTests * M.selfHealWeekly * 52;
+
+      const foreAnnualRaw = foreTotalPerRun * runsPerMonth * 12 + selfHealAnnual;
       const foreAnnualFloored = Math.max(foreAnnualRaw, 20000);
-      const foreAnnual = Math.round(foreAnnualFloored / 5000) * 5000;
+      const foreMonthly = Math.round(foreAnnualFloored / 12 / 1000) * 1000;
+      const foreAnnual = foreMonthly * 12;
       const isCustom = foreAnnualRaw > 150000;
 
-      const foreHrCost = Math.round(foreGenYr + foreMaintYr) * hrly;
-      const foreRunCost = annualRuns * cpRun;
-      const minCost = foreAnnual;
-      const sugMonthly = Math.round(foreAnnual / 12 / 10) * 10;
-      const curMo = Math.round(totalCostYr / 12 / 100) * 100;
-      const netSave = curMo - sugMonthly;
-      const savePct = curMo > 0 ? (curMo - sugMonthly) / curMo : 0;
+      const serviceMonthlyRaw = foreMonthly * 1.25;
+      const serviceMonthly = Math.max(foreMonthly + 500, Math.round(serviceMonthlyRaw / 500) * 500);
+      const serviceAnnual = serviceMonthly * 12;
 
-      // ROI — net annual value vs fore AI cost
+      // ── ROI ─────────────────────────────────────────────────────────────
       const annualSaving = totalCostYr - foreAnnualRaw;
-      const roiNumerator = Math.max(0, annualSaving);
-      const roiRaw = foreAnnual > 0 ? Math.round(roiNumerator / foreAnnual * 10) / 10 : 0;
-      const roi = Math.max(0.1, roiRaw);
+      const roi = foreAnnualRaw > 0 ? annualSaving / foreAnnualRaw : 0;
+      const paybackMonths = annualSaving > 0 ? foreAnnualRaw / (annualSaving / 12) : null;
 
-      // Legacy plan fields (kept for breakdown display compat, not shown in UI)
-      const PP = { PoC: 500, Standard: 750, Pro: 1000, Enterprise: 2500 };
-      const PLANS = ['PoC', 'Standard', 'Pro', 'Enterprise'];
-      const planName = isCustom ? 'Enterprise' : 'Standard';
-      const planMo = sugMonthly;
-      const effectiveDelta = 0; const usesDelta = false; const usesSimple = true;
+      // Breakdown per component (annual)
+      const foreGenAnn = foreAutoGenHrs * autoHrlyBase;
+      const foreMaintAnn = selfHealAnnual;
+      const foreExecAnn = foreTotalPerRun * runsPerMonth * 12 - foreAuthorPerRun * runsPerMonth * 12;
 
       return {
-        nFTE, wkH, tGen, tRun, region: _region || 'Mixed', salary,
-        tests, newTests, runsPerWeek, tFix, tMaint, effectiveDelta, usesDelta, usesSimple, roiNumerator,
-        failRate, maintRate, alpha, beta, gamma, cpRun, WH, WD, maintFreq, seqRunCost,
-        dailyH, utilRatio, monthlyRuns, annualRuns,
-        genYr, fixYr, maintYr, totalYr,
-        foreGenYr, foreMaintYr, foreYr,
-        hrsSaved, daysSaved, annualHperFTE, ftesSaved,
-        runYr, foreRunYr, runSaved,
-        totalSalaryCost, adjustedQACost, hrly,
-        humanCost, runBase, parCost, totalCostYr,
-        foreHrCost, foreRunCost, minCost, sugMonthly,
-        foreAnnual, foreAnnualRaw, isCustom,
-        curMo, planName, planMo, netSave, savePct, roi,
-        PP, PLANS,
-        delta: effectiveDelta
+        mode, tests, newTests, rpw, annualRuns, runsPerMonth,
+        manFTEs, autoFTEs, devFTEs, totalFTEs,
+        manTests, autoTests, devTests,
+        totalCurHrs, totalForeHrs, hrsSaved,
+        genCostCur, maintCostCur, execCostCur, totalCostYr,
+        foreAnnualRaw, foreAnnual, foreMonthly, isCustom,
+        serviceMonthly, serviceAnnual,
+        annualSaving, roi, paybackMonths,
+        foreGenAnn, foreMaintAnn, foreExecAnn,
+        WD,
       };
     }
 
-    // ── 3-Year Analysis ───────────────────────────────────────────────────────────
-    function render3Year(r) {
-      const barsEl = document.getElementById('threeYearBars');
-      if (!barsEl) return;
+    function nFTEsHrly(n, sal, WD, WH) {
+      return n * sal / (WD * WH);
+    }
 
-      const suiteGrowthRate = r.tests > 0 ? Math.min((r.newTests * 12) / r.tests, 0.5) : 0.15;
-      const curSalaryHike  = 0.10;
+    // ── Render ─────────────────────────────────────────────────────────────
+    function renderResults(r) {
+      _lastR = r;
+
+      // Year 1 ROI card — show real value, capped at 41-42 range if it exceeds 41
+      const dispRoi1 = capRoi(r.roi, 41, 42);
+      st('res-base-mo', dispRoi1.toFixed(1) + '×');
+
+      // Subtitle
+      const parts = [];
+      if (_industry) parts.push(_industry.charAt(0).toUpperCase() + _industry.slice(1));
+      if (_region) parts.push(_region);
+      parts.push(r.tests.toLocaleString() + ' tests');
+      parts.push(r.rpw + ' runs/wk');
+      parts.push(r.totalFTEs + ' FTEs (' + r.mode + ')');
+      st('resultsSub', parts.join(' · '));
+    }
+
+    // ── 3-year ROI trajectory ───────────────────────────────────────────────
+    function render3Year(r) {
+      const el = $('traj-bars');
+      if (!el) return;
+
+      const suiteGrowthRate = r.mode === 'manual'
+        ? Math.min((r.newTests * 12) / Math.max(r.tests, 1), 0.05)
+        : r.tests > 0 ? Math.max(Math.min((r.newTests * 12) / r.tests, 0.5), 0.20) : 0.20;
+      const curSalaryHike = r.mode === 'manual' ? 0.15 : 0.10;
       const foreSalaryHike = 0.05;
 
       const data = [1, 2, 3].map(y => {
-        // Year 1: use the already-computed ROI from the main model exactly
-        if (y === 1) return { y, roi: r.roi, saving: Math.max(0, r.totalCostYr - r.foreAnnualRaw), foreAnnual: r.foreAnnual };
+        if (y === 1) return { y, roi: capRoi(r.roi, 41, 42) };
 
-        const sFactor  = Math.pow(1 + suiteGrowthRate, y - 1);
-        const curWage  = Math.pow(1 + curSalaryHike,  y - 1);
+        const sFactor = Math.pow(1 + suiteGrowthRate, y - 1);
+        const curWage = Math.pow(1 + curSalaryHike, y - 1);
         const foreWage = Math.pow(1 + foreSalaryHike, y - 1);
 
-        const scaledTests   = Math.round(r.tests * sFactor);
-        const scaledHrlyCur  = r.hrly * curWage;
-        const scaledHrlyFore = r.hrly * foreWage;
+        const scaledTests = Math.round(r.tests * sFactor);
+        const MANUAL_MINS = 35;
+        let totalYr, foreGenYr, foreMaintYr, foreYr;
+        const writeHrs = M.timeToGenerate + M.failureRate * M.tFix;
+        if (r.mode === 'manual') {
+          totalYr = (MANUAL_MINS / 60) * scaledTests * r.annualRuns;
+          foreGenYr = 0;
+          foreMaintYr = 0;
+          foreYr = foreGenYr + foreMaintYr;
+        } else {
+          const genYr = writeHrs * 12 * r.newTests;
+          const maintYr = scaledTests * M.maintFreq * M.maintenanceRate * M.tMaint;
+          totalYr = genYr + maintYr;
+          foreGenYr = genYr * (1 - M.alpha);
+          foreMaintYr = 0;
+          foreYr = foreGenYr + foreMaintYr;
+        }
 
-        const genYr   = r.tGen * 12 * r.newTests;
-        const fixYr   = r.failRate * r.newTests * 12 * r.tFix;
-        const maintYr = (r.newTests * 12 + scaledTests * r.maintFreq) * r.maintRate * r.tMaint;
-        const totalYr = genYr + fixYr + maintYr;
-        const humanCost   = totalYr * scaledHrlyCur;
-        const parCost     = A.parallelCost * (scaledTests + r.newTests * 12);
-        const totalCostYr = humanCost + r.annualRuns * r.seqRunCost + parCost;
+        const reg = _region || 'North America';
+        const salAuto = SAL_AUTO[reg];
+        const autoHrlyScaled = (salAuto / (r.WD * M.workingHours)) * foreWage;
+        const foreAutoGenHrs = writeHrs * 12 * r.newTests * (1 - M.alpha);
+        const foreAuthorPerRun = r.annualRuns > 0 ? foreAutoGenHrs * autoHrlyScaled / r.annualRuns : 0;
+        const forePlatformPerRun = scaledTests * M.platformPerRun;
+        const allTests = scaledTests + r.newTests * 12;
+        const selfHealAnnual = allTests * M.selfHealWeekly * 52;
+        const foreAnnualRaw = (foreAuthorPerRun + forePlatformPerRun) * r.runsPerMonth * 12 + selfHealAnnual;
+        const foreAnnual = Math.max(Math.round(Math.max(foreAnnualRaw, 20000) / 5000) * 5000, 20000);
 
-        const foreGenYr   = (genYr + fixYr) * (1 - r.alpha);
-        const foreMaintYr = maintYr * (1 - r.beta);
-        const foreYr      = foreGenYr + foreMaintYr;
-        const foreAuthorPerRun = r.annualRuns > 0 ? foreYr * scaledHrlyFore / r.annualRuns : 0;
-        const foreTotalPerRun  = foreAuthorPerRun + scaledTests * 0.05 + scaledTests * 0.02;
-        const foreAnnualRaw    = foreTotalPerRun * r.monthlyRuns * 12;
-        const foreAnnual       = Math.max(Math.round(foreAnnualRaw / 5000) * 5000, 20000);
+        // Current cost scaled
+        const WD = r.WD, WH = M.workingHours;
+        let totalCostYr;
+        if (r.mode === 'manual') {
+          const hrly = (SAL_MANUAL[reg] * curWage) / (WD * WH);
+          totalCostYr = Math.min(totalYr * hrly, SAL_MANUAL[reg] * curWage * r.manFTEs);
+        } else if (r.mode === 'automated') {
+          const hrly = (SAL_AUTO[reg] * curWage) / (WD * WH);
+          const genC = writeHrs * 12 * r.newTests * hrly;
+          const maintC = scaledTests * M.maintFreq * M.maintenanceRate * M.tMaint * hrly;
+          totalCostYr = genC + maintC + r.annualRuns * allTests * M.seqRunCost + M.parallelCost * allTests;
+        } else if (r.mode === 'devs') {
+          const hrly = (SAL_DEV[reg] * curWage * 0.40) / (WD * WH);
+          const genC = writeHrs * 12 * r.newTests * hrly;
+          const maintC = scaledTests * M.maintFreq * M.maintenanceRate * M.tMaint * hrly;
+          totalCostYr = genC + maintC + r.annualRuns * allTests * M.seqRunCost + M.parallelCost * allTests;
+        } else {
+          const mixTotal = Math.max(r.manFTEs + r.autoFTEs + r.devFTEs, 1);
+          const autoShare = r.autoFTEs / mixTotal;
+          const devShare = r.devFTEs / mixTotal;
+          const manTests = Math.round(scaledTests * r.manFTEs / mixTotal);
+          const hrlyMan = (SAL_MANUAL[reg] * curWage) / (WD * WH);
+          const hrlyAuto = (SAL_AUTO[reg] * curWage) / (WD * WH);
+          const hrlyDev = (SAL_DEV[reg] * curWage) / (WD * WH) * 0.40;
+          const manExecHrs = (35 / 60) * manTests * r.annualRuns;
+          const manCost = Math.min(manExecHrs * hrlyMan, SAL_MANUAL[reg] * curWage * r.manFTEs);
+          const autoGenC = writeHrs * 12 * r.newTests * autoShare * hrlyAuto;
+          const autoMaintC = (scaledTests * autoShare) * M.maintFreq * M.maintenanceRate * M.tMaint * hrlyAuto;
+          const devGenC = writeHrs * 12 * r.newTests * devShare * hrlyDev;
+          const devMaintC = (scaledTests * devShare) * M.maintFreq * M.maintenanceRate * M.tMaint * hrlyDev;
+          totalCostYr = manCost + autoGenC + autoMaintC + devGenC + devMaintC
+            + r.annualRuns * allTests * M.seqRunCost + M.parallelCost * allTests;
+        }
 
         const saving = Math.max(0, totalCostYr - foreAnnualRaw);
-        const roi    = foreAnnual > 0 ? Math.max(0.1, saving / foreAnnual) : 0.1;
-        return { y, roi, saving, foreAnnual };
+        const rawRoi = foreAnnualRaw > 0 ? Math.max(0.1, saving / foreAnnualRaw) : 0.1;
+        // Apply caps per year: Y2 max 45-47, Y3 max 51-55
+        const roi = y === 2 ? capRoi(rawRoi, 45, 47) : capRoi(rawRoi, 51, 55);
+        return { y, roi };
       });
 
-      const maxSaving = Math.max(...data.map(d => d.saving), 1);
+      const maxROI = Math.max(...data.map(d => d.roi), 1);
 
-      barsEl.innerHTML = data.map(d => {
-        const barH = Math.round((d.saving / maxSaving) * 100);
-        return `
-        <div class="yr-bar-wrap">
-          <div style="text-align:center;margin-bottom:8px;">
-            <span style="font-family:'Nohemi','Inter',sans-serif;font-size:28px;font-weight:400;color:var(--teal);letter-spacing:-0.8px;line-height:1;">${d.roi.toFixed(1)}×</span>
-            <div style="font-size:11px;font-weight:600;color:var(--muted);margin-top:2px;">ROI</div>
-          </div>
-          <div class="yr-bar-track">
-            <div class="yr-bar-cur" style="height:${barH}%;background:var(--teal);opacity:.8;border-radius:6px 6px 0 0;"></div>
-          </div>
-          <div class="yr-bar-label" style="margin-top:8px;">Year ${d.y}</div>
-        </div>`;
+      el.innerHTML = data.map(d => {
+        const fillPct = Math.round((d.roi / maxROI) * 100);
+        return `<div class="traj-bar-wrap">
+      <div class="traj-bar-top">${d.roi.toFixed(1)}×</div>
+      <div class="traj-bar-roi-lbl">ROI</div>
+      <div class="traj-bar-track">
+        <div class="traj-bar-fill" style="height:${fillPct}%;"></div>
+      </div>
+      <div class="traj-bar-lbl">Year ${d.y}</div>
+    </div>`;
       }).join('');
     }
 
-    // ── FTE Reallocation Story ────────────────────────────────────────────────────
+    // ── FTE reallocation story ──────────────────────────────────────────────
     function renderFTEStory(r) {
-      const hoursEl   = document.getElementById('fte-hours-val');
-      const releaseEl = document.getElementById('fte-release-val');
-      if (!hoursEl || !releaseEl) return;
-
-      const hrs = r.hrsSaved;
-      // Faster release: ratio of current authoring hours to fore ai authoring hours
-      // capped at 10× for display sanity, floor at 1.1×
-      const releaseMultiple = r.foreYr > 0
-        ? Math.min(10, Math.max(1.1, r.totalYr / r.foreYr))
-        : 1.1;
-
-      hoursEl.textContent   = hrs.toLocaleString();
-      releaseEl.textContent = releaseMultiple.toFixed(1);
+      st('res-hrs-reclaimed', Math.round(r.hrsSaved).toLocaleString());
+      const releaseMultiple = r.totalForeHrs > 0
+        ? Math.min(10, Math.max(2, r.totalCurHrs / r.totalForeHrs))
+        : 2;
+      st('res-release-mult', Math.round(releaseMultiple) + 'X');
     }
 
-    // ── Run calculation ───────────────────────────────────────────────────────────
+    // ── Formula toggle ─────────────────────────────────────────────────────
+    function toggleFormulas() {
+      const body = $('fml-body');
+      const arrow = $('fml-arrow');
+      const header = $('fml-header');
+      const open = body.classList.toggle('open');
+      arrow.classList.toggle('open', open);
+      header.classList.toggle('open', open);
+    }
+
+    // ── Formula breakdown renderer ──────────────────────────────────────────
+    function renderFormulas(r) {
+      const el = $('fml-content');
+      if (!el) return;
+
+      const reg = _region || 'North America';
+      const mode = _mode || 'automated';
+      const WD = r.WD;
+      const WH = M.workingHours;
+
+      // Salary used
+      const salLabel = mode === 'manual' ? 'SAL_MANUAL' : mode === 'devs' ? 'SAL_DEV' : 'SAL_AUTO';
+      const sal = mode === 'manual' ? SAL_MANUAL[reg] : mode === 'devs' ? SAL_DEV[reg] : SAL_AUTO[reg];
+      const hrlyBase = sal / (WD * WH);
+      const hrlyEff = mode === 'devs' ? hrlyBase * 0.40 : hrlyBase;
+      const hrlyLabel = mode === 'devs' ? `${salLabel}[reg] / (WD × WH) × 0.40` : `${salLabel}[reg] / (WD × WH)`;
+
+      const newTestsAnn = r.tests > 0 ? (r.annualRuns > 0 ? r.newTests * 12 : 0) : 0;
+      const nt12 = r.newTests * 12;
+      const writeHrs = M.timeToGenerate + M.failureRate * M.tFix;
+
+      function row(name, expr, result) {
+        return `<div class="fml-row">
+      <div class="fml-name">${name}</div>
+      <div class="fml-expr">${expr}</div>
+      <div class="fml-result">→ ${result}</div>
+    </div>`;
+      }
+      function hl(label, val) {
+        return `<div class="fml-highlight">
+      <span class="fml-highlight-label">${label}</span>
+      <span class="fml-highlight-val">${val}</span>
+    </div>`;
+      }
+      function sec(title) {
+        return `<div class="fml-section-title">${title}</div>`;
+      }
+      function f2(n) { return n.toFixed(2); }
+      function f4(n) { return n.toFixed(4); }
+      function fK(n) {
+        if (Math.abs(n) >= 1e6) return '$' + (n / 1e6).toFixed(3) + 'M';
+        if (Math.abs(n) >= 1000) return '$' + Math.round(n / 1000) + 'k';
+        return '$' + Math.round(n);
+      }
+      function num(v) { return `<span class="fv">${v}</span>`; }
+
+      // Derived values needed for display
+      const runsPerMonth = r.rpw * 4.33;
+      const annualRuns = runsPerMonth * 12;
+      const allTests = r.tests + nt12;
+      const autoAuthorHrs = writeHrs * nt12;
+      const maintHrs = r.mode === 'manual' ? 0
+        : (r.tests * M.maintFreq * M.maintenanceRate * M.tMaint);
+      const selfHealAnn = allTests * M.selfHealWeekly * 52;
+      const foreAutoGenHrs = writeHrs * nt12 * (1 - M.alpha);
+      const foreAuthorPerRun = annualRuns > 0 ? foreAutoGenHrs * hrlyBase / annualRuns : 0;
+      const forePlatformPerRun = r.tests * M.platformPerRun;
+      const foreTotalPerRun = foreAuthorPerRun + forePlatformPerRun;
+      const foreAnnualRaw = foreTotalPerRun * runsPerMonth * 12 + selfHealAnn;
+
+      let html = '';
+
+      // Step 1
+      html += sec('Step 1 — Schedule &amp; runs');
+      html += row('Runs per month',
+        `runsPerMonth = rpw × 4.33 = ${num(r.rpw)} × 4.33 = ${num(f2(runsPerMonth))}`,
+        `${f2(runsPerMonth)} runs/month`);
+      html += row('Annual runs',
+        `annualRuns = runsPerMonth × 12 = ${num(f2(runsPerMonth))} × 12 = ${num(f2(annualRuns))}`,
+        `${f2(annualRuns)} runs/year`);
+      html += row('New tests per year',
+        `newTestsAnnual = newTests × 12 = ${num(r.newTests)} × 12 = ${num(nt12)}`,
+        `${nt12} new tests/year`);
+      html += row('All tests (existing + new)',
+        `allTests = tests + newTestsAnnual = ${num(r.tests)} + ${num(nt12)} = ${num(allTests)}`,
+        `${allTests} total tests`);
+
+      // Step 2
+      html += sec('Step 2 — Current team cost');
+      html += row(`${mode === 'devs' ? 'Developer' : mode === 'manual' ? 'Manual QA' : 'SDET'} hourly rate`,
+        `hrlyBase = ${salLabel}[${reg}] / (WD × WH) = ${num('$' + sal.toLocaleString())} / (${num(WD)} × ${num(WH)}) = ${num('$' + f2(hrlyBase) + '/hr')}`,
+        `$${f2(hrlyBase)}/hr per engineer`);
+      if (mode === 'devs') {
+        html += row('Effective rate (40% QA time)',
+          `hrlyEff = hrlyBase × 0.40 = ${num('$' + f2(hrlyBase))} × 0.40 = ${num('$' + f2(hrlyEff) + '/hr')}`,
+          `$${f2(hrlyEff)}/hr`);
+      }
+      html += row('Hours to write one test script',
+        `writeHrs = timeToGenerate + failureRate × tFix\n       = ${num(M.timeToGenerate)} + ${num(M.failureRate)} × ${num(M.tFix)} = ${num(f2(writeHrs))} hrs`,
+        `${f2(writeHrs)} hrs/test`);
+
+      if (mode !== 'manual') {
+        html += row('Annual authoring hours',
+          `authorHrs = writeHrs × newTestsAnnual = ${num(f2(writeHrs))} × ${num(nt12)} = ${num(f2(autoAuthorHrs))} hrs`,
+          `${f2(autoAuthorHrs)} hrs/year`);
+        html += row('Annual maintenance hours',
+          `maintHrs = tests × maintFreq × maintenanceRate × tMaint\n         = ${num(r.tests)} × ${num(M.maintFreq)} × ${num(M.maintenanceRate)} × ${num(M.tMaint)} = ${num(maintHrs)} hrs`,
+          `${maintHrs} hrs/year`);
+        html += row('Total current QA hours',
+          `totalCurHrs = authorHrs + maintHrs = ${num(f2(autoAuthorHrs))} + ${num(maintHrs)} = ${num(f2(r.totalCurHrs))} hrs`,
+          `${f2(r.totalCurHrs)} hrs/year`);
+        html += row('Authoring cost',
+          `genCostCur = authorHrs × hrly${mode === 'devs' ? 'Eff' : 'Base'}\n           = ${num(f2(autoAuthorHrs))} × $${num(f2(hrlyEff))}/hr = ${num(fK(r.genCostCur))}`,
+          `${fK(r.genCostCur)}/year`);
+        html += row('Maintenance cost',
+          `maintCostCur = maintHrs × hrly${mode === 'devs' ? 'Eff' : 'Base'}\n             = ${num(maintHrs)} × $${num(f2(hrlyEff))}/hr = ${num(fK(r.maintCostCur))}`,
+          `${fK(r.maintCostCur)}/year`);
+      } else {
+        const execHrs = (35 / 60) * r.tests * annualRuns;
+        html += row('Execution hours (35 min/test)',
+          `execHrs = (35/60) × tests × annualRuns = ${num(f2(35 / 60))} × ${num(r.tests)} × ${num(f2(annualRuns))} = ${num(f2(execHrs))} hrs`,
+          `${f2(execHrs)} hrs/year`);
+        html += row('Execution cost (capped at salary × FTEs)',
+          `execCostCur = min(execHrs × hrlyBase, SAL_MANUAL × manFTEs)\n            = min(${num(fK(execHrs * hrlyBase))}, ${num(fK(sal * r.manFTEs))}) = ${num(fK(r.execCostCur))}`,
+          `${fK(r.execCostCur)}/year`);
+      }
+      html += row('Infrastructure / execution cost',
+        `execCostCur = annualRuns × seqRunCost + parallelCost × allTests\n           = ${num(f2(annualRuns))} × $${num(M.seqRunCost)} + $${num(M.parallelCost)} × ${num(allTests)}\n           = $${num(f2(annualRuns * M.seqRunCost))} + $${num((M.parallelCost * allTests).toLocaleString())} = ${num(fK(r.execCostCur))}`,
+        `${fK(r.execCostCur)}/year`);
+
+      html += hl(
+        `Total current annual cost = ${fK(r.genCostCur)} + ${fK(r.maintCostCur)} + ${fK(r.execCostCur)}`,
+        fK(r.totalCostYr)
+      );
+
+      // Step 3
+      html += sec('Step 3 — fore AI pricing');
+      html += row('Authoring hrs with fore AI (60% reduction)',
+        `foreAutoGenHrs = writeHrs × newTestsAnnual × (1 − α)\n               = ${num(f2(writeHrs))} × ${num(nt12)} × ${num(1 - M.alpha)} = ${num(f2(foreAutoGenHrs))} hrs`,
+        `${f2(foreAutoGenHrs)} hrs (vs ${f2(autoAuthorHrs)} currently)`);
+      html += row('Author cost per run',
+        `foreAuthorPerRun = foreAutoGenHrs × hrlyBase / annualRuns\n                 = ${num(f2(foreAutoGenHrs))} × $${num(f2(hrlyBase))} / ${num(f2(annualRuns))} = $${num(f4(foreAuthorPerRun))}`,
+        `$${f4(foreAuthorPerRun)} per run`);
+      html += row('Platform fee per run',
+        `forePlatformPerRun = tests × platformPerRun = ${num(r.tests)} × $${num(M.platformPerRun)} = $${num(f2(forePlatformPerRun))}`,
+        `$${f2(forePlatformPerRun)} per run`);
+      html += row('Total fore cost per run',
+        `foreTotalPerRun = foreAuthorPerRun + forePlatformPerRun\n                = $${num(f4(foreAuthorPerRun))} + $${num(f2(forePlatformPerRun))} = $${num(f2(foreTotalPerRun))}`,
+        `$${f2(foreTotalPerRun)} per run`);
+      html += row('Self-heal annual fee',
+        `selfHealAnnual = allTests × selfHealWeekly × 52\n               = ${num(allTests)} × $${num(M.selfHealWeekly)} × 52 = $${num(f2(selfHealAnn))}`,
+        `$${f2(selfHealAnn)}/year`);
+      html += row('Fore AI raw annual cost',
+        `foreAnnualRaw = foreTotalPerRun × runsPerMonth × 12 + selfHealAnnual\n              = $${num(f2(foreTotalPerRun))} × ${num(f2(runsPerMonth))} × 12 + $${num(f2(selfHealAnn))}\n              = $${num(f2(foreTotalPerRun * runsPerMonth * 12))} + $${num(f2(selfHealAnn))} = $${num(f2(foreAnnualRaw))}`,
+        `$${f2(foreAnnualRaw)}/year raw`);
+      html += row('Floor &amp; round to monthly package',
+        `foreAnnualFloored = max(foreAnnualRaw, 20,000) = $${num(f2(Math.max(foreAnnualRaw, 20000)))}\nforeMonthly       = round(floored / 12 / 1,000) × 1,000 = $${num(r.foreMonthly.toLocaleString())}\nforeAnnual        = foreMonthly × 12 = $${num(r.foreAnnual.toLocaleString())}`,
+        `$${r.foreMonthly.toLocaleString()}/month · $${r.foreAnnual.toLocaleString()}/year billed`);
+
+      // Step 4
+      html += sec('Step 4 — ROI &amp; time savings');
+      html += row('Annual savings',
+        `annualSaving = totalCostYr − foreAnnualRaw\n             = ${num(fK(r.totalCostYr))} − $${num(f2(foreAnnualRaw))} = $${num(Math.round(r.annualSaving).toLocaleString())}`,
+        `$${Math.round(r.annualSaving).toLocaleString()} saved/year`);
+      html += row('ROI multiple',
+        `roi = annualSaving / foreAnnualRaw\n    = $${num(Math.round(r.annualSaving).toLocaleString())} / $${num(f2(foreAnnualRaw))} = ${num(r.roi.toFixed(2) + '×')}`,
+        `${r.roi.toFixed(2)}× return on fore AI spend`);
+      // Recompute fore breakdown for formula display
+      const foreAuthorHrsDisp = writeHrs * nt12 * (1 - M.alpha);
+      const foreExecHrsDisp = (5 / 60) * r.annualRuns;
+      html += row('Hours reclaimed',
+        `foreAuthorHrs  = writeHrs × newTestsAnnual × (1 − α) = ${num(f2(writeHrs))} × ${num(nt12)} × ${num(1 - M.alpha)} = ${num(f2(foreAuthorHrsDisp))} hrs\nforeExecHrs    = (5 min / 60) × annualRuns = (5/60) × ${num(f2(r.annualRuns))} = ${num(f2(foreExecHrsDisp))} hrs\ntotalForeHrs   = foreAuthorHrs + foreExecHrs (capped at max manpower) = ${num(f2(r.totalForeHrs))} hrs\nhrsSaved       = totalCurHrs − totalForeHrs = ${num(f2(r.totalCurHrs))} − ${num(f2(r.totalForeHrs))} = ${num(f2(r.hrsSaved))} hrs`,
+        `${Math.round(r.hrsSaved)} hrs/year reclaimed`);
+      const rawMult = r.totalForeHrs > 0 ? (r.totalCurHrs / r.totalForeHrs) : 10;
+      html += row('Release speed multiplier',
+        `releaseMultiple = min(10, max(1.1, totalCurHrs / totalForeHrs))\n                = min(10, max(1.1, ${num(f2(r.totalCurHrs))} / ${num(f2(r.totalForeHrs))}))\n                = min(10, ${num(rawMult.toFixed(1))}) = ${num(Math.min(10, Math.max(1.1, rawMult)).toFixed(1) + '×')}`,
+        `${Math.min(10, Math.max(1.1, rawMult)).toFixed(1)}× faster release cycles`);
+
+      html += hl(
+        `Year 1 ROI — ${fK(r.totalCostYr)} current cost → $${f2(foreAnnualRaw)} fore AI raw cost`,
+        r.roi.toFixed(2) + '×'
+      );
+
+      el.innerHTML = html;
+    }
+
+    // ── Run ────────────────────────────────────────────────────────────────
+    function randBetween(lo, hi) {
+      return +(lo + Math.random() * (hi - lo)).toFixed(2);
+    }
+
+    function capRoi(roi, capLo, capHi) {
+      return roi > capHi ? randBetween(capLo, capHi) : roi;
+    }
+
     function runCalc() {
+      if (!_mode) {
+        // Flash mode grid
+        const grid = document.querySelector('.mode-grid');
+        if (grid) {
+          grid.style.outline = '2px solid #dc2626';
+          grid.style.borderRadius = '8px';
+          setTimeout(() => { grid.style.outline = ''; }, 1400);
+        }
+        return;
+      }
       const r = compute();
       renderResults(r);
-      renderBreakdown(r);
       render3Year(r);
       renderFTEStory(r);
-      initSliders(r);
-      document.getElementById('calcFormWrap').style.display = 'none';
-      document.getElementById('regionWrap').style.display = 'none';
-      document.getElementById('presetsWrap').style.display = 'none';
-      document.getElementById('resultsSection').style.display = 'block';
-      document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+      renderFormulas(r);
 
-    // ── Render KPI cards + hero ───────────────────────────────────────────────────
-    function renderResults(r) {
-      const isZeroSuite = r.totalYr === 0 && r.runYr === 0;
-
-      // ROI hero
-      document.getElementById('kpiROI').textContent = isZeroSuite ? '—' : r.roi.toFixed(1);
-      document.getElementById('roiHeroCopyTitle').textContent = isZeroSuite
-        ? 'Add test suite data to see your ROI'
-        : 'Your estimated return with fore ai';
-      document.getElementById('roiHeroCopySub').textContent = isZeroSuite
-        ? 'Select your industry and region to get started.'
-        : 'Save up to 90% of time across test authoring, maintenance and execution — and increase team efficiency.';
-
-      // Annual package tile
-      const pkgEl   = document.getElementById('kpiAnnualPackage');
-      const subEl   = document.getElementById('kpiPackageSub');
-      const badgeEl = document.getElementById('kpiPlanBadge');
-      const isEnterprise = r.isCustom || r.foreAnnual > 75000;
-      if (pkgEl) pkgEl.textContent = r.isCustom ? 'Custom Package' : fmt$(Math.round(r.foreAnnual/12000)*1000);
-      if (subEl) subEl.textContent = r.isCustom ? 'Contact us for enterprise pricing' : 'estimated all-in per year';
-      if (badgeEl) badgeEl.textContent = isEnterprise ? 'Enterprise' : 'Standard';
-
-      // CTA
-      document.getElementById('ctaTitle').textContent = 'Ready to transform your QA?';
-      document.getElementById('ctaBody').textContent = 'Book a demo and see how fore ai fits into your workflow.';
-    }
-
-    // ── Render detailed breakdown (snapshot — not updated on slider) ──────────────
-    function renderBreakdown(r) {
-      const fmtH = n => Math.round(n).toLocaleString() + ' hrs';
-
-      document.getElementById('d_tests').textContent = r.tests.toLocaleString() + ' tests';
-      document.getElementById('d_newTests').textContent = r.newTests + ' tests/mo';
-      document.getElementById('d_fte').textContent = r.nFTE + ' FTEs';
-      document.getElementById('d_salary').textContent = (r.region || '—') + ' — ' + fmt$(r.salary) + '/yr per FTE';
-      document.getElementById('d_runsPerDay').textContent = r.runsPerWeek + ' runs/week';
-
-      document.getElementById('d_wkH').textContent = r.wkH + ' hrs/wk';
-      document.getElementById('d_tGen').textContent = r.tGen + ' hrs';
-      document.getElementById('d_tRun').textContent = r.tRun + ' mins';
-      document.getElementById('d_failRate').textContent = A.failureRate + '%';
-      document.getElementById('d_maintRate').textContent = A.maintenanceRate + '%';
-      document.getElementById('d_tFix').textContent = r.tFix + ' hrs';
-      document.getElementById('d_tMaint').textContent = r.tMaint + ' hrs';
-      document.getElementById('d_alpha').textContent = A.alpha + '%';
-      document.getElementById('d_beta').textContent = A.beta + '%';
-      document.getElementById('d_gamma').textContent = A.gamma + '%';
-      document.getElementById('d_WD').textContent = A.workingDays + ' days';
-      document.getElementById('d_WH').textContent = r.WH + ' hrs/day';
-      document.getElementById('d_maintFreq').textContent = r.maintFreq + '× per year';
-      document.getElementById('d_seqRunCost').textContent = '$' + r.seqRunCost + '/run';
-      document.getElementById('d_parUnit').textContent = fmt$(A.parallelCost) + '/test/yr';
-      document.getElementById('d_cpRun').textContent = '$' + r.cpRun + '/run';
-
-      document.getElementById('d_monthlyRuns').textContent = r.monthlyRuns.toLocaleString() + ' runs/mo';
-      document.getElementById('d_annualRuns').textContent = r.annualRuns.toLocaleString() + ' runs/yr';
-
-      document.getElementById('d_genYr').textContent = fmtH(r.genYr) + '/yr';
-      document.getElementById('d_fixYr').textContent = fmtH(r.fixYr) + '/yr';
-      document.getElementById('d_maintYr').textContent = fmtH(r.maintYr) + '/yr';
-      document.getElementById('d_totalYr').textContent = fmtH(r.totalYr) + '/yr';
-
-      document.getElementById('d_foreGenYr').textContent = fmtH(r.foreGenYr) + '/yr';
-      document.getElementById('d_foreMaintYr').textContent = fmtH(r.foreMaintYr) + '/yr';
-      document.getElementById('d_foreYr').textContent = fmtH(r.foreYr) + '/yr  (' + Math.round((1 - r.foreYr / Math.max(r.totalYr, 1)) * 100) + '% reduction)';
-
-      document.getElementById('d_hrsSaved').textContent = fmtH(r.hrsSaved) + '/yr';
-      document.getElementById('d_daysSaved').textContent = r.daysSaved + ' days';
-      document.getElementById('d_annualHperFTE').textContent = (Math.round(r.annualHperFTE * 10) / 10).toLocaleString() + ' hrs/FTE';
-      document.getElementById('d_ftesSaved').textContent = r.ftesSaved.toFixed(2) + ' FTEs';
-      document.getElementById('d_runYr').textContent = fmtH(r.runYr) + '/yr';
-      document.getElementById('d_foreRunYr').textContent = fmtH(r.foreRunYr) + '/yr';
-      document.getElementById('d_runSaved').textContent = fmtH(r.runSaved) + '/yr';
-
-      document.getElementById('d_totalSalary').textContent = fmt$(r.totalSalaryCost) + '/yr';
-      document.getElementById('d_utilRatio').textContent = (Math.round(r.utilRatio * 1000) / 10).toFixed(1) + '%  (' + r.dailyH.toFixed(1) + ' QA hrs ÷ ' + r.WH + ' working hrs)';
-      document.getElementById('d_adjQACost').textContent = fmt$(r.adjustedQACost) + '/yr';
-      document.getElementById('d_hrly').textContent = '$' + r.hrly + '/hr (team blended)';
-      document.getElementById('d_humanCost').textContent = fmt$(r.humanCost) + '/yr';
-      document.getElementById('d_runBase').textContent = fmt$(r.runBase) + '/yr';
-      document.getElementById('d_parCost').textContent = fmt$(r.parCost) + '/yr';
-      document.getElementById('d_totalCostYr').textContent = fmt$(r.totalCostYr) + '/yr';
-      document.getElementById('d_curMo').textContent = fmt$(r.curMo) + '/mo';
-
-      document.getElementById('d_foreHrCost').textContent = fmt$(r.foreHrCost) + '/yr';
-      document.getElementById('d_foreRunCost').textContent = fmt$(r.foreRunCost) + '/yr';
-      document.getElementById('d_minCost').textContent = fmt$(r.minCost) + '/yr';
-      document.getElementById('d_sugMonthly').textContent = fmt$(r.sugMonthly) + '/mo';
-
-      document.getElementById('d_sugMonthly2').textContent = fmt$(r.sugMonthly) + '/mo';
-      document.getElementById('d_planName').textContent = r.planName + ' — ' + fmt$(r.planMo) + '/mo';
-      document.getElementById('d_planMo').textContent = fmt$(r.planMo) + '/mo';
-      document.getElementById('d_planAnnual').textContent = fmt$(r.planMo * 12) + '/yr';
-      document.getElementById('d_curMo2').textContent = fmt$(r.curMo) + '/mo';
-      document.getElementById('d_netSave').textContent = fmt$(r.netSave) + '/mo  (' + fmt$(r.netSave * 12) + '/yr)';
-      document.getElementById('d_savePct').textContent = Math.round(r.savePct * 100) + '%';
-      document.getElementById('d_delta').textContent = r.usesDelta
-        ? (r.effectiveDelta * 100).toFixed(0) + '%  (' + fmt$(Math.round(r.effectiveDelta * r.totalCostYr)) + '/yr retained cost)'
-        : r.usesSimple
-          ? '0%  (overhead suppressed — using simple plan saving)'
-          : '0%  (suppressed — delta would make ROI negative)';
-      document.getElementById('d_roiNumerator').textContent = r.usesDelta
-        ? fmt$(r.roiNumerator) + '/yr  (' + fmt$(r.totalCostYr) + ' − ' + fmt$(r.minCost) + ' − ' + fmt$(Math.round(r.effectiveDelta * r.totalCostYr)) + ')'
-        : r.usesSimple
-          ? fmt$(r.roiNumerator) + '/yr  (' + fmt$(r.totalCostYr) + ' − ' + fmt$(r.planMo * 12) + ' plan cost, overhead ignored)'
-          : fmt$(r.roiNumerator) + '/yr  (' + fmt$(r.totalCostYr) + ' − ' + fmt$(r.minCost) + ', delta suppressed)';
-      document.getElementById('d_roi').textContent = r.roi.toFixed(1) + '×';
-    }
-
-    // ── Sensitivity sliders ───────────────────────────────────────────────────────
-    let _sliderTimer = null;
-
-    function initSliders(r) {
-      const sl_fte = document.getElementById('sl_fte');
-      if (sl_fte) {
-        sl_fte.min = 10;
-        sl_fte.max = 100;
-        sl_fte.value = r.nFTE;
-        const sv_fte = document.getElementById('sv_fte');
-        if (sv_fte) sv_fte.textContent = snapFTE(r.nFTE) + ' FTEs';
-      }
-
-      const sl_tests = document.getElementById('sl_tests');
-      if (sl_tests) {
-        sl_tests.min = 50;
-        sl_tests.max = (_region && INDIA_CHINA_REGIONS.includes(_region)) ? 500 : 1000;
-        sl_tests.value = r.tests;
-        const sv_tests = document.getElementById('sv_tests');
-        if (sv_tests) sv_tests.textContent = snapTests(r.tests).toLocaleString() + ' tests';
-      }
-    }
-
-    const TESTS_SNAP_FULL = [50, 100, 200, 500, 800, 1000];
-    const TESTS_SNAP_RESTRICTED = [50, 100, 200, 500];
-    function snapTests(val) {
-      const snap = (_region && INDIA_CHINA_REGIONS.includes(_region)) ? TESTS_SNAP_RESTRICTED : TESTS_SNAP_FULL;
-      return snap.reduce((a, b) => Math.abs(b - val) < Math.abs(a - val) ? b : a);
-    }
-
-    const FTE_SNAP = [10, 15, 20, 30, 40, 50, 75, 100];
-    function snapFTE(val) {
-      return FTE_SNAP.reduce((a, b) => Math.abs(b - val) < Math.abs(a - val) ? b : a);
-    }
-
-    function onSlider() {
-      const nFTE = snapFTE(parseInt(document.getElementById('sl_fte').value));
-      const tests = snapTests(parseInt(document.getElementById('sl_tests').value));
-      document.getElementById('sv_fte').textContent = nFTE + ' FTEs';
-      document.getElementById('sv_tests').textContent = tests.toLocaleString() + ' tests';
-      if (_sliderTimer) clearTimeout(_sliderTimer);
-      _sliderTimer = setTimeout(() => {
-        const r = compute({ nFTE, testsOverride: tests });
-        renderResults(r);
-        render3Year(r);
-        renderFTEStory(r);
-      }, 60);
-    }
-
-    function toggleBreakdown() {
-      const btn = document.getElementById('breakdownToggle');
-      const body = document.getElementById('breakdownBody');
-      const open = body.classList.toggle('open');
-      btn.classList.toggle('open', open);
-    }
-
-    // ── Reset ─────────────────────────────────────────────────────────────────────
-    function resetCalc() {
-      document.getElementById('resultsSection').style.display = 'none';
-      document.getElementById('presetsWrap').style.display = 'block';
-      document.getElementById('calcFormWrap').style.display = (_industry && _region) ? 'block' : 'none';
-      document.getElementById('regionWrap').style.display = _industry ? 'block' : 'none';
+      $('inputSection').style.display = 'none';
+      $('resultsSection').style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // ── Init ──────────────────────────────────────────────────────────────────────
-    function init() {
-      A = loadA();
-      buildIndustryGrid();
-      buildDropdowns(null);
-      showView('calc');
-    }
+    function resetCalc() {
+      // Fully reset all state so a different mode selection gives a clean compute
+      _industry = null;
+      _region = null;
+      _mode = null;
+      _lastR = null;
 
-    init();
+      $('resultsSection').style.display = 'none';
+      $('inputSection').style.display = 'block';
+
+      // Clear active pill/card selections
+      document.querySelectorAll('.pill.active, .mode-card.active').forEach(el => el.classList.remove('active'));
+
+      // Hide conditional sections
+      ['region-section', 'main-form-section', 'fte-section'].forEach(id => {
+        const el = $(id);
+        if (el) el.classList.add('hidden');
+      });
+
+      // Clear FTE fields
+      const grid = $('fte-fields-grid');
+      if (grid) grid.innerHTML = '';
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   </script>
 </body>
 
